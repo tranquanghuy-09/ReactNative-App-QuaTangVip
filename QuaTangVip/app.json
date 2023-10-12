@@ -24,15 +24,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png",
-      "config": {
-        "cors": {
-          "origins": ["*"]
-        }
-      }
-    },
-    "packagerOpts": {
-      "port": 8082
+      "favicon": "./assets/favicon.png"
     }
   }
 }
