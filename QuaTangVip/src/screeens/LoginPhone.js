@@ -22,15 +22,44 @@ const iIcon = require("../../assets/icons_Dai/ic_info_circle.webp");
 
 //Chưa xử lý được:D
 // + Kiểm tra không phải số điện thoại việt nam
-// + Kiểm tra thông tin người dùng đăng ký
+// + Kiểm tra data ảo
+// + Chưa xử lý đănng ký số điện mới
+
 export default function App({ navigation, route }) {
+  //Dữ liệu người dùng tạm thời
+  const data = [
+    {
+      id: 1,
+      name: "Nguyễn Văn A",
+      phone: "0000000000",
+      password: "123",
+      sex: true
+    },
+    {
+      id: 2,
+      name: "Nguyễn Văn B",
+      phone: "1234567899",
+      password: "123",
+      sex: true
+    },
+    {
+      id: 3,
+      name: "Nguyễn Thị Mừng",
+      phone: "0111111111",
+      password: "123",
+      sex: false
+    }
+  ];
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [checkPhoneFail, setCheckPhoneFail] = useState(false); // Khi không phải số điện thoại thì trả về true
 
   const deletePhone = () => {
     setPhoneNumber("");
+    setCheckPhoneFail(false);
   };
 
+  //Định dạng số điện thoại
   const handleTextChange = (text) => {
     setCheckPhoneFail(false);
     const numericText = text.replace(/\D/g, "");
@@ -44,13 +73,19 @@ export default function App({ navigation, route }) {
       setPhoneNumber(numericText);
     }
   };
+  //Kiểm tra số điện thoại
   const handleContinue = () => {
     const numericText = phoneNumber.replace(/\D/g, "");
-    if (numericText.length !== 10 && numericText[0] == "0") {
-      setCheckPhoneFail(true);
-      return;
+    if (numericText.length == 10 && numericText[0] == "0") {
+      const user = data.find((item) => item.phone == numericText);
+      if (user !== undefined) {
+        navigation.navigate("LoginPassword", { user: user });
+      } else {
+        navigation.navigate("SignUp", { phone: numericText });
+      }
     }
-    navigation.navigate("LoginPassword", { phone: numericText });
+    setCheckPhoneFail(true);
+    return;
   };
 
   return (

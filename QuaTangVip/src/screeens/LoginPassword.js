@@ -14,64 +14,54 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const colorGray = "#8D8D8D";
+const colorBlack = "black";
 const colorRed = "red";
 const colorYellow = "#FFC62E";
+const colorBlue = "#0E86C6";
 const screenWidth = Dimensions.get("window").width;
-const removeIcon = require("../../assets/icons_Dai/ic_clear.webp");
+const clockIcon = require("../../assets/icons_Dai/assets_images_ic_light_lock.webp");
 const iIcon = require("../../assets/icons_Dai/ic_info_circle.webp");
+const showIcon = require("../../assets/icons_Dai/design_ic_visibility.png");
+const hideIcon = require("../../assets/icons_Dai/design_ic_visibility_off.png");
+const fingerprintIon = require("../../assets/icons_Dai/ic_fingerprint.webp");
 
-//Chưa xử lý được:D
+//Chưa xử lý được:
 // + Kiểm tra không phải số điện thoại việt nam
-export default function App({ navigarion, route }) {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [checkPhoneFail, setCheckPhoneFail] = useState(false); // Khi không phải số điện thoại thì trả về true
+// + Chưa xử lý được nút Quét mã QR
+// + Thông báo sai mật khẩu còn xấu, chưa giống app thật
 
-  const deletePhone = () => {
-    setPhoneNumber("");
-  };
+export default function App({ navigation, route }) {
+  const user = route.params.user;
+  const sex = user.sex ? "Anh" : "Chị";
+  const [displayPass, setdisplayPass] = useState(false);
+  const [password, setPassword] = useState("");
 
-  const handleTextChange = (text) => {
-    setCheckPhoneFail(false);
-    const numericText = text.replace(/\D/g, "");
-    if (numericText.length === 10) {
-      const formattedNumber = numericText.replace(
-        /(\d{4})(\d{3})(\d{3})/,
-        "$1 $2 $3"
-      );
-      setPhoneNumber(formattedNumber);
+  const checkPassword = () => {
+    if (password == user.password) {
+      navigation.navigate("Home", { user: user });
     } else {
-      setPhoneNumber(numericText);
+      alert("Sai mật khẩu");
     }
   };
-  const handleContinue = () => {
-    const numericText = phoneNumber.replace(/\D/g, "");
-    if (numericText.length !== 10 && numericText[0] == "0") {
-      setCheckPhoneFail(true);
-      return;
-    }
-    navigarion.navigate("");
-  };
-
   return (
     <View style={styles.container}>
-      <View>
+      <View style={{ flexDirection: "column" }}>
         <Text
           style={{
             fontSize: 30,
             fontWeight: "bold",
-            marginBottom: 20,
             marginTop: 20,
+            marginBottom: 5,
             textAlign: "center"
           }}
         >
-          Xin chào Anh!
+          Xin chào {sex}!
         </Text>
         <Text
           style={{
-            fontSize: 30,
+            fontSize: 22,
             fontWeight: "bold",
-            marginBottom: 20,
-            marginTop: 20,
+            marginBottom: 30,
             textAlign: "center"
           }}
         >
@@ -81,100 +71,148 @@ export default function App({ navigarion, route }) {
           style={{
             flexDirection: "row",
             marginBottom: 10,
-            marginLeft: 5
+            marginLeft: 5,
+            alignItems: "center"
           }}
         >
-          <Text style={{ color: "red", marginRight: 5 }}>*</Text>
-          <Text style={{ color: colorGray }}>Nhập số điện thoại</Text>
-        </View>
-        <View style={{ flexDirection: "row" }}>
-          <TextInput
-            placeholder="Số điện thoại của bạn"
-            placeholderTextColor={colorGray}
+          <Text style={{ color: "red", marginRight: 5, fontWeight: 700 }}>
+            *
+          </Text>
+          <Text style={{ color: colorBlack, fontSize: 16 }}>Mật khẩu</Text>
+          <Image
+            source={iIcon}
             style={{
-              borderWidth: 1,
-              width: (screenWidth * 90) / 100,
+              resizeMode: "contain",
+              width: 18,
+              height: 18,
+              marginLeft: 5,
+              top: 3
+            }}
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            width: (screenWidth * 90) / 100,
+            borderWidth: 1,
+            borderColor: colorGray,
+            borderRadius: 10
+          }}
+        >
+          <Image
+            source={clockIcon}
+            style={{
+              flex: 1,
+              resizeMode: "contain",
+              width: 20,
+              height: 20,
+              top: 13
+            }}
+          />
+          <TextInput
+            placeholder="Nhập mật khẩu"
+            placeholderTextColor={colorGray}
+            secureTextEntry={!displayPass}
+            style={{
+              flex: 6,
               padding: 10,
               marginBottom: 5,
-              borderRadius: 10,
-              borderColor: checkPhoneFail ? colorRed : colorGray,
-              fontSize: 18,
-              color: checkPhoneFail ? colorRed : colorGray
+              fontSize: 16,
+              color: colorGray
             }}
-            keyboardType="numeric"
-            maxLength={10}
-            onChangeText={handleTextChange}
-            value={phoneNumber}
+            onChangeText={setPassword}
           ></TextInput>
-          {phoneNumber.length != 0 ? (
-            <TouchableOpacity onPress={deletePhone}>
-              <Image
-                source={removeIcon}
-                style={{
-                  resizeMode: "contain",
-                  width: 20,
-                  height: 20,
-                  position: "absolute",
-                  right: 15,
-                  top: 13,
-                  tintColor: checkPhoneFail ? colorRed : colorGray
-                }}
-              />
-            </TouchableOpacity>
-          ) : (
-            ""
-          )}
-        </View>
-
-        {checkPhoneFail ? (
-          <View
+          <TouchableOpacity
             style={{
-              flexDirection: "row",
+              top: 13,
+              flex: 1
+            }}
+            onPress={() => setdisplayPass(!displayPass)}
+          >
+            <Image
+              source={displayPass ? showIcon : hideIcon}
+              style={{
+                resizeMode: "contain",
+                width: 20,
+                height: 20,
+                left: 5,
+                tintColor: colorGray
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={{ flexDirection: "column" }}>
+        <View
+          style={{
+            width: (screenWidth * 90) / 100,
+            flexDirection: "row",
+            justifyContent: "space-between"
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              backgroundColor: colorYellow,
+              height: 45,
+              borderRadius: 10,
+              width: (screenWidth * 90) / 100 - 65,
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+            onPress={checkPassword}
+          >
+            <Text
+              style={{
+                color: "black",
+                fontSize: 14,
+                textAlign: "center",
+                fontWeight: 700
+              }}
+            >
+              Tiếp tục
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: colorYellow,
+              borderRadius: 10,
+              width: 50,
+              height: 50,
+              justifyContent: "center",
               alignItems: "center"
             }}
           >
             <Image
-              source={iIcon}
+              source={fingerprintIon}
               style={{
                 resizeMode: "contain",
-                width: 15,
-                height: 15,
-                tintColor: colorRed,
-                marginRight: 7
+                width: 30,
+                height: 30
               }}
             />
-            <Text style={{ color: colorRed }}>
-              Số điện thoại không đúng. Bạn vui lòng nhập lại.
-            </Text>
-          </View>
-        ) : (
-          ""
-        )}
-      </View>
-      <View>
+          </TouchableOpacity>
+        </View>{" "}
         <TouchableOpacity
-          style={{
-            backgroundColor: colorYellow,
-            padding: 15,
-            borderRadius: 10,
-            flex: 1,
-            width: (screenWidth * 90) / 100
-          }}
-          onPress={handleContinue}
+          style={{ alignItems: "center" }}
+          onPress={() => navigation.navigate("LoginPhone")}
         >
           <Text
             style={{
-              color: "black",
-              fontSize: 14,
+              color: colorBlue,
+              fontSize: 16,
+              borderBottomWidth: 1,
+              borderColor: colorBlue,
+              fontWeight: "bold",
               textAlign: "center",
-              fontWeight: 700
+              marginBottom: 10,
+              marginTop: 15,
+              width: "fit-content"
             }}
           >
-            Tiếp tục
+            Đăng nhập bằng số điện thoại khác
           </Text>
         </TouchableOpacity>
       </View>
-      <StatusBar style="auto" />
     </View>
   );
 }
