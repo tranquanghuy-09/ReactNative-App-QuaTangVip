@@ -1,8 +1,25 @@
 import React, { useState } from "react";
-import { View, TextInput, Button } from "react-native";
+import { Text, View, TextInput, Button, TouchableOpacity } from "react-native";
 
-const Home = ({ navigation }) => {
-  return <View>Trang chủ</View>;
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+const Home = ({ navigation, route }) => {
+  const user = route.params.user;
+  return (
+    <View>
+      <Text> Trang chủ</Text>
+      <TouchableOpacity
+  style={{ backgroundColor: "green", padding: 10 }}
+  onPress={() => navigation.navigate("Account", { user: user })}
+>
+
+        <View style={{ backgroundColor: "green", padding: 10 }}>
+          <Text>Navigate to Account</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
 };
 
 export default Home;
