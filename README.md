@@ -106,7 +106,7 @@ Use the `BLANK_README.md` to get started.
 
 * Trần Quang Huy
     * MSSV: 20092731
-    * Phone: 0357.391.270
+    * Phone: 0357391270
 * Bùi Gia Đại
     * MSSV: 
     * Phone: 
