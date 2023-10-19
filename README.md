@@ -19,6 +19,7 @@
   </a>
 
   <h3 align="center">Quà Tặng VIP</h3>
+  </div>
 <!--
   <p align="center">
     An awesome README template to jumpstart your projects!
@@ -32,7 +33,7 @@
     ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
   </p>
-</div>
+
 -->
 
 
@@ -92,10 +93,10 @@ Use the `BLANK_README.md` to get started.
 <!-- * [![Svelte][Svelte.dev]][Svelte-url] -->
 <!-- * [![Laravel][Laravel.com]][Laravel-url] -->
 <!-- * [![Bootstrap][Bootstrap.com]][Bootstrap-url] -->
-<!-- * [![JQuery][JQuery.com]][JQuery-url] -->
+<!-- * [![JQuery][JQuery.com]][JQuery-url] 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+-->
 ## Decripstions
 
 "QuaTangVIP" is a sub project in your mobile programming course. This project can be seen as an opportunity for practical learning and the development of mobile programming skills.
@@ -127,9 +128,9 @@ _Below is an example of how you can instruct your audience on installing and set
    ```js
    const API_KEY = 'ENTER YOUR API';
    ```
--->
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+-->
 
 
 <!-- CONTACT 
