@@ -1,31 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   Image,
   TouchableOpacity,
   ScrollView,
-  Dimensions
+  Dimensions,
+  Modal,
+  TouchableWithoutFeedback
 } from "react-native";
+
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 const colorBlack = "#000000";
 const colorGray = "#A59464";
 const colorGrayLight = "#F7F7F7";
 const colorWhite = "#FFF";
 const colorRed = "red";
 const colorYellow = "#FFEEC0";
+const colorYellow2 = "#FFC62E";
 const colorBlue = "#105989";
 
-const fontSizeTitle = 16;
-const fontSizeContent = 16;
-const fontSizeLogout = 16;
+const fontSize1 = 16;
+const fontSize2 = 14;
+const fontSize3 = 12;
+const fontSize4 = 10;
 
-const Account = () => {
+//Chưa xử lý được:
+
+const Account = ({ navigation, routeroute }) => {
   const avatar = require("../../assets/icons_Dai/ic_account_logo.webp");
   const rightArrowIcon = require("../../assets/icons_Dai/ic_right.webp");
   const logoutIcon = require("../../assets/icons_Dai/ic_logout.webp");
   const version = "1.1.10 v246";
   const brachImage = require("../../assets/icons_Dai/img_branchname.webp");
   const cameraIcon = require("../../assets/icons_Dai/ic_camera.webp");
+  const developmentIcon = require("../../assets/icons_Dai/ic_development.webp");
   const txtBrach =
     " Ứng dụng tích điểm và sử dụng điểm dành cho Khách hàng của Tập đoàn Thế Giới Di Động (MWG)";
   const data = [
@@ -70,9 +81,103 @@ const Account = () => {
       ]
     }
   ];
+  //Xử lý sự kiện
+
+  const [isModalVisible, setModalVisible] = React.useState(false);
+
+  const onClick = (link) => {
+    if (link === "") {
+      toggleModal();
+      return;
+    }
+    navigation.navigate(link);
+  };
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: colorWhite }}>
+      {/* Thông báo khi chưa có link*/}
+      <Modal
+        animationType="fade" // hiệu ứng khi mở modal
+        transparent={true} // màn hình nền có trong suốt hay không
+        visible={isModalVisible}
+      >
+        <TouchableWithoutFeedback onPress={toggleModal}>
+          {/* khi click ra ngoài thì modal sẽ tắt */}
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "rgba(0, 0, 0, 0.5)"
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: "white",
+                padding: 20,
+                borderRadius: 10,
+                width: "80%"
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between"
+                }}
+              >
+                <Image
+                  source={developmentIcon}
+                  style={{
+                    width: 20,
+                    height: 20,
+                    resizeMode: "contain",
+                    alignSelf: "center",
+                    marginBottom: 10
+                  }}
+                />
+                <TouchableOpacity onPress={() => setModalVisible(false)}>
+                  <Text style={{ fontSize: fontSize1 }}>X</Text>
+                </TouchableOpacity>
+              </View>
+              <Text
+                style={{
+                  fontSize: fontSize1,
+                  fontWeight: "bold"
+                }}
+              >
+                Tính năng được phát triển
+              </Text>
+              <Text style={{ fontSize: fontSize2, marginBottom: 30 }}>
+                Ứng dụng Quà tặng VIP sẽ mang tính năng này đến anh trong thời
+                gian sớm nhất. Mong anh thông cảm nhé!
+              </Text>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: colorYellow2,
+                  padding: 10,
+                  borderRadius: 5,
+                  alignItems: "center"
+                }}
+                onPress={toggleModal}
+              >
+                <Text
+                  style={{
+                    color: colorBlack,
+                    fontSize: fontSize1,
+                    fontWeight: "bold"
+                  }}
+                >
+                  Đồng ý
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+
       <View
         accessible={true}
         accessibilityLabel="User info section"
@@ -117,13 +222,11 @@ const Account = () => {
             />
           </TouchableOpacity>
           <View style={{ marginLeft: 20 }}>
-            <Text style={{ fontWeight: "bold", fontSize: fontSizeTitle }}>
-              Đại
-            </Text>
+            <Text style={{ fontWeight: "bold", fontSize: fontSize1 }}>Đại</Text>
             <Text
               style={{
                 color: colorBlack,
-                fontSize: fontSizeTitle,
+                fontSize: fontSize1,
                 marginTop: 5
               }}
             >
@@ -151,7 +254,7 @@ const Account = () => {
             <Text
               style={{
                 fontWeight: "bold",
-                fontSize: fontSizeTitle,
+                fontSize: fontSize1,
                 color: colorBlack,
                 marginBottom: 15
               }}
@@ -170,6 +273,7 @@ const Account = () => {
                       marginBottom: 0,
                       width: (Dimensions.get("window").width * 90) / 100
                     }}
+                    onPress={() => onClick(child.link)}
                   >
                     <View
                       style={{
@@ -193,7 +297,7 @@ const Account = () => {
                         style={{
                           flex: 5,
                           color: colorBlack,
-                          fontSize: fontSizeContent
+                          fontSize: fontSize1
                         }}
                       >
                         {child.name}
@@ -259,7 +363,7 @@ const Account = () => {
         <Text
           style={{
             color: colorRed,
-            fontSize: fontSizeLogout,
+            fontSize: fontSize1,
             marginLeft: 5,
             fontWeight: 500
           }}
@@ -294,7 +398,7 @@ const Account = () => {
           <Text
             style={{
               flex: 5,
-              fontSize: 10,
+              fontSize: fontSize4,
               color: colorGray,
               fontWeight: 500,
               marginLeft: 10
@@ -306,7 +410,7 @@ const Account = () => {
         <Text
           style={{
             color: "#B49D5C",
-            fontSize: 12,
+            fontSize: fontSize3,
             textAlign: "center",
             marginTop: 10,
             marginBottom: 75,
