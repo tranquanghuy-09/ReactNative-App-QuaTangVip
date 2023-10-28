@@ -10,10 +10,9 @@ const Home = ({ navigation, route }) => {
     <View>
       <Text> Trang chủ</Text>
       <TouchableOpacity
-  style={{ backgroundColor: "green", padding: 10 }}
-  onPress={() => navigation.navigate("Account", { user: user })}
->
-
+        style={{ backgroundColor: "green", padding: 10 }}
+        onPress={() => navigation.navigate("Account", { user: user })}
+      >
         <View style={{ backgroundColor: "green", padding: 10 }}>
           <Text>Navigate to Account</Text>
         </View>

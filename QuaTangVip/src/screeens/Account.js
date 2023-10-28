@@ -29,7 +29,11 @@ const fontSize4 = 10;
 
 //Chưa xử lý được:
 
-const Account = ({ navigation, routeroute }) => {
+const Account = ({ navigation, route }) => {
+  const user = route.params.user;
+  const name = user.name;
+  const phone = user.phone;
+
   const avatar = require("../../assets/icons_Dai/ic_account_logo.webp");
   const rightArrowIcon = require("../../assets/icons_Dai/ic_right.webp");
   const logoutIcon = require("../../assets/icons_Dai/ic_logout.webp");
@@ -45,7 +49,7 @@ const Account = ({ navigation, routeroute }) => {
       child: [
         {
           name: "Thông tin cá nhân",
-          link: "",
+          link: "Thông tin cá nhân",
           img: require("../../assets/icons_Dai/user.webp")
         }
       ]
@@ -55,17 +59,17 @@ const Account = ({ navigation, routeroute }) => {
       child: [
         {
           name: "Cửa hàng gần bạn",
-          link: "",
+          link: "Cửa hàng gần bạn",
           img: require("../../assets/icons_Dai/maps.webp")
         },
         {
           name: "Điều khoản Quà Tặng VIP",
-          link: "",
+          link: "Điều khoản Quà Tặng VIP",
           img: require("../../assets/icons_Dai/2490657-200.png")
         },
         {
           name: "Quản lý ứng dụng",
-          link: "",
+          link: "Quản lý ứng dụng",
           img: require("../../assets/icons_Dai/ics_setting.webp")
         }
       ]
@@ -222,7 +226,9 @@ const Account = ({ navigation, routeroute }) => {
             />
           </TouchableOpacity>
           <View style={{ marginLeft: 20 }}>
-            <Text style={{ fontWeight: "bold", fontSize: fontSize1 }}>Đại</Text>
+            <Text style={{ fontWeight: "bold", fontSize: fontSize1 }}>
+              {name}
+            </Text>
             <Text
               style={{
                 color: colorBlack,
@@ -230,7 +236,7 @@ const Account = ({ navigation, routeroute }) => {
                 marginTop: 5
               }}
             >
-              0382890389
+              {phone}
             </Text>
           </View>
         </View>

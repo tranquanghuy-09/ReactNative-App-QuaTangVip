@@ -10,15 +10,20 @@
   },
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",
+    "@react-native-community/geolocation": "^3.1.0",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "@types/react-native": "^0.72.7",
+    "axios": "^1.6.2",
     "expo": "~49.0.15",
+    "expo-location": "~16.1.0",
     "expo-status-bar": "~1.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "0.72.6",
+    "react-native": "0.72.5",
     "react-native-flash-message": "^0.4.2",
+    "react-native-geolocation-service": "^5.3.1",
+    "react-native-maps": "1.7.1",
     "react-native-web": "~0.19.6"
   },
   "devDependencies": {
