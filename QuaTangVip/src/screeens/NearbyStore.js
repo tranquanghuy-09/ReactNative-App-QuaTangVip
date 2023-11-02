@@ -1,3 +1,23 @@
+// Tham khảo: https://docs.expo.io/versions/latest/sdk/map-view/
+// Thêm quyền truy cập vị trí vào file app.json
+// {
+//     "expo": {
+//       "android": {
+//         "permissions": ["ACCESS_FINE_LOCATION"]
+//       },
+//       "ios": {
+//         "infoPlist": {
+//           "NSLocationWhenInUseUsageDescription": "Your message here"
+//         }
+//       }
+//     }
+//   }
+// Import các thư viện cần thiết
+// npx expo install react-native-maps
+// expo install expo-location
+///expo install react-native-elements
+
+//https://www.latlong.net: lấy địa chỉ
 import React, { useEffect, useState, useRef } from "react";
 import {
   View,
@@ -18,6 +38,8 @@ import { useNavigation } from "@react-navigation/native";
 // Chưa làm được:
 // Vị trí hiện tại xoay theo vị trí người dùng
 // Trang này có cái vui vui là khi render lại thì các cửa hàng cũng thay đổi vị trí :))))
+//Chưa sắp xếp thứ tự các cửa hàng theo km
+// Chưa hiển thị con đường đến cửa hàng
 
 const NearbyStore = ({ navigation, route }) => {
   //Ảnh
