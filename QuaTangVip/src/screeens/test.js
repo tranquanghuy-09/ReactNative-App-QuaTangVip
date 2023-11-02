@@ -1,12 +1,21 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  FlatList,
+  PanResponder
+} from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
-import { Icon } from "react-native-elements";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+//Thử nghiệm tạo button trên map nhưng không được => do sắp xếp thứ tụ sai: button nằm dưới hàm xử lý :(((((
 
-//Thử nghiệm tạo button trên map nhưng không được
-// Chưa làm được
+// Chưa làm được:
 // Vị trí hiện tại xoay theo vị trí người dùng
 // Trang này có cái vui vui là khi render lại thì các cửa hàng cũng thay đổi vị trí :))))
 
@@ -14,6 +23,7 @@ const NearbyStore = ({ navigation, route }) => {
   //Ảnh
   const goBackImage = require("../../assets/icons_Dai/node_modules_reactnavigation_stack_src_views_assets_backicon.png");
   const myLocationImage = require("../../assets/icons_Dai/ic_my_location.webp");
+  //Iocn logo 5 loại cửa hàng
   const theGioiDiDongImage = require("../../assets/icons_Dai/logo_branch_tgdd.webp");
   const dienMayXanhIcon = require("../../assets/icons_Dai/phat-trien-website-dien-may-xanh-16233.jpeg");
   const anKhangIcon = require("../../assets/icons_Dai/nha-thuoc-an-khang-tra-cuu-chi-tiet-thong-tin-thuoc-logo-06-07-2021.png");
@@ -21,31 +31,28 @@ const NearbyStore = ({ navigation, route }) => {
   const aVACareIcon = require("../../assets/icons_Dai/thumbtopzone2_800x450-600x400.jpg");
   //Màu
   const colorYellow = "#FFC62E";
+  const colorGray = "#BDBDBD";
+  const colorBlue = "#1892D3";
+  //Kích thước màn hình
+  const { widthMAX, heightMAX } = Dimensions.get("window");
+  //Độ phóng to
+  const zoom = 0.002;
+  //Icon
+  const upIcon = require("../../assets/icons_Dai/ic_up.webp");
+  const downIcon = require("../../assets/icons_Dai/ic_down.webp");
+  const shopIcon = require("../../assets/icons_Dai/ic_shop.webp");
+  const mapIcon = require("../../assets/icons_Dai/maps.webp");
+  const clockIcon = require("../../assets/icons_Dai/lovepik-clock-icon-png-image_401467032_wh1200.png");
 
-  //   const button = [
-  //     {
-  //       id: 1,
-  //       name: "Trở về",
-  //       icon: goBackImage,
-  //       backgroundColor: colorYellow,
-  //       color: "black",
-  //       event: handleGoBack
-  //     },
-  //     {
-  //       id: 2,
-  //       name: "Định vị",
-  //       icon: myLocationImage,
-  //       backgroundColor: colorYellow,
-  //       color: "black",
-  //       event: handleLocateMe
-  //     }
-  //   ];
-
+  //Height của thanh dưới
+  const [lowerBarLength, setlowerBarLength] = useState(false);
+  const [upDownIcon, setUpDownIcon] = useState(upIcon);
+  //map
   const [location, setLocation] = useState(null);
   const mapViewRef = useRef(null);
+  const [infoStore, setinfoStore] = useState(null);
 
-  //data ảo dự trù trên gg map
-
+  //data ảo cửa hàng trên gg map
   const getRandomOffset = () => {
     return (Math.random() - 0.5) * 0.02;
   };
@@ -59,19 +66,22 @@ const NearbyStore = ({ navigation, route }) => {
           id: 1,
           latitude: 10.82213 + getRandomOffset(),
           longitude: 106.68683 + getRandomOffset(),
-          local: "Địa chỉ: 123 Nguyễn Thị Minh Khai, Quận 1, TP.HCM"
+          local:
+            "12 Nguyễn Văn Bảo, Phường 4, Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam"
         },
         {
           id: 2,
           latitude: 10.82213 + getRandomOffset(),
           longitude: 106.68683 + getRandomOffset(),
-          local: "Địa chỉ: 123 Nguyễn Thị Minh Khai, Quận 1, TP.HCM"
+          local:
+            "12 Nguyễn Văn Bảo, Phường 4, Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam"
         },
         {
           id: 3,
           latitude: 10.82213 + getRandomOffset(),
           longitude: 106.68683 + getRandomOffset(),
-          local: "Địa chỉ: 123 Nguyễn Thị Minh Khai, Quận 1, TP.HCM"
+          local:
+            "12 Nguyễn Văn Bảo, Phường 4, Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam"
         }
       ],
       icon: theGioiDiDongImage
@@ -84,13 +94,15 @@ const NearbyStore = ({ navigation, route }) => {
           id: 1,
           latitude: 10.82213 + getRandomOffset(),
           longitude: 106.68683 + getRandomOffset(),
-          local: "Địa chỉ: 123 Nguyễn Thị Minh Khai, Quận 1, TP.HCM"
+          local:
+            "12 Nguyễn Văn Bảo, Phường 4, Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam"
         },
         {
           id: 2,
           latitude: 10.82213 + getRandomOffset(),
           longitude: 106.68683 + getRandomOffset(),
-          local: "Địa chỉ: 123 Nguyễn Thị Minh Khai, Quận 1, TP.HCM"
+          local:
+            "12 Nguyễn Văn Bảo, Phường 4, Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam"
         }
       ],
       icon: dienMayXanhIcon
@@ -103,13 +115,15 @@ const NearbyStore = ({ navigation, route }) => {
           id: 1,
           latitude: 10.82213 + getRandomOffset(),
           longitude: 106.68683 + getRandomOffset(),
-          local: "Địa chỉ: 123 Nguyễn Thị Minh Khai, Quận 1, TP.HCM"
+          local:
+            "12 Nguyễn Văn Bảo, Phường 4, Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam"
         },
         {
           id: 2,
           latitude: 10.82213 + getRandomOffset(),
           longitude: 106.68683 + getRandomOffset(),
-          local: "Địa chỉ: 123 Nguyễn Thị Minh Khai, Quận 1, TP.HCM"
+          local:
+            "12 Nguyễn Văn Bảo, Phường 4, Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam"
         }
       ],
       icon: anKhangIcon
@@ -122,7 +136,8 @@ const NearbyStore = ({ navigation, route }) => {
           id: 1,
           latitude: 10.82213 + getRandomOffset(),
           longitude: 106.68683 + getRandomOffset(),
-          local: "Địa chỉ: 123 Nguyễn Thị Minh Khai, Quận 1, TP.HCM"
+          local:
+            "12 Nguyễn Văn Bảo, Phường 4, Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam"
         }
       ],
       icon: aVAKIDSIcon
@@ -135,13 +150,15 @@ const NearbyStore = ({ navigation, route }) => {
           id: 1,
           latitude: 10.82213 + getRandomOffset(),
           longitude: 106.68683 + getRandomOffset(),
-          local: "Địa chỉ: 123 Nguyễn Thị Minh Khai, Quận 1, TP.HCM"
+          local:
+            "12 Nguyễn Văn Bảo, Phường 4, Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam"
         },
         {
           id: 2,
           latitude: 10.82213 + getRandomOffset(),
           longitude: 106.68683 + getRandomOffset(),
-          local: "Địa chỉ: 123 Nguyễn Thị Minh Khai, Quận 1, TP.HCM"
+          local:
+            "12 Nguyễn Văn Bảo, Phường 4, Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam"
         }
       ],
       icon: aVACareIcon
@@ -154,13 +171,15 @@ const NearbyStore = ({ navigation, route }) => {
           id: 1,
           latitude: 10.82213 + getRandomOffset(),
           longitude: 106.68683 + getRandomOffset(),
-          local: "Địa chỉ: 123 Nguyễn Thị Minh Khai, Quận 1, TP.HCM"
+          local:
+            "12 Nguyễn Văn Bảo, Phường 4, Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam"
         },
         {
           id: 2,
           latitude: 10.82213 + getRandomOffset(),
           longitude: 106.68683 + getRandomOffset(),
-          local: "Địa chỉ: 123 Nguyễn Thị Minh Khai, Quận 1, TP.HCM"
+          local:
+            "12 Nguyễn Văn Bảo, Phường 4, Gò Vấp, Thành phố Hồ Chí Minh, Việt Nam"
         }
       ],
       icon: aVACareIcon
@@ -183,25 +202,123 @@ const NearbyStore = ({ navigation, route }) => {
     };
     getLocation();
   }, []);
-
   const handleGoBack = () => {
     navigation.goBack();
   };
 
+  //Xử lý di chuyển màn hình tới địa chỉ đươc nhận
+  const handleMoveToLocation = (latitude, longitude) => {
+    mapViewRef.current?.animateToRegion({
+      latitude: latitude,
+      longitude: longitude,
+      latitudeDelta: zoom,
+      longitudeDelta: zoom
+    });
+  };
+  //Xử lý chuyển chuyển màn hình tới địa chỉ bản thân
   const handleLocateMe = async () => {
     try {
       let userLocation = await Location.getCurrentPositionAsync({});
       setLocation(userLocation.coords);
-      mapViewRef.current?.animateToRegion({
-        latitude: userLocation.coords.latitude,
-        longitude: userLocation.coords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421
-      });
+      handleMoveToLocation(
+        userLocation.coords.latitude,
+        userLocation.coords.longitude
+      );
     } catch (error) {
       console.error("Đã xảy ra lỗi khi nhận vị trí", error);
     }
   };
+
+  //Xử lý tính khoảng cách để vị trí của bản thân
+  function getKm(latitudeStore, longitudeStore) {
+    if (!location || !latitudeStore || !longitudeStore) {
+      return null; //không có dữ liệu
+    }
+    const toRadians = (angle) => {
+      return (angle * Math.PI) / 180;
+    };
+    const R = 6371; //Bán kính trái đất
+    const dLat = toRadians(latitudeStore - location.latitude);
+    const dLon = toRadians(longitudeStore - location.longitude);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRadians(location.latitude)) *
+        Math.cos(toRadians(latitudeStore)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); //Tính toán theo công thức haversine
+    const distance = R * c; // Khoảng cách tính theo km
+    return distance.toFixed(2); // adjust the number of decimal places as needed
+  }
+
+  // Xử lý khi người dùng vuốt lên hoặc xuống
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponderCapture: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: (_, gestureState) => {
+        // Di chuyển lên
+        if (gestureState.dy < 0) {
+          setUpDownIcon(downIcon);
+          setlowerBarLength(true);
+          console.log("Moving up", gestureState.dy);
+        } else {
+          // // Di chuyển xuống
+          setUpDownIcon(upIcon);
+          setlowerBarLength(false);
+          console.log("Moving down", gestureState.dy);
+        }
+      },
+      onPanResponderRelease: (_, gestureState) => {
+        // Xử lý khi người dùng nhả tay
+        console.log("Released", gestureState.dy);
+      }
+    })
+  ).current;
+
+  //Xử lý thay đổi độ dài thanh dưới với 2 kich thước măc định
+  const handleScroll = () => {
+    lowerBarLength ? setUpDownIcon(upIcon) : setUpDownIcon(downIcon);
+    setlowerBarLength(!lowerBarLength);
+  };
+
+  //Xử lý hiển thị thông tin cửa hàng
+  const handleShowStore = (item, store) => {
+    // di chuyển tới vị trí cửa hàng
+    handleMoveToLocation(store.latitude, store.longitude);
+    //Hiển thị thông tin cửa hàng
+    const newStore = {
+      name: item.name,
+      local: store.local,
+      latitude: store.latitude,
+      longitude: store.longitude,
+      time: "7:30 - 22:00",
+      icon: item.icon,
+      id: store.id
+    };
+    setinfoStore(newStore);
+  };
+
+  //Các nút trên map
+  const button = [
+    {
+      id: 1,
+      name: "Trở về",
+      icon: goBackImage,
+      backgroundColor: colorYellow,
+      color: "black",
+      event: handleGoBack
+    },
+    {
+      id: 2,
+      name: "Định vị",
+      icon: myLocationImage,
+      backgroundColor: colorYellow,
+      color: "black",
+      event: handleLocateMe
+    }
+  ];
 
   return (
     <View style={{ flex: 1 }}>
@@ -267,30 +384,33 @@ const NearbyStore = ({ navigation, route }) => {
           width: "100%",
           position: "absolute",
           marginTop: 80,
-          padding: 10,
+          padding: 20,
           zIndex: 1,
           flexDirection: "row",
           justifyContent: "space-between"
         }}
       >
-        {/* {button.map((item) => (
+        {button.map((item) => (
           <TouchableOpacity
             key={item.id}
-            onPress={() => item.event}
+            onPress={item.event}
             style={{
               backgroundColor: item.backgroundColor,
               borderRadius: 25,
-              width: 40,
-              height: 40,
+              width: 50,
+              height: 50,
               justifyContent: "center",
               alignItems: "center"
             }}
           >
-            <Image source={item.icon} style={{ width: 30, height: 30 }} />
+            <Image
+              source={item.icon}
+              style={{ width: 30, height: 30, tintColor: item.color }}
+            />
           </TouchableOpacity>
-        ))} */}
+        ))}
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={handleGoBack}
           style={{
             backgroundColor: colorYellow,
@@ -303,6 +423,7 @@ const NearbyStore = ({ navigation, route }) => {
         >
           <Image source={goBackImage} style={{ width: 30, height: 30 }} />
         </TouchableOpacity>
+
         <TouchableOpacity
           onPress={handleLocateMe}
           style={{
@@ -319,7 +440,214 @@ const NearbyStore = ({ navigation, route }) => {
             source={myLocationImage}
             style={{ width: 30, height: 30, tintColor: "black" }}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+      </View>
+
+      <View
+        style={{
+          width: widthMAX,
+          position: "absolute",
+          bottom: 0,
+          height: lowerBarLength ? 575 : 215, //215
+          backgroundColor: "white",
+          flexDirection: "column",
+          alignItems: "center"
+        }}
+        {...panResponder.panHandlers} //Lắng nghe sự kiện vuốt lên hoặc xuống
+      >
+        <Image
+          source={upDownIcon}
+          style={{
+            width: 150,
+            height: 30,
+            tintColor: colorGray,
+            resizeMode: "stretch"
+          }}
+        ></Image>
+        {/* Nội dung của thanh cuối */}
+        {infoStore == null ? (
+          <>
+            <React.Fragment>
+              {/* Danh sách cửa hàng*/}
+              <FlatList
+                data={dataStore}
+                horizontal={false}
+                renderItem={({ item }) =>
+                  item.lisStore.map((store) => (
+                    <View
+                      key={store.id}
+                      style={{
+                        width: "90%",
+                        height: 150,
+                        flexDirection: "row",
+                        padding: 10
+                      }}
+                    >
+                      <Image
+                        source={item.icon}
+                        style={{
+                          width: 30,
+                          height: 30,
+                          borderRadius: 25,
+                          marginBottom: 10,
+                          marginLeft: 20,
+                          marginRight: 20,
+                          marginTop: 0
+                        }}
+                      />
+                      <View
+                        style={{
+                          flexDirection: "column"
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontWeight: "bold",
+                            marginBottom: 5,
+                            fontSize: 18
+                          }}
+                        >
+                          {item.name}
+                        </Text>
+                        <Text style={{ fontSize: 16 }}>
+                          Cách bạn {getKm(store.latitude, store.longitude)} km
+                        </Text>
+                        <Text
+                          style={{
+                            color: colorGray,
+                            fontSize: 14,
+                            width: "65%"
+                          }}
+                        >
+                          {store.local}
+                        </Text>
+                        <TouchableOpacity
+                          style={{}}
+                          onPress={() => handleShowStore(item, store)}
+                        >
+                          <Text
+                            style={{
+                              color: colorBlue,
+                              textDecorationLine: "underline",
+                              fontSize: 14,
+                              marginTop: 10
+                            }}
+                          >
+                            Chi tiết cửa hàng
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  ))
+                }
+                keyExtractor={(item) => item.id.toString()}
+              />
+              <View
+                style={{
+                  borderColor: colorYellow,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 25,
+                  position: "absolute",
+                  bottom: 40,
+                  right: 40
+                }}
+              >
+                <TouchableOpacity
+                  onPress={handleScroll}
+                  style={{
+                    backgroundColor: colorBlue,
+                    width: 50,
+                    height: 50,
+                    borderColor: colorYellow,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius: 25,
+                    position: "absolute"
+                  }}
+                >
+                  <Image
+                    source={upDownIcon}
+                    style={{ width: 30, height: 30, tintColor: "white" }}
+                  />
+                </TouchableOpacity>
+              </View>
+              {/* Kết thúc danh sách */}
+            </React.Fragment>
+          </>
+        ) : (
+          //Hiển thị thông tin cửa hàng
+          <View
+            style={{
+              flexDirection: "column",
+              width: Dimensions.get("window").width
+            }}
+          >
+            <View
+              style={{
+                width: Dimensions.get("window").width,
+                flexDirection: "row",
+                padding: 10,
+                borderRadius: 5
+              }}
+            >
+              <Image
+                source={shopIcon}
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 25,
+                  marginBottom: 10,
+                  marginRight: 20,
+                  marginTop: 0
+                }}
+              />
+              <Text>{getKm(infoStore.latitude, infoStore.longitude)} km</Text>
+            </View>
+            <View
+              style={{
+                width: Dimensions.get("window").width,
+                flexDirection: "row",
+                padding: 10,
+                borderRadius: 5
+              }}
+            >
+              <Image
+                source={mapIcon}
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 25,
+                  marginBottom: 10,
+                  marginRight: 20,
+                  marginTop: 0
+                }}
+              />
+              <Text>{infoStore.local}</Text>
+            </View>
+            <View
+              style={{
+                width: Dimensions.get("window").width,
+                flexDirection: "row",
+                padding: 10,
+                borderRadius: 5
+              }}
+            >
+              <Image
+                source={clockIcon}
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 25,
+                  marginBottom: 10,
+                  marginRight: 20,
+                  marginTop: 0
+                }}
+              />
+              <Text>{infoStore.time}</Text>
+            </View>
+          </View>
+        )}
       </View>
     </View>
   );
