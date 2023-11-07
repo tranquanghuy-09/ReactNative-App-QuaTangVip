@@ -13,10 +13,13 @@
     "@react-native-community/geolocation": "^3.1.0",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
+    "@react-navigation/stack": "^6.3.20",
     "@types/react-native": "^0.72.7",
     "axios": "^1.6.2",
     "expo": "~49.0.15",
+    "expo-image-picker": "^14.5.0",
     "expo-location": "~16.1.0",
+    "expo-permissions": "^14.4.0",
     "expo-status-bar": "~1.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -25,7 +28,9 @@
     "react-native-flash-message": "^0.4.2",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-maps": "1.7.1",
-    "react-native-web": "~0.19.6"
+    "react-native-vector-icons": "^10.0.2",
+    "react-native-web": "~0.19.6",
+    "react-navigation-stack": "^2.10.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
