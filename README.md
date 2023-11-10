@@ -132,6 +132,13 @@ _Below is an example of how you can instruct your audience on installing and set
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 -->
 
+# Demo
+<img width="415" title="Android" alt="Ảnh màn hình 2023-11-11 lúc 04 48 44" src="https://github.com/tranquanghuy-09/ReactNative-App-QuaTangVip/assets/107989088/00d29484-9144-49b9-9193-13614c9f8f0c"> 
+<img width="415" title="IOS" alt="Ảnh màn hình 2023-11-11 lúc 04 48 44" src="https://github.com/tranquanghuy-09/ReactNative-App-QuaTangVip/assets/107989088/ced762c1-851c-4aea-b4b6-efd0c80c59fb"> 
+
+https://github.com/tranquanghuy-09/ReactNative-App-QuaTangVip/assets/107989088/f6875ffa-1bc0-4e2c-919a-37efa510d79b
+
+
 
 <!-- CONTACT 
 ## Contact
