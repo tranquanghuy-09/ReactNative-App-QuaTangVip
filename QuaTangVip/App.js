@@ -14,6 +14,7 @@ import TermsQTVIP from "./src/screeens/TermsQTVIP";
 import ApplicationManagement from "./src/screeens/ApplicationManagement";
 //Con trang chủ
 import SuggestionsAndFeedBack from "./src/screeens/SuggestionsAndFeedBack";
+import Camera from "./src/screeens/Camera";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,7 @@ function App() {
           name="Góp ý, khiếu nại"
           component={SuggestionsAndFeedBack}
         />
+        <Stack.Screen name="Camera" component={Camera} />
       </Stack.Navigator>
     </NavigationContainer>
   );

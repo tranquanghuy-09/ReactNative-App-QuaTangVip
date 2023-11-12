@@ -1,3 +1,5 @@
+// npm install react-native-vector-icons @react-navigation/stack expo-image-picker expo-permissions
+// npm installreact-navigation-stack
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -13,12 +15,6 @@ import IconCamera from "../../assets/icons_Dai/ic_camera.webp";
 import IconImage from "../../assets/icons_Dai/ic_copy_new.webp";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
-
-//Chưa xong:
-//1. Chụp ảnh
-//2. Xử lý ảnh được tải
-//3. Nút gửi
-// Giới hạn video,tai video
 
 const Stack = createStackNavigator();
 const SuggestionsAndFeedback = ({ navigation, route }) => {
@@ -111,11 +107,17 @@ const SuggestionsAndFeedback = ({ navigation, route }) => {
       return;
     }
     if (option === "CHỤP ẢNH") {
+      navigation.navigate("Camera");
     } else if (option === "TẢI ẢNH LÊN") {
       pickImage();
     }
   };
 
+  //Xử lý ảnh được tải
+  // const openImageModal = (image) => {
+  //   setSelectedImage(image);
+  //   setShowImageModal(true);
+  // };
   const removeImage = (index) => {
     const newImages = [...selectedImages];
     newImages.splice(index, 1);
