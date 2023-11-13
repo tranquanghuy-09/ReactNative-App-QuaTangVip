@@ -1,5 +1,9 @@
 // npm install react-native-vector-icons @react-navigation/stack expo-image-picker expo-permissions
-// npm installreact-navigation-stack
+// npm install react-navigation-stack
+// npm install react-native-vector-icons @react-navigation/stack expo-image-picker expo-permissions
+// "permissions": ["READ_EXTERNAL_STORAGE"] trong app.json  //Quyền truy cập thư viện ảnh
+
+//npm install react-native-fast-image
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -7,18 +11,25 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Image
+  Image,
+  Modal,
+  Dimensions
 } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";
-import IconCamera from "../../assets/icons_Dai/ic_camera.webp";
-import IconImage from "../../assets/icons_Dai/ic_copy_new.webp";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
+//Quyền truy cập thư viện ảnh
 
+import Ionicons from "react-native-vector-icons/Ionicons";
+import IconCamera from "../../assets/icons_Dai/ic_camera.webp";
+import IconImage from "../../assets/icons_Dai/ic_copy_new.webp";
+import IconBack from "../../assets/icons_Dai/node_modules_reactnavigation_stack_src_views_assets_backicon.png";
 const Stack = createStackNavigator();
+
+//Chưa xong:
+// + Chưa xử lý được nút Gửi
+// + Chưa nhận 1 video
 const SuggestionsAndFeedback = ({ navigation, route }) => {
-  //User
   const user = route.params ? route.params.user : null;
   const name = user ? user.name : "";
   const sex = user ? (user.sex == "Nam" ? "Nam" : "Chị") : "";
@@ -50,10 +61,11 @@ const SuggestionsAndFeedback = ({ navigation, route }) => {
   ];
   const contactOptions = ["Có", "Không"];
 
-  const [feedback, setFeedback] = useState("");
-  const [contactOption, setContactOption] = useState(null);
-  const [selectedCompany, setSelectedCompany] = useState(null);
-  const [selectedImages, setSelectedImages] = useState([]);
+  const [feedback, setFeedback] = useState(""); //Nội dung góp ý, khiếu nại
+  const [contactOption, setContactOption] = useState(null); //Có hoặc không
+  const [selectedCompany, setSelectedCompany] = useState(null); //Công ty được chọn
+  const [imgList, setImgList] = useState([]); //Danh sách ảnh
+  const [selectedImage, setSelectedImage] = useState(null); //Ảnh được chọn để hiển thị trong modal
 
   const handleContactOptionChange = (option) => {
     setContactOption(option);
@@ -70,7 +82,12 @@ const SuggestionsAndFeedback = ({ navigation, route }) => {
   // Kiểm tra và xin quyền truy cập thư viện ảnh
   useEffect(() => {
     (async () => {
-      const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+      // const { status } =await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const { status } =
+        Platform.OS === "android"
+          ? await Permissions.askAsync(Permissions.MEDIA_LIBRARY)
+          : await ImagePicker.requestMediaLibraryPermissionsAsync();
+
       if (status !== "granted") {
         console.warn("Quyền truy cập thư viện ảnh không được cấp phép.");
       }
@@ -82,27 +99,46 @@ const SuggestionsAndFeedback = ({ navigation, route }) => {
     if (route.params) {
       const { imgNew } = route.params;
       if (imgNew) {
-        setSelectedImages([...selectedImages, imgNew]);
+        setImgList([...imgList, imgNew]);
       }
     }
   }, [route.params]);
 
+  // Chọn hình ảnh từ thư viện
   const pickImage = async () => {
-    // Chọn hình ảnh từ thư viện
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    console.log("Trạng thái cấp phép thư viện:", status);
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       aspect: [4, 3],
       quality: 1
     });
 
+    console.log("Kết quả chọn hình ảnh:", result);
+
     if (!result.cancelled) {
-      setSelectedImages([...selectedImages, result.uri]);
+      // {"assets":
+      //  [{"assetId": "5070B379-03EF-41DA-8393-794DC9600B8D/L0/001",
+      //   "base64": null,
+      //   "duration": null,
+      //   "exif": null,
+      //   "fileName": "IMG_9509.png",
+      //    "fileSize": 5068365,
+      //    "height": 2208, "
+      //  type": "image",
+      //   "uri": "file:///var/mobile/Containers/Data/Application/1CAB6ADB-038A-4559-A55E-CB403236A766/Library/Caches/ExponentExperienceData/%2540anonymous%252FQuaTangVip-47b53549-6ad6-4e91-af41-790549c554bc/ImagePicker/BA05B835-5693-49DF-8186-A616437ED835.png",
+      //   "width": 1242}],
+      //   "canceled": false}
+
+      const uri = Platform.OS === "android" ? result.uri : result.assets[0].uri;
+      setImgList([...imgList, uri]);
     }
   };
 
   //Chụp ảnh
   const handleImageUpload = (option) => {
-    if (selectedImages.length >= 5) {
+    if (imgList.length >= 5) {
       alert("Bạn đã chọn đủ 5 ảnh.");
       return;
     }
@@ -113,19 +149,62 @@ const SuggestionsAndFeedback = ({ navigation, route }) => {
     }
   };
 
-  //Xử lý ảnh được tải
-  // const openImageModal = (image) => {
-  //   setSelectedImage(image);
-  //   setShowImageModal(true);
-  // };
-  const removeImage = (index) => {
-    const newImages = [...selectedImages];
-    newImages.splice(index, 1);
-    setSelectedImages(newImages);
+  //Xử lý hiển thị ảnh khi nhấp vào
+  const openImageModal = (image) => {
+    setSelectedImage(image);
   };
+
+  //Xoá ảnh khỏi danh sách
+  const removeImage = (index) => {
+    const newImages = [...imgList];
+    newImages.splice(index, 1);
+    setImgList(newImages);
+  };
+
   //Giao diện
   return (
     <ScrollView style={{ backgroundColor: colorGray, padding: 16 }}>
+      {/* Modal hiển thị một bức ảnh khi nhấp vào*/}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={selectedImage !== null}
+        onRequestClose={() => {
+          setSelectedImage(null); //Khi nhấn nút back
+        }}
+      >
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "black",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <Image
+            source={{ uri: selectedImage }}
+            style={{
+              width: Dimensions.get("window").width,
+              height: Dimensions.get("window").height
+            }}
+          />
+          {/* Nút đóng modal */}
+          <TouchableOpacity
+            style={{
+              position: "absolute",
+              top: 55,
+              left: 30,
+              padding: 5,
+              backgroundColor: colorYellow,
+              borderRadius: 25
+            }}
+            onPress={() => setSelectedImage(null)}
+          >
+            <Image source={IconBack} style={{ width: 65, height: 30 }} />
+          </TouchableOpacity>
+        </View>
+      </Modal>
+
       <TextInput
         multiline
         style={{
@@ -136,7 +215,9 @@ const SuggestionsAndFeedback = ({ navigation, route }) => {
           marginTop: 0,
           backgroundColor: colorWhite,
           fontSize: fontSize1,
-          justifyContent: "flex-start"
+          justifyContent: "flex-start",
+          //chữ xuất hiện đầu
+          textAlignVertical: "top"
         }}
         placeholder="Nhập nội dung góp ý, khiếu nại"
         placeholderTextColor={colorGrayLight}
@@ -180,7 +261,7 @@ const SuggestionsAndFeedback = ({ navigation, route }) => {
                 style={{
                   marginRight: 5,
                   color:
-                    contactOption == option.toLowerCase()
+                    contactOption === option.toLowerCase()
                       ? "gold"
                       : colorGrayLight
                 }}
@@ -245,10 +326,14 @@ const SuggestionsAndFeedback = ({ navigation, route }) => {
         >
           Tối đa 5 ảnh, 1 video
         </Text>
+
         <View style={{ flexDirection: "row", marginBottom: 20 }}>
-          {selectedImages.map((item, index) => (
+          {imgList.map((item, index) => (
             <View key={index} style={{ position: "relative", marginRight: 5 }}>
-              <View style={{ overflow: "visible", position: "relative" }}>
+              <TouchableOpacity
+                style={{ overflow: "visible", position: "relative" }}
+                onPress={() => openImageModal(item)}
+              >
                 <Image
                   source={{ uri: item }}
                   style={{
@@ -286,14 +371,16 @@ const SuggestionsAndFeedback = ({ navigation, route }) => {
                     </Text>
                   </TouchableOpacity>
                 </View>
-              </View>
+              </TouchableOpacity>
             </View>
           ))}
         </View>
 
+        {/* Chọn ảnh và chụp ảnh */}
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          {["CHỤP ẢNH", "TẢI ẢNH LÊN"].map((item) => (
+          {["CHỤP ẢNH", "TẢI ẢNH LÊN"].map((item, index) => (
             <TouchableOpacity
+              key={index}
               onPress={() => handleImageUpload(item)}
               style={{
                 width: "48%",
@@ -307,7 +394,7 @@ const SuggestionsAndFeedback = ({ navigation, route }) => {
               }}
             >
               <Image
-                source={item == "CHỤP ẢNH" ? IconCamera : IconImage}
+                source={item === "CHỤP ẢNH" ? IconCamera : IconImage}
                 style={{
                   width: 30,
                   height: 30,
@@ -328,7 +415,7 @@ const SuggestionsAndFeedback = ({ navigation, route }) => {
           ))}
         </View>
       </View>
-
+      {/* Nút gửi */}
       <TouchableOpacity
         onPress={handleSubmit}
         style={{ backgroundColor: colorYellow, padding: 12, borderRadius: 8 }}

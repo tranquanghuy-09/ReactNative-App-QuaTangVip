@@ -17,6 +17,17 @@ const Home = ({ navigation, route }) => {
           <Text>Navigate to Account</Text>
         </View>
       </TouchableOpacity>
+      {/* trang góp ý */}
+      <TouchableOpacity
+        style={{ backgroundColor: "blue", padding: 10 }}
+        onPress={() => navigation.navigate("Góp ý, khiếu nại")}
+      >
+        <View style={{ backgroundColor: "blue", padding: 10 }}>
+          <Text>Navigate to Góp ý, khiếu nại</Text>
+        </View>
+      </TouchableOpacity>
+      {/* trang thông tin cá nhân */}
+
     </View>
   );
 };

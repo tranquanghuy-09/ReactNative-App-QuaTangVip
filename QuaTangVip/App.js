@@ -43,6 +43,7 @@ function App() {
           name="Góp ý, khiếu nại"
           component={SuggestionsAndFeedBack}
         />
+        
         <Stack.Screen name="Camera" component={Camera} />
       </Stack.Navigator>
     </NavigationContainer>

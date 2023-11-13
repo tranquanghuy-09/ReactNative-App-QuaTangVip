@@ -15,7 +15,9 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Your message here"
+        "NSLocationWhenInUseUsageDescription": "Your message here",
+        "NSPhotoLibraryUsageDescription": "Your message about photo library access here"
+
       }
     },
     "android": {
@@ -23,7 +25,21 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "READ_EXTERNAL_STORAGE"
+      ],
+      "plugins": [
+        [
+          "expo-media-library",
+          {
+            "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
+            "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+            "isAccessMediaLocationEnabled": true
+          }
+        ]
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
