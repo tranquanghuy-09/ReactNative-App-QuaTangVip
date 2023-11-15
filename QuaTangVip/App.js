@@ -15,14 +15,14 @@ import ApplicationManagement from "./src/screeens/ApplicationManagement";
 //Con trang chủ
 import SuggestionsAndFeedBack from "./src/screeens/SuggestionsAndFeedBack";
 import Camera from "./src/screeens/Camera";
-
+import Notification from "./src/screeens/Notification";
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={"LoginPhone"}
+        initialRouteName={"Thông báo"}
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="LoginPhone" component={LoginPhone} />
@@ -43,6 +43,7 @@ function App() {
           name="Góp ý, khiếu nại"
           component={SuggestionsAndFeedBack}
         />
+        <Stack.Screen name="Thông báo" component={Notification} />
 
         <Stack.Screen name="Camera" component={Camera} />
       </Stack.Navigator>

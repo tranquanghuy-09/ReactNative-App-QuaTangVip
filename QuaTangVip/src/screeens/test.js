@@ -1,12 +1,307 @@
-// {"assets":
-//  [{"assetId": "5070B379-03EF-41DA-8393-794DC9600B8D/L0/001",
-//   "base64": null, 
-//   "duration": null, 
-//   "exif": null, 
-//   "fileName": "IMG_9509.png",
-//    "fileSize": 5068365, 
-//    "height": 2208, "
-//  type": "image",
-//   "uri": "file:///var/mobile/Containers/Data/Application/1CAB6ADB-038A-4559-A55E-CB403236A766/Library/Caches/ExponentExperienceData/%2540anonymous%252FQuaTangVip-47b53549-6ad6-4e91-af41-790549c554bc/ImagePicker/BA05B835-5693-49DF-8186-A616437ED835.png", 
-//   "width": 1242}], 
-//   "canceled": false}
+//Trang thông báo của ứng dụng Quà Tặng Vip
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  Modal,
+  TextInput
+} from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+//Icon
+const theGioiDiDongImage = require("../../assets/icons_Dai/logo_branch_tgdd.webp");
+const dienMayXanhIcon = require("../../assets/icons_Dai/phat-trien-website-dien-may-xanh-16233.jpeg");
+// Color
+const colorRed = "red";
+const colorWhite = "#FFFFFF";
+const colorGray = "#DCDCDC";
+const colorYellow = "#FFC62E";
+const colorBlue = "#0866FF";
+const Notification = ({ navigation, route }) => {
+  const data = [
+    {
+      id: 1,
+      title: "Tài khoản của bạn vừa đăng nhâo ở thiết bị khác",
+      conntent:
+        "Tài khoản của bạn vừa đăng nhâo ở thiết bị khác. Nếu không phảu là bạn thực hiện vui lòng liên hệ đến số 1900 1039 để được hỗ trợ",
+      time: "18:35 - 30/09/2023",
+      type: 1,
+      link: "",
+      status: true //trạng thai đã đọc hay chưa
+    },
+    {
+      id: 2,
+      title: "Dữ liệu đông bộ thành công",
+      conntent: "Dữ liệu đông bộ thành công. Cảm ơn quý khách đã chờ đợi",
+      time: "18:35 - 30/09/2023",
+      type: 1,
+      link: "",
+      status: false
+    },
+    {
+      id: 3,
+      title: "Tài khoản của bạn vừa đăng nhâo ở thiết bị khác",
+      conntent:
+        "Tài khoản của bạn vừa đăng nhâo ở thiết bị khác. Nếu không phảu là bạn thực hiện vui lòng liên hệ đến số 1900 1039 để được hỗ trợ",
+      time: "18:35 - 30/09/2023",
+      type: 1,
+      link: "",
+      status: true
+    },
+    {
+      id: 4,
+      title: "Cập nhập nội dung chính sách tích điểm",
+      conntent: "Ap dụng từ ngagy 23/10/2023",
+      time: "18:35 - 30/09/2023",
+      type: 1,
+      link: "",
+      status: true
+    },
+    {
+      id: 5,
+      title: "Tích điểm thành công",
+      conntent: "Bạn vừa tích điểm thành công ở cửa hàng Bách Hoá Xanh",
+      time: "18:35 - 30/09/2023",
+      type: 2,
+      link: "",
+      status: false
+    },
+    {
+      id: 6,
+      title: "Cảm mơn Anh/Chị đã mua hàng",
+      conntent:
+        "Bạn vừa tích điểm thành công ở cửa hàng Bách Hoá Xanh đơn hàng 123456789. Vui lòng đánh giá chất lượng dịch vụ",
+      time: "18:35 - 30/09/2023",
+      type: 3,
+      link: "",
+      status: false
+    },
+    {
+      id: 7,
+      title: "Đơn hàng của bạn đang được giao",
+      conntent: "Đơn hàng của bạn đang được giao",
+      time: "18:35 - 30/09/2023",
+      type: 1,
+      link: "",
+      status: true
+    }
+  ];
+
+  function setStatus(index, item) {
+    alert(index + " " + item.status);
+    //Chuyển trạng thái đã đọc thành đã đọc
+  }
+
+  const [activeTab, setActiveTab] = useState("all"); // all | bill
+
+  const handleTabPress = (tab) => {
+    setActiveTab(tab);
+  };
+
+  return (
+    // Trang thông báo của ứng dụng Quà Tặng Vip bao gồm 2 phần nằm hở header: Tất cả | Hoá đơn điện tử
+    // Trang tất cả nằm bên phải, trang hoá đơn điện tử nằm bên trái
+    // Chữ tất cả và hoá đơn điện tử nằm trên cùng như 1 tab
+    // Khi click vào tab nào thì tab đó được tô màu xanh, vào chuyển đến trang đó
+    // Ở trang tất cả vuối sang phải thì chuyển sang trang hoá đơn điện tử
+    // Ở trang hoá đơn điện tử vuối sang trái thì chuyển sang trang tất cả
+
+    // Phần Tất cả: Hiển thị các thông báo của ứng dụng Quà Tặng Vip
+    // Danh sách theo hàng ngang sắp xếp theo thời gian, từ trên xuống dưới
+    // Mỗi thông báo gồm:
+    // thời gina
+    // Anh icon| Tiêu đề |
+    // Nội dung |
+
+    // Phần Hoá đơn điện tử: Ảnh : hIỆN TẠI KHÔNG CÓ THÔNGG BÁO
+
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          height: 50,
+          paddingHorizontal: 10,
+          borderBottomWidth: 1,
+          borderBottomColor: "#eee"
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+          onPress={() => handleTabPress("all")}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "bold",
+              marginLeft: 10
+            }}
+          >
+            Tất cả
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+          onPress={() => handleTabPress("bill")}
+        >
+          <Text style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}>
+            Hoá đơn điện tử
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <ScrollView>
+        {data.map((item, index) => {
+          return (
+            <TouchableOpacity
+              key={index}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingHorizontal: 10,
+                paddingVertical: 15,
+                borderBottomWidth: 1,
+                borderBottomColor: "#eee"
+              }}
+              onPress={() => setStatus(index, item)}
+            >
+              <View
+                style={{
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  flex: 1
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text style={{ flex: 1 }}></Text>
+                  <Text
+                    style={{
+                      flex: 5,
+                      fontSize: 10,
+                      color: "#888",
+                      marginBottom: 10
+                    }}
+                  >
+                    {item.time}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "flex-end",
+                      alignItems: "center"
+                    }}
+                  >
+                    <Image
+                      source={
+                        item.type == 1 ? theGioiDiDongImage : dienMayXanhIcon
+                      }
+                      style={{
+                        width: 30,
+                        height: 30,
+                        borderRadius: 20,
+                        top: 25
+                      }}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      flex: 8,
+                      marginLeft: 10,
+                      borderWidth: 1,
+                      padding: 15,
+                      borderRadius: 10,
+                      width: Dimensions.get("window").width * 0.8,
+                      borderColor: colorGray,
+                      backgroundColor: item.status ? colorWhite : colorGray
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: colorBlue,
+                        marginBottom: 10
+                      }}
+                      numberOfLines={1}
+                      ellipsizeMode="tail" //  tail:cuối...; head:...đầu; middle:gi...ữa
+                      //  numberOfLines={1} là chỉ hiển thị 1 dòng
+                    >
+                      {item.title}
+                    </Text>
+                    <Text style={{ fontSize: 14, color: "#888" }}>
+                      {item.conntent}
+                    </Text>
+                    {/* Nếu là thông báo đơn hàng thì hiển thị 2 nút */}
+                    {item.type == 2 ? (
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          marginTop: 10,
+                          justifyContent: "space-between"
+                        }}
+                      >
+                        <TouchableOpacity
+                          style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: colorWhite,
+                            borderRadius: 10,
+                            paddingHorizontal: 10,
+                            paddingVertical: 5,
+                            marginRight: 10,
+                            borderColor: colorBlue,
+                            borderWidth: 1
+                          }}
+                        >
+                          <Text style={{ color: colorBlue, fontSize: 14 }}>
+                            Chi tiết đơn hàng
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: colorBlue,
+                            borderRadius: 10,
+                            paddingHorizontal: 10,
+                            paddingVertical: 5
+                          }}
+                        >
+                          <Text style={{ color: colorWhite, fontSize: 14 }}>
+                            Đánh giá dịch vụ
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    ) : null}
+                  </View>
+                </View>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+      {/* Hoá đơn điện tử */}
+    </View>
+  );
+};
+
+export default Notification;

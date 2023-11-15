@@ -1,258 +1,308 @@
-import React, { useState, useEffect } from "react";
+//Trang thông báo của ứng dụng Quà Tặng Vip
+import React, { useState } from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
   Image,
-  SectionList,
-  StyleSheet,
-  Platform
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  Modal,
+  TextInput
 } from "react-native";
-import axios from "axios";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-export default function App() {
-  const [page, setPage] = useState(0);
-  const [lsdh, setLsdh] = useState(0);
-  const [orders, setOrders] = useState([]);
-
-  useEffect(() => {
-    loadOrders();
-  }, [lsdh]);
-
-  const loadOrders = async () => {
-    try {
-      const result = await axios.get(
-        `http://${ipv4}/orders?user_id=1&page=${page}&size=5`
-      );
-      setOrders(result.data.content);
-    } catch (error) {
-      console.error("Error loading orders:", error);
+//Icon
+const theGioiDiDongImage = require("../../assets/icons_Dai/logo_branch_tgdd.webp");
+const dienMayXanhIcon = require("../../assets/icons_Dai/phat-trien-website-dien-may-xanh-16233.jpeg");
+// Color
+const colorRed = "red";
+const colorWhite = "#FFFFFF";
+const colorGray = "#DCDCDC";
+const colorYellow = "#FFC62E";
+const colorBlue = "#0866FF";
+const Notification = ({ navigation, route }) => {
+  const data = [
+    {
+      id: 1,
+      title: "Tài khoản của bạn vừa đăng nhâo ở thiết bị khác",
+      conntent:
+        "Tài khoản của bạn vừa đăng nhâo ở thiết bị khác. Nếu không phảu là bạn thực hiện vui lòng liên hệ đến số 1900 1039 để được hỗ trợ",
+      time: "18:35 - 30/09/2023",
+      type: 1,
+      link: "",
+      status: true //trạng thai đã đọc hay chưa
+    },
+    {
+      id: 2,
+      title: "Dữ liệu đông bộ thành công",
+      conntent: "Dữ liệu đông bộ thành công. Cảm ơn quý khách đã chờ đợi",
+      time: "18:35 - 30/09/2023",
+      type: 1,
+      link: "",
+      status: false
+    },
+    {
+      id: 3,
+      title: "Tài khoản của bạn vừa đăng nhâo ở thiết bị khác",
+      conntent:
+        "Tài khoản của bạn vừa đăng nhâo ở thiết bị khác. Nếu không phảu là bạn thực hiện vui lòng liên hệ đến số 1900 1039 để được hỗ trợ",
+      time: "18:35 - 30/09/2023",
+      type: 1,
+      link: "",
+      status: true
+    },
+    {
+      id: 4,
+      title: "Cập nhập nội dung chính sách tích điểm",
+      conntent: "Ap dụng từ ngagy 23/10/2023",
+      time: "18:35 - 30/09/2023",
+      type: 1,
+      link: "",
+      status: true
+    },
+    {
+      id: 5,
+      title: "Tích điểm thành công",
+      conntent: "Bạn vừa tích điểm thành công ở cửa hàng Bách Hoá Xanh",
+      time: "18:35 - 30/09/2023",
+      type: 2,
+      link: "",
+      status: false
+    },
+    {
+      id: 6,
+      title: "Cảm mơn Anh/Chị đã mua hàng",
+      conntent:
+        "Bạn vừa tích điểm thành công ở cửa hàng Bách Hoá Xanh đơn hàng 123456789. Vui lòng đánh giá chất lượng dịch vụ",
+      time: "18:35 - 30/09/2023",
+      type: 3,
+      link: "",
+      status: false
+    },
+    {
+      id: 7,
+      title: "Đơn hàng của bạn đang được giao",
+      conntent: "Đơn hàng của bạn đang được giao",
+      time: "18:35 - 30/09/2023",
+      type: 1,
+      link: "",
+      status: true
     }
-  };
+  ];
 
-  const groupDataByMonth = (data) => {
-    // Code nhóm dữ liệu giữ nguyên từ yêu cầu của bạn
-    // ...
+  function setStatus(index, item) {
+    alert(index + " " + item.status);
+    //Chuyển trạng thái đã đọc thành đã đọc
+  }
 
-    return sortedGroupedOrders;
-  };
+  const [activeTab, setActiveTab] = useState("all"); // all | bill
 
-  const groupedOrders = groupDataByMonth(orders);
-
-  const loadMoreData = async () => {
-    try {
-      setPage(page + 1);
-
-      const loadUsers = await axios.get(
-        `http://${ipv4}/orders?user_id=1&page=${page}&size=5`
-      );
-      const results = loadUsers.data.content;
-
-      const sumArray = [...orders, ...results];
-
-      const uniqueArray = sumArray.reduce((accumulator, currentValue) => {
-        const existingItem = accumulator.find(
-          (item) => item.id === currentValue.id
-        );
-        if (!existingItem) {
-          accumulator.push(currentValue);
-        }
-        return accumulator;
-      }, []);
-
-      setOrders(uniqueArray);
-    } catch (error) {
-      console.error("Error loading orders:", error);
-    }
+  const handleTabPress = (tab) => {
+    setActiveTab(tab);
   };
 
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>{/* Header content */}</View>
+    // Trang thông báo của ứng dụng Quà Tặng Vip bao gồm 2 phần nằm hở header: Tất cả | Hoá đơn điện tử
+    // Trang tất cả nằm bên phải, trang hoá đơn điện tử nằm bên trái
+    // Chữ tất cả và hoá đơn điện tử nằm trên cùng như 1 tab
+    // Khi click vào tab nào thì tab đó được tô màu xanh, vào chuyển đến trang đó
+    // Ở trang tất cả vuối sang phải thì chuyển sang trang hoá đơn điện tử
+    // Ở trang hoá đơn điện tử vuối sang trái thì chuyển sang trang tất cả
 
-      {/* Main content */}
-      <View style={styles.mainContent}>
-        {/* Tabs */}
-        <View style={styles.tabs}>
-          {/* Tab 1 */}
-          <TouchableOpacity
-            onPress={() => setLsdh(Math.random, setPage(0))}
-            style={styles.tabButton}
+    // Phần Tất cả: Hiển thị các thông báo của ứng dụng Quà Tặng Vip
+    // Danh sách theo hàng ngang sắp xếp theo thời gian, từ trên xuống dưới
+    // Mỗi thông báo gồm:
+    // thời gina
+    // Anh icon| Tiêu đề |
+    // Nội dung |
+
+    // Phần Hoá đơn điện tử: Ảnh : hIỆN TẠI KHÔNG CÓ THÔNGG BÁO
+
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          height: 50,
+          paddingHorizontal: 10,
+          borderBottomWidth: 1,
+          borderBottomColor: "#eee"
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+          onPress={() => handleTabPress("all")}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "bold",
+              marginLeft: 10
+            }}
           >
-            <Image
-              source={require("../../assets/icons/bag.png")}
-              style={styles.tabIcon}
-            />
-            <Text style={styles.tabText}>Lịch sử đơn hàng</Text>
-          </TouchableOpacity>
-
-          {/* Tab 2 */}
-          <TouchableOpacity style={styles.tabButton}>
-            <Image
-              source={require("../../assets/icons/air-conditioner.png")}
-              style={styles.tabIcon}
-            />
-            <Text style={styles.tabText}>Đơn hành dịch vụ tận tâm</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* SectionList */}
-        <SectionList
-          sections={groupedOrders}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.orderItem}>
-              <Image
-                source={
-                  item.store === "Bách Hoá Xanh"
-                    ? require("../../assets/icons/bachhoaxanh.png")
-                    : null
-                }
-                style={styles.storeIcon}
-              />
-              <View style={styles.orderDetails}>
-                <View style={styles.orderHeader}>
-                  <Text style={styles.storeName}>{item.store}</Text>
-                  <View style={styles.statusBadge}>
-                    <Text style={styles.statusText}>{item.status}</Text>
+            Tất cả
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+          onPress={() => handleTabPress("bill")}
+        >
+          <Text style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}>
+            Hoá đơn điện tử
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <ScrollView>
+        {data.map((item, index) => {
+          return (
+            <TouchableOpacity
+              key={index}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingHorizontal: 10,
+                paddingVertical: 15,
+                borderBottomWidth: 1,
+                borderBottomColor: "#eee"
+              }}
+              onPress={() => setStatus(index, item)}
+            >
+              <View
+                style={{
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  flex: 1
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text style={{ flex: 1 }}></Text>
+                  <Text
+                    style={{
+                      flex: 5,
+                      fontSize: 10,
+                      color: "#888",
+                      marginBottom: 10
+                    }}
+                  >
+                    {item.time}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "flex-end",
+                      alignItems: "center"
+                    }}
+                  >
+                    <Image
+                      source={
+                        item.type == 1 ? theGioiDiDongImage : dienMayXanhIcon
+                      }
+                      style={{
+                        width: 30,
+                        height: 30,
+                        borderRadius: 20,
+                        top: 25
+                      }}
+                    />
                   </View>
-                </View>
-                <View style={styles.orderTimeContainer}>
-                  <Text style={styles.labelText}>Thời gian đặt hàng</Text>
-                  <Text style={styles.orderTime}>{item.orderDate}</Text>
-                </View>
-                <View style={styles.pointsContainer}>
-                  <Text style={styles.labelText}>Điểm tích lũy:</Text>
-                  <Text style={styles.pointsText}>+{item.diemTichLuy}</Text>
+                  <View
+                    style={{
+                      flex: 8,
+                      marginLeft: 10,
+                      borderWidth: 1,
+                      padding: 15,
+                      borderRadius: 10,
+                      width: Dimensions.get("window").width * 0.8,
+                      borderColor: colorGray,
+                      backgroundColor: item.status ? colorWhite : colorGray
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: colorBlue,
+                        marginBottom: 10
+                      }}
+                      numberOfLines={1}
+                      ellipsizeMode="tail" //  tail:cuối...; head:...đầu; middle:gi...ữa
+                      //  numberOfLines={1} là chỉ hiển thị 1 dòng
+                    >
+                      {item.title}
+                    </Text>
+                    <Text style={{ fontSize: 14, color: "#888" }}>
+                      {item.conntent}
+                    </Text>
+                    {/* Nếu là thông báo đơn hàng thì hiển thị 2 nút */}
+                    {item.type == 2 ? (
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          marginTop: 10,
+                          justifyContent: "space-between"
+                        }}
+                      >
+                        <TouchableOpacity
+                          style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: colorWhite,
+                            borderRadius: 10,
+                            paddingHorizontal: 10,
+                            paddingVertical: 5,
+                            marginRight: 10,
+                            borderColor: colorBlue,
+                            borderWidth: 1
+                          }}
+                        >
+                          <Text style={{ color: colorBlue, fontSize: 14 }}>
+                            Chi tiết đơn hàng
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: colorBlue,
+                            borderRadius: 10,
+                            paddingHorizontal: 10,
+                            paddingVertical: 5
+                          }}
+                        >
+                          <Text style={{ color: colorWhite, fontSize: 14 }}>
+                            Đánh giá dịch vụ
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    ) : null}
+                  </View>
                 </View>
               </View>
             </TouchableOpacity>
-          )}
-          renderSectionHeader={({ section: { month } }) => (
-            <Text style={styles.monthHeader}>Tháng {month}</Text>
-          )}
-          onEndReached={loadMoreData}
-          onEndReachedThreshold={0.05}
-        />
-      </View>
+          );
+        })}
+      </ScrollView>
+      {/* Hoá đơn điện tử */}
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff"
-  },
-  header: {
-    // Header styles
-  },
-  mainContent: {
-    flex: 5,
-    backgroundColor: "rgba(235, 235, 235, 1)"
-  },
-  tabs: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 12,
-    paddingVertical: 17
-  },
-  tabButton: {
-    flexDirection: "row",
-    backgroundColor: "white",
-    width: Platform.OS === "ios" ? 165 : 185,
-    height: Platform.OS === "ios" ? 50 : 55,
-    borderRadius: 15,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  tabIcon: {
-    width: 28,
-    height: 28,
-    backgroundColor: "rgba(242, 231, 231, 1)",
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: Platform.OS === "ios" ? 8 : 10
-  },
-  tabText: {
-    fontSize: Platform.OS === "ios" ? 14 : 15,
-    color: "#000",
-    fontWeight: 400,
-    height: 55,
-    width: Platform.OS === "ios" ? 120 : 130,
-    paddingTop: Platform.OS === "ios" ? 19 : 17
-  },
-  orderItem: {
-    justifyContent: "space-between",
-    paddingVertical: 15,
-    paddingHorizontal: 7,
-    flexDirection: "row",
-    width: Platform.OS === "ios" ? 345 : 375,
-    height: 120,
-    borderRadius: 13,
-    backgroundColor: "#FFFFFF",
-    marginTop: 15,
-    alignContent: "center",
-    alignItems: "center"
-  },
-  storeIcon: {
-    width: 38,
-    height: 38
-  },
-  orderDetails: {
-    width: Platform.OS === "ios" ? 280 : 310,
-    paddingTop: 5,
-    justifyContent: "space-between"
-  },
-  orderHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  statusBadge: {
-    width: 120,
-    height: 20,
-    backgroundColor: "rgba(225, 244, 228, 1)",
-    borderRadius: 6,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  statusText: {
-    color: "rgba(115, 183, 115, 1)"
-  },
-  storeName: {
-    color: "rgba(30, 66, 127, 1)",
-    fontSize: 16,
-    fontWeight: 400
-  },
-  orderTimeContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 5
-  },
-  labelText: {
-    color: "rgba(152, 152, 152, 1)",
-    fontSize: 15,
-    fontWeight: 400
-  },
-  orderTime: {
-    color: "rgba(142, 142, 142, 1)",
-    fontSize: 14,
-    fontWeight: 400
-  },
-  pointsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  pointsText: {
-    color: "rgba(90, 168, 89, 1)",
-    fontSize: 20,
-    fontWeight: 400
-  },
-  monthHeader: {
-    fontSize: 22,
-    color: "rgba(42, 97, 199, 1)",
-    marginTop: 25
-  }
-});
+export default Notification;
+ 
