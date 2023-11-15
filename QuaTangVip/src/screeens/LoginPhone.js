@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -73,16 +74,19 @@ export default function App({ navigation, route }) {
       setPhoneNumber(numericText);
     }
   };
+
   //Kiểm tra số điện thoại
   const handleContinue = () => {
     const numericText = phoneNumber.replace(/\D/g, "");
     if (numericText.length == 10 && numericText[0] == "0") {
+      setCheckPhoneFail(false);
       const user = data.find((item) => item.phone == numericText);
       if (user !== undefined) {
         navigation.navigate("LoginPassword", { user: user });
       } else {
         navigation.navigate("SignUp", { phone: numericText });
       }
+      return;
     }
     setCheckPhoneFail(true);
     return;
@@ -93,10 +97,10 @@ export default function App({ navigation, route }) {
       <View>
         <Text
           style={{
-            fontSize: 30,
+            fontSize: 35,
             fontWeight: "bold",
             marginBottom: 20,
-            marginTop: 20,
+            marginTop: 50,
             textAlign: "center"
           }}
         >
@@ -127,7 +131,7 @@ export default function App({ navigation, route }) {
               color: checkPhoneFail ? colorRed : colorGray
             }}
             keyboardType="numeric"
-            maxLength={10}
+            maxLength={12}
             onChangeText={handleTextChange}
             value={phoneNumber}
           ></TextInput>
@@ -182,15 +186,19 @@ export default function App({ navigation, route }) {
             backgroundColor: colorYellow,
             padding: 15,
             borderRadius: 10,
-            flex: 1,
-            width: (screenWidth * 90) / 100
+            width: "auto",
+            alignSelf: "center",
+            minWidth: Dimensions.get("window").width * 0.9,
+            height: 50,
+            justifyContent: "center",
+            alignItems: "center"
           }}
           onPress={handleContinue}
         >
           <Text
             style={{
               color: "black",
-              fontSize: 14,
+              fontSize: 16,
               textAlign: "center",
               fontWeight: 700
             }}

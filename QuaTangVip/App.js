@@ -9,7 +9,7 @@ import Home from "./src/screeens/Home";
 import Account from "./src/screeens/Account";
 //Con accoutn
 import InforUser from "./src/screeens/InforUser";
-// import NearbyStore from "./src/screeens/NearbyStore";
+import NearbyStore from "./src/screeens/NearbyStore";
 import TermsQTVIP from "./src/screeens/TermsQTVIP";
 import ApplicationManagement from "./src/screeens/ApplicationManagement";
 //Con trang chủ
@@ -22,17 +22,17 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={"Góp ý, khiếu nại"}
+        initialRouteName={"LoginPhone"}
         screenOptions={{ headerShown: false }}
       >
-        <Stack.Screen name="LoginPassword" component={LoginPassword} />
         <Stack.Screen name="LoginPhone" component={LoginPhone} />
+        <Stack.Screen name="LoginPassword" component={LoginPassword} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Account" component={Account} />
 
         <Stack.Screen name="Thông tin cá nhân" component={InforUser} />
-        {/* <Stack.Screen name="Cửa hàng gần bạn" component={NearbyStore} /> */}
+        <Stack.Screen name="Cửa hàng gần bạn" component={NearbyStore} />
         <Stack.Screen name="Điều khoản Quà Tặng VIP" component={TermsQTVIP} />
         <Stack.Screen
           name="Quản lý ứng dụng"
@@ -43,7 +43,7 @@ function App() {
           name="Góp ý, khiếu nại"
           component={SuggestionsAndFeedBack}
         />
-        
+
         <Stack.Screen name="Camera" component={Camera} />
       </Stack.Navigator>
     </NavigationContainer>

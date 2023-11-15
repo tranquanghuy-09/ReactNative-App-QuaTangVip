@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
@@ -8,49 +7,158 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  ImageBackground
+  Alert,
+  Modal,
+  TouchableWithoutFeedback
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+// Color
 const colorGray = "#8D8D8D";
 const colorBlack = "black";
-const colorRed = "red";
 const colorYellow = "#FFC62E";
 const colorBlue = "#0E86C6";
 const screenWidth = Dimensions.get("window").width;
+
+// Icon
 const clockIcon = require("../../assets/icons_Dai/assets_images_ic_light_lock.webp");
 const iIcon = require("../../assets/icons_Dai/ic_info_circle.webp");
 const showIcon = require("../../assets/icons_Dai/design_ic_visibility.png");
 const hideIcon = require("../../assets/icons_Dai/design_ic_visibility_off.png");
-const fingerprintIon = require("../../assets/icons_Dai/ic_fingerprint.webp");
+const fingerprintIcon = require("../../assets/icons_Dai/ic_fingerprint.webp");
+const errorIcon = require("../../assets/icons_Dai/ic_error.webp");
 
-//Chưa xử lý được:
-// + Kiểm tra không phải số điện thoại việt nam
-// + Chưa xử lý được nút Quét mã QR
-// + Thông báo sai mật khẩu còn xấu, chưa giống app thật
+// Font
+const fontSize1 = 16;
+const fontSize2 = 14;
+
+const isPhoneNumber = (value) => {
+  const phoneNumberRegex = /^[0-9]{10,11}$/;
+  return phoneNumberRegex.test(value);
+};
 
 export default function App({ navigation, route }) {
   const user = route.params.user;
   const sex = user.sex ? "Anh" : "Chị";
-  const [displayPass, setdisplayPass] = useState(false);
+  const [displayPass, setDisplayPass] = useState(false);
   const [password, setPassword] = useState("");
+  const [count, setCount] = useState(0);
+  const [txtError, setTxtError] = useState(null);
+
+  const toggleModal = () => {
+    setTxtError(null);
+  };
 
   const checkPassword = () => {
-    if (password == user.password) {
-      navigation.navigate("Home", { user: user });
-    } else {
-      alert("Sai mật khẩu");
+    if (password === "") {
+      toggleModal();
+      setTxtError("Không được để trống mật khẩu");
+      return;
     }
+
+    if (password !== user.password) {
+      setCount((prevCount) => prevCount + 1);
+      toggleModal();
+      setTxtError("Sai mật khẩu");
+
+      if (count + 1 === 3) {
+        navigation.navigate("LoginPhone");
+      }
+
+      return;
+    }
+
+    navigation.navigate("Home", { user: user });
   };
+
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: "column" }}>
+      {/* Modal thông báo sai mật khẩu */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={txtError !== null}
+      >
+        <TouchableWithoutFeedback onPress={toggleModal}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "rgba(0, 0, 0, 0.5)"
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: "white",
+                padding: 20,
+                borderRadius: 10,
+                width: "80%"
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between"
+                }}
+              >
+                <Image
+                  source={errorIcon}
+                  style={{
+                    width: 20,
+                    height: 20,
+                    resizeMode: "contain",
+                    alignSelf: "center",
+                    marginBottom: 10
+                  }}
+                />
+                <TouchableOpacity onPress={toggleModal}>
+                  <Text style={{ fontSize: fontSize1 }}>X</Text>
+                </TouchableOpacity>
+              </View>
+              <Text
+                style={{
+                  fontSize: fontSize1,
+                  fontWeight: "bold"
+                }}
+              >
+                Kiểm tra mật khẩu
+              </Text>
+              <Text style={{ fontSize: fontSize2, marginBottom: 30 }}>
+                {txtError}
+              </Text>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: colorYellow,
+                  padding: 10,
+                  borderRadius: 5,
+                  alignItems: "center"
+                }}
+                onPress={toggleModal}
+              >
+                <Text
+                  style={{
+                    color: colorBlack,
+                    fontSize: fontSize1,
+                    fontWeight: "bold"
+                  }}
+                >
+                  Đồng ý
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+
+      {/* Tiêu đề */}
+      <View style={{ flexDirection: "column", marginTop: 50 }}>
         <Text
           style={{
             fontSize: 30,
             fontWeight: "bold",
-            marginTop: 20,
+            marginTop: 35,
             marginBottom: 5,
             textAlign: "center"
           }}
@@ -75,20 +183,13 @@ export default function App({ navigation, route }) {
             alignItems: "center"
           }}
         >
-          <Text style={{ color: "red", marginRight: 5, fontWeight: 700 }}>
-            *
+          <Text style={{ color: colorBlack, fontSize: 16 }}>
+            <Text style={{ color: "red", marginRight: 5, fontWeight: "bold" }}>
+              *
+            </Text>
+            Mật khẩu
           </Text>
-          <Text style={{ color: colorBlack, fontSize: 16 }}>Mật khẩu</Text>
-          <Image
-            source={iIcon}
-            style={{
-              resizeMode: "contain",
-              width: 18,
-              height: 18,
-              marginLeft: 5,
-              top: 3
-            }}
-          />
+          <Image source={iIcon} style={styles.icon} />
         </View>
         <View
           style={{
@@ -121,35 +222,20 @@ export default function App({ navigation, route }) {
               color: colorGray
             }}
             onChangeText={setPassword}
-          ></TextInput>
+          />
           <TouchableOpacity
-            style={{
-              top: 13,
-              flex: 1
-            }}
-            onPress={() => setdisplayPass(!displayPass)}
+            style={{ top: 13, flex: 1 }}
+            onPress={() => setDisplayPass(!displayPass)}
           >
             <Image
               source={displayPass ? showIcon : hideIcon}
-              style={{
-                resizeMode: "contain",
-                width: 20,
-                height: 20,
-                left: 5,
-                tintColor: colorGray
-              }}
+              style={styles.icon}
             />
           </TouchableOpacity>
         </View>
       </View>
       <View style={{ flexDirection: "column" }}>
-        <View
-          style={{
-            width: (screenWidth * 90) / 100,
-            flexDirection: "row",
-            justifyContent: "space-between"
-          }}
-        >
+        <View style={styles.buttonsContainer}>
           <TouchableOpacity
             style={{
               backgroundColor: colorYellow,
@@ -163,10 +249,10 @@ export default function App({ navigation, route }) {
           >
             <Text
               style={{
-                color: "black",
-                fontSize: 14,
+                color: colorBlack,
+                fontSize: 16,
                 textAlign: "center",
-                fontWeight: 700
+                fontWeight: "bold"
               }}
             >
               Tiếp tục
@@ -181,17 +267,14 @@ export default function App({ navigation, route }) {
               justifyContent: "center",
               alignItems: "center"
             }}
+            onPress={checkPassword}
           >
             <Image
-              source={fingerprintIon}
-              style={{
-                resizeMode: "contain",
-                width: 30,
-                height: 30
-              }}
+              source={fingerprintIcon}
+              style={{ resizeMode: "contain", width: 30, height: 30 }}
             />
           </TouchableOpacity>
-        </View>{" "}
+        </View>
         <TouchableOpacity
           style={{ alignItems: "center" }}
           onPress={() => navigation.navigate("LoginPhone")}
@@ -222,6 +305,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
+    justifyContent: "space-between"
+  },
+  icon: {
+    resizeMode: "contain",
+    width: 20,
+    height: 20,
+    left: 5,
+    tintColor: colorBlack
+  },
+  buttonsContainer: {
+    width: (screenWidth * 90) / 100,
+    flexDirection: "row",
     justifyContent: "space-between"
   }
 });

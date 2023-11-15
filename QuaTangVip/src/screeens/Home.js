@@ -8,7 +8,6 @@ const Home = ({ navigation, route }) => {
   const user = route.params.user;
   return (
     <View>
-      <Text> Trang chủ</Text>
       <TouchableOpacity
         style={{ backgroundColor: "green", padding: 10 }}
         onPress={() => navigation.navigate("Account", { user: user })}
