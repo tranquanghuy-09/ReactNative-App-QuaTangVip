@@ -2,11 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import {Platform,} from 'react-native';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ImageBackground, Image, ScrollView} from 'react-native';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
+import React from 'react';
 
-
-export default function App({navigation}) {
+export default function App({navigation, route}) {
   const isIPhone = Platform.OS === 'ios';
-
   return (
     <View style={[styles.container]}>
       <ImageBackground
@@ -86,7 +85,10 @@ export default function App({navigation}) {
             </TouchableOpacity>
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 37}}>
-            <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} onPress={()=>{navigation.navigate('Quà của tôi')}}>
+            <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} onPress={()=>{navigation.navigate('HomeNavigation', {
+        screen: 'Quà của tôi',
+        params: {},
+      });}}>
               <View style={{backgroundColor: '#FFF1BE', width: 70, height: 70, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}}>
                 <Image source={require('../../assets/images/gift.png')} style={{width: 30, height: 30}} />
               </View>
@@ -94,7 +96,7 @@ export default function App({navigation}) {
                 <Text style={{fontSize: 14, color: '#605F5F', color: '#7B7B7B', textAlign: 'center'}}>Quà của tôi</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}}>
+            <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} onPress={()=>{navigation.navigate('Hỗ trợ trực tuyến')}}>
               <View style={{backgroundColor: '#F6F5FE', width: 70, height: 70, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}}>
                 <Image source={require('../../assets/images/headphones.png')} style={{width: 30, height: 30}} />
               </View>
