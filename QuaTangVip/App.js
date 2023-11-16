@@ -16,7 +16,7 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName='Home' screenOptions={{ headerShown: false, }}>
+      <Tab.Navigator initialRouteName='Lịch sử' screenOptions={{ headerShown: false, }}>
         <Tab.Screen name="Trang chủ" component={Home} 
           options={{
             tabBarLabel: 'Trang chủ',
