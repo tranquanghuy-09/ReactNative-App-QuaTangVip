@@ -1,4 +1,8 @@
-//Trang thông báo của ứng dụng Quà Tặng Vip
+// npm install @react-navigation/native
+// npm install @react-navigation/material-top-tabs
+// npm install @react-navigation/native @react-navigation/bottom-tabs
+// npm install react-native-paper
+
 import React, { useState } from "react";
 import {
   View,
@@ -8,22 +12,32 @@ import {
   ScrollView,
   Dimensions,
   Modal,
-  TextInput
+  TextInput,
+  RefreshControl,
+  Platform,
+  ActivityIndicator
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 //Icon
 const theGioiDiDongImage = require("../../assets/icons_Dai/logo_branch_tgdd.webp");
 const dienMayXanhIcon = require("../../assets/icons_Dai/phat-trien-website-dien-may-xanh-16233.jpeg");
+const emptyIcon = require("../../assets/icons_Dai/ic_empty.webp");
 // Color
 const colorRed = "red";
 const colorWhite = "#FFFFFF";
 const colorGray = "#DCDCDC";
 const colorYellow = "#FFC62E";
 const colorBlue = "#0866FF";
-const Notification = ({ navigation, route }) => {
-  const data = [
+const Tab = createMaterialTopTabNavigator();
+
+//Trang dễ đột tử khi chạy trên ISO khi không được khởi động đúng cách
+
+function AllNotifications() {
+  //data ảo
+  const dataAll = [
     {
       id: 1,
       title: "Tài khoản của bạn vừa đăng nhâo ở thiết bị khác",
@@ -91,80 +105,14 @@ const Notification = ({ navigation, route }) => {
       status: true
     }
   ];
-
   function setStatus(index, item) {
     alert(index + " " + item.status);
     //Chuyển trạng thái đã đọc thành đã đọc
   }
-
-  const [activeTab, setActiveTab] = useState("all"); // all | bill
-
-  const handleTabPress = (tab) => {
-    setActiveTab(tab);
-  };
-
   return (
-    // Trang thông báo của ứng dụng Quà Tặng Vip bao gồm 2 phần nằm hở header: Tất cả | Hoá đơn điện tử
-    // Trang tất cả nằm bên phải, trang hoá đơn điện tử nằm bên trái
-    // Chữ tất cả và hoá đơn điện tử nằm trên cùng như 1 tab
-    // Khi click vào tab nào thì tab đó được tô màu xanh, vào chuyển đến trang đó
-    // Ở trang tất cả vuối sang phải thì chuyển sang trang hoá đơn điện tử
-    // Ở trang hoá đơn điện tử vuối sang trái thì chuyển sang trang tất cả
-
-    // Phần Tất cả: Hiển thị các thông báo của ứng dụng Quà Tặng Vip
-    // Danh sách theo hàng ngang sắp xếp theo thời gian, từ trên xuống dưới
-    // Mỗi thông báo gồm:
-    // thời gina
-    // Anh icon| Tiêu đề |
-    // Nội dung |
-
-    // Phần Hoá đơn điện tử: Ảnh : hIỆN TẠI KHÔNG CÓ THÔNGG BÁO
-
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          height: 50,
-          paddingHorizontal: 10,
-          borderBottomWidth: 1,
-          borderBottomColor: "#eee"
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center"
-          }}
-          onPress={() => handleTabPress("all")}
-        >
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "bold",
-              marginLeft: 10
-            }}
-          >
-            Tất cả
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center"
-          }}
-          onPress={() => handleTabPress("bill")}
-        >
-          <Text style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}>
-            Hoá đơn điện tử
-          </Text>
-        </TouchableOpacity>
-      </View>
       <ScrollView>
-        {data.map((item, index) => {
+        {dataAll.map((item, index) => {
           return (
             <TouchableOpacity
               key={index}
@@ -299,10 +247,167 @@ const Notification = ({ navigation, route }) => {
           );
         })}
       </ScrollView>
+    </View>
+  );
+}
+
+function ElectronicInvoices() {
+  const [refreshing, setRefreshing] = useState(false);
+  const [dataBill, setDataBill] = useState([]);
+
+  const fetchData = () => {
+    // Trả về một Promise để có thể sử dụng .then() khi cần thiết
+    return new Promise((resolve) => {
+      // Giả lập thời gian tải dữ liệu
+      setTimeout(() => {
+        // Dữ liệu mới
+        const newData = [
+          // ... Cập nhật dữ liệu mới ở đây ...
+        ];
+        setDataBill(newData);
+        resolve(); // Kết thúc Promise
+      }, 2000); // Thời gian giả lập: 2000ms (2 giây)
+    });
+  };
+
+  const reload = () => {
+    setRefreshing(true); // hiệu ứng reload
+    // Gọi hàm fetchData để lấy dữ liệu mới
+    fetchData().then(() => {
+      setRefreshing(false);
+    });
+  };
+  return (
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       {/* Hoá đơn điện tử */}
+      {dataBill.length == 0 ? (
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          {refreshing ? (
+            <ActivityIndicator
+              size="large"
+              color={colorBlue}
+              style={{ marginTop: 150 }}
+            />
+          ) : (
+            <>
+              <Image
+                source={emptyIcon}
+                style={{
+                  width: Dimensions.get("window").width * 0.4,
+                  height: Dimensions.get("window").height * 0.3
+                }}
+              ></Image>
+              <Text
+                style={{
+                  fontSize: 22,
+                  color: colorBlue,
+                  marginTop: 10,
+                  fontWeight: "bold"
+                }}
+              >
+                Hiện tại không có thông báo nào
+              </Text>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: colorYellow,
+                  borderRadius: 10,
+                  width: Dimensions.get("window").width * 0.9,
+                  height: 50,
+                  marginTop: 35,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+                onPress={reload}
+              >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    textAlign: "center"
+                  }}
+                >
+                  Tải lại trang
+                </Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+      ) : (
+        // Hiển thị khi có dữ liệu
+        ""
+      )}
+    </View>
+  );
+}
+const CustomTabBar = ({ state, descriptors, navigation }) => {
+  //state: trạng thái hiện tại của tab
+  //descriptors: mô tả các tab
+  //navigation: điều hướng
+  return (
+    <View style={{ flexDirection: "row", backgroundColor: "#fff" }}>
+      {state.routes.map((route, index) => {
+        const { options } = descriptors[route.key];
+        const label =
+          options.tabBarLabel !== undefined
+            ? options.tabBarLabel
+            : options.title !== undefined
+            ? options.title
+            : route.name;
+        const isFocused = state.index === index;
+        const onPress = () => {
+          const event = navigation.emit({
+            type: "tabPress",
+            target: route.key,
+            canPreventDefault: true
+          });
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
+        const onLongPress = () => {
+          navigation.emit({
+            type: "tabLongPress",
+            target: route.key
+          });
+        };
+        return (
+          <TouchableOpacity
+            key={index}
+            onPress={onPress}
+            onLongPress={onLongPress}
+            style={{
+              flex: 1,
+              marginTop: 20,
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: 16,
+              borderBottomWidth: isFocused ? 2 : 0,
+              borderBottomColor: isFocused ? "#FFC62E" : "transparent"
+            }}
+          >
+            <Text
+              style={{
+                fontWeight: isFocused ? "bold" : "normal",
+                fontSize: 14,
+                textTransform: "lowercase"
+              }}
+            >
+              {label}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 };
 
-export default Notification;
- 
+function NotificationScreen() {
+  return (
+    <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
+      <Tab.Screen name="Tất cả" component={AllNotifications} />
+      <Tab.Screen name="Hoá đơn điện tử" component={ElectronicInvoices} />
+    </Tab.Navigator>
+  );
+}
+
+export default NotificationScreen;

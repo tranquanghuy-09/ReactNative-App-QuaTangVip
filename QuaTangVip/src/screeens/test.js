@@ -23,75 +23,7 @@ const colorGray = "#DCDCDC";
 const colorYellow = "#FFC62E";
 const colorBlue = "#0866FF";
 const Notification = ({ navigation, route }) => {
-  const data = [
-    {
-      id: 1,
-      title: "Tài khoản của bạn vừa đăng nhâo ở thiết bị khác",
-      conntent:
-        "Tài khoản của bạn vừa đăng nhâo ở thiết bị khác. Nếu không phảu là bạn thực hiện vui lòng liên hệ đến số 1900 1039 để được hỗ trợ",
-      time: "18:35 - 30/09/2023",
-      type: 1,
-      link: "",
-      status: true //trạng thai đã đọc hay chưa
-    },
-    {
-      id: 2,
-      title: "Dữ liệu đông bộ thành công",
-      conntent: "Dữ liệu đông bộ thành công. Cảm ơn quý khách đã chờ đợi",
-      time: "18:35 - 30/09/2023",
-      type: 1,
-      link: "",
-      status: false
-    },
-    {
-      id: 3,
-      title: "Tài khoản của bạn vừa đăng nhâo ở thiết bị khác",
-      conntent:
-        "Tài khoản của bạn vừa đăng nhâo ở thiết bị khác. Nếu không phảu là bạn thực hiện vui lòng liên hệ đến số 1900 1039 để được hỗ trợ",
-      time: "18:35 - 30/09/2023",
-      type: 1,
-      link: "",
-      status: true
-    },
-    {
-      id: 4,
-      title: "Cập nhập nội dung chính sách tích điểm",
-      conntent: "Ap dụng từ ngagy 23/10/2023",
-      time: "18:35 - 30/09/2023",
-      type: 1,
-      link: "",
-      status: true
-    },
-    {
-      id: 5,
-      title: "Tích điểm thành công",
-      conntent: "Bạn vừa tích điểm thành công ở cửa hàng Bách Hoá Xanh",
-      time: "18:35 - 30/09/2023",
-      type: 2,
-      link: "",
-      status: false
-    },
-    {
-      id: 6,
-      title: "Cảm mơn Anh/Chị đã mua hàng",
-      conntent:
-        "Bạn vừa tích điểm thành công ở cửa hàng Bách Hoá Xanh đơn hàng 123456789. Vui lòng đánh giá chất lượng dịch vụ",
-      time: "18:35 - 30/09/2023",
-      type: 3,
-      link: "",
-      status: false
-    },
-    {
-      id: 7,
-      title: "Đơn hàng của bạn đang được giao",
-      conntent: "Đơn hàng của bạn đang được giao",
-      time: "18:35 - 30/09/2023",
-      type: 1,
-      link: "",
-      status: true
-    }
-  ];
-
+  
   function setStatus(index, item) {
     alert(index + " " + item.status);
     //Chuyển trạng thái đã đọc thành đã đọc

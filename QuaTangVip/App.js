@@ -43,7 +43,7 @@ function App() {
           name="Góp ý, khiếu nại"
           component={SuggestionsAndFeedBack}
         />
-        <Stack.Screen name="Thông báo" component={Notification} />
+         <Stack.Screen name="Thông báo" component={Notification} />
 
         <Stack.Screen name="Camera" component={Camera} />
       </Stack.Navigator>
