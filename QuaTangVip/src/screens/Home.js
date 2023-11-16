@@ -86,9 +86,9 @@ export default function App({navigation, route}) {
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 37}}>
             <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} onPress={()=>{navigation.navigate('HomeNavigation', {
-        screen: 'Quà của tôi',
-        params: {},
-      });}}>
+              screen: 'Quà của tôi',
+              params: {},
+            });}}>
               <View style={{backgroundColor: '#FFF1BE', width: 70, height: 70, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}}>
                 <Image source={require('../../assets/images/gift.png')} style={{width: 30, height: 30}} />
               </View>
@@ -104,12 +104,12 @@ export default function App({navigation, route}) {
                 <Text style={{fontSize: 14, color: '#605F5F', color: '#7B7B7B', textAlign: 'center'}}>Hỗ trợ kỹ thuật trực truyến</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}}>
+            <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} onPress={()=>{navigation.navigate('Đặt lịch vệ sinh thiết bị')}}>
               <View style={{backgroundColor: '#E7F7FE', width: 70, height: 70, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}}>
                 <Image source={require('../../assets/images/air-conditioner.png')} style={{width: 30, height: 30}} />
               </View>
               <View style={{width: 63, height: 34, justifyContent:'center', alignItems: 'center',marginTop: 9}}>
-                <Text style={{fontSize: 14, color: '#605F5F', color: '#7B7B7B', textAlign: 'center'}}>Đặt lịch vệ sinh thiết bị</Text>
+                <Text style={{fontSize: 14, color: '#605F5F', color: '#7B7B7B', textAlign: 'center', width: 100}}>Đặt lịch vệ sinh thiết bị</Text>
               </View>
             </TouchableOpacity>
           </View>
