@@ -3,8 +3,10 @@ import {Platform,} from 'react-native';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ImageBackground, Image, ScrollView} from 'react-native';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 
-export default function App() {
+
+export default function App({navigation}) {
   const isIPhone = Platform.OS === 'ios';
+
   return (
     <View style={[styles.container]}>
       <ImageBackground
@@ -84,7 +86,7 @@ export default function App() {
             </TouchableOpacity>
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 37}}>
-            <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}}>
+            <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} onPress={()=>{navigation.navigate('Quà của tôi')}}>
               <View style={{backgroundColor: '#FFF1BE', width: 70, height: 70, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}}>
                 <Image source={require('../../assets/images/gift.png')} style={{width: 30, height: 30}} />
               </View>
