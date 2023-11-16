@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from './src/screens/Home';
-import HomeNavigation from './src/screens/HomeNavigation';
+import HomeNavigation from './src/screens/HomeNavigator';
 import History from './src/screens/History';
 import ScreenQR from './src/screens/ScreenQR';
 import Account from './src/screens/Account';
