@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from './src/screens/Home';
+import HomeNavigation from './src/screens/HomeNavigation';
 import History from './src/screens/History';
 import ScreenQR from './src/screens/ScreenQR';
 import Account from './src/screens/Account';
@@ -16,8 +17,8 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName='Lịch sử' screenOptions={{ headerShown: false, }}>
-        <Tab.Screen name="Trang chủ" component={Home} 
+      <Tab.Navigator initialRouteName='HomeNavigation' screenOptions={{ headerShown: false, }}>
+        <Tab.Screen name="HomeNavigation" component={HomeNavigation} 
           options={{
             tabBarLabel: 'Trang chủ',
             tabBarIcon: ({ focused, color, size }) => (
