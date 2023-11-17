@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  Alert,
   Modal,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -37,6 +37,8 @@ const isPhoneNumber = (value) => {
   const phoneNumberRegex = /^[0-9]{10,11}$/;
   return phoneNumberRegex.test(value);
 };
+
+//Chưa xong: chưa xử lý được nút vân tay
 
 export default function App({ navigation, route }) {
   const user = route.params.user;
@@ -219,7 +221,7 @@ export default function App({ navigation, route }) {
               padding: 10,
               marginBottom: 5,
               fontSize: 16,
-              color: colorGray
+              color: colorBlack
             }}
             onChangeText={setPassword}
           />
@@ -234,68 +236,73 @@ export default function App({ navigation, route }) {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{ flexDirection: "column" }}>
-        <View style={styles.buttonsContainer}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        //di chuyển view khi bàn phím hiện lên
+      >
+        <View style={{ flexDirection: "column", bottom: 5 }}>
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: colorYellow,
+                height: 45,
+                borderRadius: 10,
+                width: (screenWidth * 90) / 100 - 65,
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+              onPress={checkPassword}
+            >
+              <Text
+                style={{
+                  color: colorBlack,
+                  fontSize: 16,
+                  textAlign: "center",
+                  fontWeight: "bold"
+                }}
+              >
+                Tiếp tục
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                backgroundColor: colorYellow,
+                borderRadius: 10,
+                width: 50,
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+              onPress={checkPassword}
+            >
+              <Image
+                source={fingerprintIcon}
+                style={{ resizeMode: "contain", width: 30, height: 30 }}
+              />
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity
-            style={{
-              backgroundColor: colorYellow,
-              height: 45,
-              borderRadius: 10,
-              width: (screenWidth * 90) / 100 - 65,
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-            onPress={checkPassword}
+            style={{ alignItems: "center" }}
+            onPress={() => navigation.navigate("LoginPhone")}
           >
             <Text
               style={{
-                color: colorBlack,
+                color: colorBlue,
                 fontSize: 16,
+                borderBottomWidth: 1,
+                borderColor: colorBlue,
+                fontWeight: "bold",
                 textAlign: "center",
-                fontWeight: "bold"
+                marginBottom: 10,
+                marginTop: 15,
+                width: "fit-content"
               }}
             >
-              Tiếp tục
+              Đăng nhập bằng số điện thoại khác
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              backgroundColor: colorYellow,
-              borderRadius: 10,
-              width: 50,
-              height: 50,
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-            onPress={checkPassword}
-          >
-            <Image
-              source={fingerprintIcon}
-              style={{ resizeMode: "contain", width: 30, height: 30 }}
-            />
-          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          style={{ alignItems: "center" }}
-          onPress={() => navigation.navigate("LoginPhone")}
-        >
-          <Text
-            style={{
-              color: colorBlue,
-              fontSize: 16,
-              borderBottomWidth: 1,
-              borderColor: colorBlue,
-              fontWeight: "bold",
-              textAlign: "center",
-              marginBottom: 10,
-              marginTop: 15,
-              width: "fit-content"
-            }}
-          >
-            Đăng nhập bằng số điện thoại khác
-          </Text>
-        </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }

@@ -34,6 +34,9 @@ const colorBlue = "#0866FF";
 const Tab = createMaterialTopTabNavigator();
 
 //Trang dễ đột tử khi chạy trên ISO khi không được khởi động đúng cách
+//Chưa xong:
+// 1. Chưa có dữ liệu
+// 2. Chưa có chức năng chuyển trạng thái đã đọc thành đã đọc
 
 function AllNotifications() {
   //data ảo

@@ -22,7 +22,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={"Thông báo"}
+        initialRouteName={"LoginPhone"}
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="LoginPhone" component={LoginPhone} />
@@ -42,6 +42,8 @@ function App() {
         <Stack.Screen
           name="Góp ý, khiếu nại"
           component={SuggestionsAndFeedBack}
+          options={{ headerShown: true }}
+          
         />
          <Stack.Screen name="Thông báo" component={Notification} />
 

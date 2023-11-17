@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  ImageBackground
+  KeyboardAvoidingView
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -180,34 +180,38 @@ export default function App({ navigation, route }) {
           ""
         )}
       </View>
-      <View>
-        <TouchableOpacity
-          style={{
-            backgroundColor: colorYellow,
-            padding: 15,
-            borderRadius: 10,
-            width: "auto",
-            alignSelf: "center",
-            minWidth: Dimensions.get("window").width * 0.9,
-            height: 50,
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-          onPress={handleContinue}
-        >
-          <Text
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        // behavior là hành động khi bàn phím hiện lên, padding là di chuyển view lên trên
+      >
+        <View style={{ marginBottom: 10, alignSelf: "center" }}>
+          <TouchableOpacity
             style={{
-              color: "black",
-              fontSize: 16,
-              textAlign: "center",
-              fontWeight: 700
+              backgroundColor: colorYellow,
+              padding: 15,
+              borderRadius: 10,
+              width: "auto",
+              alignSelf: "center",
+              minWidth: Dimensions.get("window").width * 0.9,
+              height: 50,
+              justifyContent: "center",
+              alignItems: "center"
             }}
+            onPress={handleContinue}
           >
-            Tiếp tục
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <StatusBar style="auto" />
+            <Text
+              style={{
+                color: "black",
+                fontSize: 16,
+                textAlign: "center",
+                fontWeight: 700
+              }}
+            >
+              Tiếp tục
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }

@@ -7,7 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 const Home = ({ navigation, route }) => {
   const user = route.params.user;
   return (
-    <View>
+    <View style={{ marginTop: 150 }}>
       <TouchableOpacity
         style={{ backgroundColor: "green", padding: 10 }}
         onPress={() => navigation.navigate("Account", { user: user })}
@@ -26,7 +26,23 @@ const Home = ({ navigation, route }) => {
         </View>
       </TouchableOpacity>
       {/* trang thông tin cá nhân */}
-
+      <TouchableOpacity
+        style={{ backgroundColor: "red", padding: 10 }}
+        onPress={() => navigation.navigate("Thông tin cá nhân")}
+      >
+        <View style={{ backgroundColor: "red", padding: 10 }}>
+          <Text>Navigate to Thông tin cá nhân</Text>
+        </View>
+      </TouchableOpacity>
+      {/* thông báo*/}
+      <TouchableOpacity
+        style={{ backgroundColor: "yellow", padding: 10 }}
+        onPress={() => navigation.navigate("Thông báo")}
+      >
+        <View style={{ backgroundColor: "yellow", padding: 10 }}>
+          <Text>Navigate to Thông báo</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
