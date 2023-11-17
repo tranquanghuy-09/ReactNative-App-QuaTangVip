@@ -102,7 +102,7 @@ const Account = ({ navigation, route }) => {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: colorWhite }}>
-      {/* Thông báo khi chưa có link*/}
+      {/* Thông f khi chưa có link*/}
       <Modal
         animationType="fade" // hiệu ứng khi mở modal
         transparent={true} // màn hình nền có trong suốt hay không
@@ -181,11 +181,9 @@ const Account = ({ navigation, route }) => {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
+      {/* End thông f */}
 
       <View
-        accessible={true}
-        accessibilityLabel="User info section"
-        accessibilityRole="header"
         style={{
           paddingHorizontal: 16,
           paddingTop: 10,
@@ -193,10 +191,9 @@ const Account = ({ navigation, route }) => {
         }}
       >
         <View
-          accessible={true}
-          accessibilityLabel="User profile picture and info"
           style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}
         >
+          {/* Ảnh đại diện */}
           <TouchableOpacity>
             {/* avatar */}
             <Image

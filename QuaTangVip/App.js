@@ -22,14 +22,24 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={"LoginPhone"}
+        initialRouteName={"LoginPassword"}
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="LoginPhone" component={LoginPhone} />
         <Stack.Screen name="LoginPassword" component={LoginPassword} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Account" component={Account} />
+        <Stack.Screen
+          name="Account"
+          component={Account}
+          options={
+            {
+              headerShown: true,
+              headerTitleAlign: "Cá nhân"
+            }
+            //Chữ  cá nhân căn phải, cỡ chữ to, ẩn nút quay về
+          }
+        />
 
         <Stack.Screen name="Thông tin cá nhân" component={InforUser} />
         <Stack.Screen name="Cửa hàng gần bạn" component={NearbyStore} />
@@ -43,9 +53,8 @@ function App() {
           name="Góp ý, khiếu nại"
           component={SuggestionsAndFeedBack}
           options={{ headerShown: true }}
-          
         />
-         <Stack.Screen name="Thông báo" component={Notification} />
+        <Stack.Screen name="Thông báo" component={Notification} />
 
         <Stack.Screen name="Camera" component={Camera} />
       </Stack.Navigator>

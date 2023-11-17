@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -33,47 +34,53 @@ const errorIcon = require("../../assets/icons_Dai/ic_error.webp");
 const fontSize1 = 16;
 const fontSize2 = 14;
 
-const isPhoneNumber = (value) => {
-  const phoneNumberRegex = /^[0-9]{10,11}$/;
-  return phoneNumberRegex.test(value);
-};
-
 //Chưa xong: chưa xử lý được nút vân tay
-
+// Định dùng tooltip nhưng tìm hiểu không thành công
 export default function App({ navigation, route }) {
-  const user = route.params.user;
+  const user = route.params
+    ? route.params.user
+    : {
+        id: 1,
+        name: "Không một ai",
+        phone: "0000000000",
+        password: "123",
+        sex: true
+      };
+  // const user = route.params.user
+
   const sex = user.sex ? "Anh" : "Chị";
   const [displayPass, setDisplayPass] = useState(false);
   const [password, setPassword] = useState("");
   const [count, setCount] = useState(0);
   const [txtError, setTxtError] = useState(null);
-
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const requestPassword = "Mật khẩu chứa ít nhất 1 ký tự";
   const toggleModal = () => {
     setTxtError(null);
   };
 
+  //Kiểm tra mật khẩu
   const checkPassword = () => {
     if (password === "") {
       toggleModal();
       setTxtError("Không được để trống mật khẩu");
       return;
     }
-
     if (password !== user.password) {
       setCount((prevCount) => prevCount + 1);
       toggleModal();
       setTxtError("Sai mật khẩu");
-
       if (count + 1 === 3) {
         navigation.navigate("LoginPhone");
       }
-
       return;
     }
-
     navigation.navigate("Home", { user: user });
   };
 
+  const toggleTooltip = () => {
+    setTooltipVisible(!tooltipVisible);
+  };
   return (
     <View style={styles.container}>
       {/* Modal thông báo sai mật khẩu */}
@@ -160,7 +167,7 @@ export default function App({ navigation, route }) {
           style={{
             fontSize: 30,
             fontWeight: "bold",
-            marginTop: 35,
+            marginTop: 20,
             marginBottom: 5,
             textAlign: "center"
           }}
@@ -186,12 +193,55 @@ export default function App({ navigation, route }) {
           }}
         >
           <Text style={{ color: colorBlack, fontSize: 16 }}>
-            <Text style={{ color: "red", marginRight: 5, fontWeight: "bold" }}>
+            <Text
+              style={{
+                color: "red",
+                marginRight: 10,
+                fontWeight: "bold"
+              }}
+            >
               *
             </Text>
-            Mật khẩu
+            <Text
+              style={{
+                fontSize: 18
+              }}
+            >
+              Mật khẩu
+            </Text>
           </Text>
-          <Image source={iIcon} style={styles.icon} />
+
+          {tooltipVisible && (
+            <View
+              style={{
+                position: "absolute",
+                backgroundColor: "white",
+                borderRadius: 5,
+                width: 150,
+                justifyContent: "center",
+                alignItems: "center",
+                top: -60,
+                left: 75,
+                padding: 10,
+                borderWidth: 1
+              }}
+            >
+              <Text style={{ fontSize: 12 }}>{requestPassword}</Text>
+            </View>
+          )}
+          {/* Khi ấn vào biểu tượng sẽ hiện ghi chú nhỏ */}
+          <TouchableOpacity onPress={toggleTooltip}>
+            <Image
+              source={iIcon}
+              style={{
+                resizeMode: "contain",
+                width: 16,
+                height: 16,
+                left: 5,
+                tintColor: colorBlack
+              }}
+            />
+          </TouchableOpacity>
         </View>
         <View
           style={{
@@ -231,7 +281,13 @@ export default function App({ navigation, route }) {
           >
             <Image
               source={displayPass ? showIcon : hideIcon}
-              style={styles.icon}
+              style={{
+                resizeMode: "contain",
+                width: 20,
+                height: 20,
+                left: 5,
+                tintColor: displayPass ? colorBlack : colorGray
+              }}
             />
           </TouchableOpacity>
         </View>
@@ -289,8 +345,6 @@ export default function App({ navigation, route }) {
               style={{
                 color: colorBlue,
                 fontSize: 16,
-                borderBottomWidth: 1,
-                borderColor: colorBlue,
                 fontWeight: "bold",
                 textAlign: "center",
                 marginBottom: 10,
