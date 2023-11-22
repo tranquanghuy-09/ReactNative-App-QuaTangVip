@@ -18,7 +18,7 @@
     <img src="img/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Quà Tặng VIP</h3>
+  <h3 align="center">Quà Tặng VIpP</h3>
   </div>
 <!--
   <p align="center">
