@@ -23,7 +23,7 @@ const HomeNavigation = ({navigation, route}) => {
         }
     }, [navigation, route]);
   return (
-    <Stack.Navigator initialRouteName='Đặt lịch vệ sinh thiết bị'>
+    <Stack.Navigator initialRouteName='Trang chủ'>
         <Stack.Screen name="Trang chủ" component={Home} options={{headerShown: false}}/>
         <Stack.Screen name="Quà của tôi" component={GiftScreen} options={{
             headerTitleAlign: 'left',
