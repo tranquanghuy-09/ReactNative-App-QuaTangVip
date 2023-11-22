@@ -5,7 +5,17 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Home = ({ navigation, route }) => {
-  const user = route.params.user;
+  const user = route.params
+    ? route.params.user
+    : {
+        id: 1,
+        name: "Không một ai",
+        phone: "0000000000",
+        password: "123",
+        sex: true
+      };
+  // const user = route.params.user;
+
   return (
     <View style={{ marginTop: 150 }}>
       <TouchableOpacity
@@ -41,6 +51,15 @@ const Home = ({ navigation, route }) => {
       >
         <View style={{ backgroundColor: "yellow", padding: 10 }}>
           <Text>Navigate to Thông báo</Text>
+        </View>
+      </TouchableOpacity>
+      {/* trang theo dõi đơn hàng*/}
+      <TouchableOpacity
+        style={{ backgroundColor: "pink", padding: 10 }}
+        onPress={() => navigation.navigate("Theo dõi đơn hàng")}
+      >
+        <View style={{ backgroundColor: "pink", padding: 10 }}>
+          <Text>Navigate to Theo dõi đơn hàng</Text>
         </View>
       </TouchableOpacity>
     </View>

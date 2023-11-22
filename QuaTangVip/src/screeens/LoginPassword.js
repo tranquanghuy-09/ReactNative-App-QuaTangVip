@@ -47,8 +47,9 @@ export default function App({ navigation, route }) {
         sex: true
       };
   // const user = route.params.user
-
   const sex = user.sex ? "Anh" : "Chị";
+
+  
   const [displayPass, setDisplayPass] = useState(false);
   const [password, setPassword] = useState("");
   const [count, setCount] = useState(0);

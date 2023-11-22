@@ -16,13 +16,16 @@ import ApplicationManagement from "./src/screeens/ApplicationManagement";
 import SuggestionsAndFeedBack from "./src/screeens/SuggestionsAndFeedBack";
 import Camera from "./src/screeens/Camera";
 import Notification from "./src/screeens/Notification";
+import OrderTracking from "./src/screeens/OrderTracking";
+import WarrantyAndMaintenance from "./src/screeens/WarrantyAndMaintenance";
+
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={"LoginPassword"}
+        initialRouteName={"Bảo hành, bảo dưỡng"}
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="LoginPhone" component={LoginPhone} />
@@ -37,7 +40,6 @@ function App() {
               headerShown: true,
               headerTitleAlign: "Cá nhân"
             }
-            //Chữ  cá nhân căn phải, cỡ chữ to, ẩn nút quay về
           }
         />
 
@@ -57,6 +59,18 @@ function App() {
         <Stack.Screen name="Thông báo" component={Notification} />
 
         <Stack.Screen name="Camera" component={Camera} />
+        <Stack.Screen name="Theo dõi đơn hàng" component={OrderTracking}    options={
+            {
+              headerShown: true,
+              headerTitleAlign: "Theo dõi dơn hàng"
+            }
+          }
+        />
+        <Stack.Screen
+          name="Bảo hành, bảo dưỡng"
+          component={WarrantyAndMaintenance}
+          options={{ headerShown: true }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
