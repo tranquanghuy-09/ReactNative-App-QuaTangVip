@@ -1,0 +1,34 @@
+{
+  "name": "quatangvip",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "start:both": "export EXPO_NO_INTERACTIVE=1 && npm run android -- --port 8081 & npm run ios -- --port 8082"
+  },
+  "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
+    "@expo/webpack-config": "^19.0.0",
+    "@react-navigation/bottom-tabs": "^6.5.11",
+    "@react-navigation/native": "^6.1.9",
+    "@react-navigation/stack": "^6.3.20",
+    "axios": "^1.6.1",
+    "cors": "^2.8.5",
+    "expo": "~49.0.15",
+    "expo-status-bar": "~1.6.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.72.6",
+    "react-native-device-info": "^10.11.0",
+    "react-native-reanimated": "^3.5.4",
+    "react-native-web": "~0.19.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "concurrently": "^8.2.2"
+  },
+  "private": true
+}
