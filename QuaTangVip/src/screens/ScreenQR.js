@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import {Platform, TextInput,} from 'react-native';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, SectionList, Button} from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import {ipv4} from '../global';
+import axios from 'axios';
 
 
 export default function App({navigation}) {
@@ -10,7 +12,49 @@ export default function App({navigation}) {
   
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [text, setText] = useState('Not yet scanned')
+  const [text, setText] = useState('Not yet scanned');
+
+  const [order, setOrder] = useState({
+    "status": 1,
+    "employee_id": 1,
+    "user_id": 1,
+  });
+  // const convertToOrderObject = (data) => {
+  //   const { order_date, employee_id, user_id, order_id } = data;
+
+  //   const orderObject = {
+  //     orderId: order_id,
+  //     orderDate: new Date(order_date),
+  //     orderStatus: "", // You may need to set the order status based on your logic
+  //     employee: { employeeId: employee_id }, // Assuming Employee has an employeeId property
+  //     user: { userId: user_id }, // Assuming User has a userId property
+  //     orderDetails: [], // You may need to handle order details based on your logic
+  //   };
+
+  //   return orderObject;
+  // };
+  // const handleData = () => {
+  //   const convertedOrder = convertToOrderObject(order);
+  //   setOrder(convertedOrder);
+  // };
+
+  console.log(order);
+
+  const [orderDetail, setOrderDetail] = useState([
+    {
+      "product_id": 1,
+      "note": "",
+      "price": 14500,
+      "quantity": 1.0,
+    },
+    {
+      "product_id": 4,
+      "note": "",
+      "price": 37500,
+      "quantity": 2.0,
+    }
+  ]);
+  console.log(orderDetail);
 
   const askForCameraPermission = () => {
     (async () => {
@@ -37,44 +81,44 @@ export default function App({navigation}) {
       <View style={styles.container}>
         <Text>Requesting for camera permission</Text>
       </View>)
-  }
+  };
   if (hasPermission === false) {
     return (
       <View style={styles.container}>
         <Text style={{ margin: 10 }}>No access to camera</Text>
         <Button title={'Allow Camera'} onPress={() => askForCameraPermission()} />
       </View>)
-  }
+  };
 
-  const [order, setOrder] = useState({
-    "order_code": "123456",
-    "order_date": "2021-06-15T00:00:00.000Z"
-  });
-  const [orderDetail, setOrderDetail] = useState([
-    {
-      "order_detail_id": 1,
-      "order_id": 1,
-      "product_id": 1,
-      "product_name": "Áo thun nam",
-      "product_price": 100000,
-      "product_quantity": 2,
-      "product_image": "https://product.hstatic.net/1000230349/product/1_1e9a4f2f8b3c4c3e8f5e3e0a8e4f7e8c_master.jpg",
-      "product_color": "Đỏ",
-      "product_size": "XL"
-    },
-    {
-      "order_detail_id": 2,
-      "order_id": 1,
-      "product_id": 2,
-      "product_name": "Áo thun nữ",
-      "product_price": 120000,
-      "product_quantity": 1,
-      "product_image": "https://product.hstatic.net/1000230349/product/1_1e9a4f2f8b3c4c3e8f5e3e0a8e4f7e8c_master.jpg",
-      "product_color": "Đỏ",
-      "product_size": "XL"
+  // const onSubmit = async () => {
+  //   try {
+  //     await axios.post("http://"+ipv4+"/order?user_id="+order.user_id+"&emp_id="+order.employee_id+"&order_detail="+orderDetail);
+  //     console.log("Thêm thành công!");
+  //   } catch (error) {
+  //     console.error("Lỗi khi thêm:", error);
+  //   }
+  // };
+
+  const onSubmit = async () => {
+    try {
+      await axios.post("http://"+ipv4+"/order", {
+        "user_id": order.user_id,
+        "employee_id": order.employee_id,
+        "status": order.status,
+        "order_detail": orderDetail
+      });
+      console.log("Thêm thành công!");
+    } catch (error) {
+      console.error("Lỗi khi thêm:", error);
+      console.log({
+        "user_id": order.user_id,
+        "employee_id": order.employee_id,
+        "status": order.status,
+        "order_detail": orderDetail
+      });
     }
-  ]);
-  
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.style1}>
@@ -88,7 +132,9 @@ export default function App({navigation}) {
         </View>
         
       </View>
+
       <View style={styles.style2}>
+        <ScrollView style={{width: '100%'}}>
         <View style={{alignItems: 'center'}}>
           <View style={{width: '100%'}}>
             <Text style={{fontSize: isIPhone?30:32, marginLeft: 20, fontWeight: 700}}>Quét mã xác thực</Text>
@@ -116,7 +162,7 @@ export default function App({navigation}) {
           </View>
         </View>
         <View style={{flexDirection: 'row', gap: isIPhone?10:15, marginBottom: isIPhone?5:10}}>
-          <TouchableOpacity style={{width:isIPhone?175:180, height: 50, borderWidth: 1, borderColor: 'rgba(174, 178, 184, 1)', borderRadius: 15, alignItems: 'center', justifyContent: 'center'}}>
+          <TouchableOpacity onPress={onSubmit} style={{width:isIPhone?175:180, height: 50, borderWidth: 1, borderColor: 'rgba(174, 178, 184, 1)', borderRadius: 15, alignItems: 'center', justifyContent: 'center'}}>
             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
               <Image source={require('../../assets/icons/qrcode-solid.png')} style={{width: 22, height: 24, }}/>
               <Text style={{fontSize: 16, color: '#0C2A48', marginLeft: 10}}>Mã QR</Text>
@@ -129,6 +175,7 @@ export default function App({navigation}) {
             </View>
           </TouchableOpacity>
         </View>
+        </ScrollView>
       </View>
     </View>
   );
