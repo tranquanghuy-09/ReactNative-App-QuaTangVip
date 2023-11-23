@@ -46,6 +46,34 @@ export default function App({navigation}) {
       </View>)
   }
 
+  const [order, setOrder] = useState({
+    "order_code": "123456",
+    "order_date": "2021-06-15T00:00:00.000Z"
+  });
+  const [orderDetail, setOrderDetail] = useState([
+    {
+      "order_detail_id": 1,
+      "order_id": 1,
+      "product_id": 1,
+      "product_name": "Áo thun nam",
+      "product_price": 100000,
+      "product_quantity": 2,
+      "product_image": "https://product.hstatic.net/1000230349/product/1_1e9a4f2f8b3c4c3e8f5e3e0a8e4f7e8c_master.jpg",
+      "product_color": "Đỏ",
+      "product_size": "XL"
+    },
+    {
+      "order_detail_id": 2,
+      "order_id": 1,
+      "product_id": 2,
+      "product_name": "Áo thun nữ",
+      "product_price": 120000,
+      "product_quantity": 1,
+      "product_image": "https://product.hstatic.net/1000230349/product/1_1e9a4f2f8b3c4c3e8f5e3e0a8e4f7e8c_master.jpg",
+      "product_color": "Đỏ",
+      "product_size": "XL"
+    }
+  ]);
   
   return (
     <View style={styles.container}>

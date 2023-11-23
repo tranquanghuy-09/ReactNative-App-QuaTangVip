@@ -6,95 +6,95 @@ import axios from 'axios';
 import {ipv4} from '../global';
 
 export default function App({navigation}) {
-  const DATA = [
-    {
-      id: 1,
-      month: 9,
-      data: 
-      [
-        {
-          id: 1,
-          stote: 'Bách Hoá Xanh',
-          status: 'Giao thành công',
-          orderDate: '18:35 - 30/09/2023',
-          diemTichLuy: '1.300',
-        },
-        {
-          id: 2,
-          stote: 'Bách Hoá Xanh',
-          status: 'Giao thành công',
-          orderDate: '18:35 - 30/09/2023',
-          diemTichLuy: '1.300',
-        },
-        {
-          id: 3,
-          stote: 'Bách Hoá Xanh',
-          status: 'Giao thành công',
-          orderDate: '18:35 - 30/09/2023',
-          diemTichLuy: '1.300',
-        },
-        {
-          id: 4,
-          stote: 'Bách Hoá Xanh',
-          status: 'Giao thành công',
-          orderDate: '18:35 - 30/09/2023',
-          diemTichLuy: '1.300',
-        },
-        {
-          id: 5,
-          stote: 'Bách Hoá Xanh',
-          status: 'Giao thành công',
-          orderDate: '18:35 - 30/09/2023',
-          diemTichLuy: '1.300',
-        },
-        {
-          id: 6,
-          stote: 'Bách Hoá Xanh',
-          status: 'Giao thành công',
-          orderDate: '18:35 - 30/09/2023',
-          diemTichLuy: '1.300',
-        },
-        {
-          id: 7,
-          stote: 'Bách Hoá Xanh',
-          status: 'Giao thành công',
-          orderDate: '18:35 - 30/09/2023',
-          diemTichLuy: '1.300',
-        },
-      ],
-    },
-    {
-      id: 2,
-      month: 8,
-      data: 
-      [
-        {
-          id: 1,
-          stote: 'Bách Hoá Xanh',
-          status: 'Giao thành công',
-          orderDate: '18:35 - 30/09/2023',
-          diemTichLuy: '1.300',
-        },
-        {
-          id: 2,
-          stote: 'Bách Hoá Xanh',
-          status: 'Giao thành công',
-          orderDate: '18:35 - 30/09/2023',
-          diemTichLuy: '1.300',
-        },
-      ],
-    },
-    {
-      id: 3,
-      month: 7,
-      data: [],
-    },
-    {
-      id: 4,
-      month: 6,
-      data: [],
-    },
-  ];
+  // const DATA = [
+  //   {
+  //     id: 1,
+  //     month: 9,
+  //     data: 
+  //     [
+  //       {
+  //         id: 1,
+  //         stote: 'Bách Hoá Xanh',
+  //         status: 'Giao thành công',
+  //         orderDate: '18:35 - 30/09/2023',
+  //         diemTichLuy: '1.300',
+  //       },
+  //       {
+  //         id: 2,
+  //         stote: 'Bách Hoá Xanh',
+  //         status: 'Giao thành công',
+  //         orderDate: '18:35 - 30/09/2023',
+  //         diemTichLuy: '1.300',
+  //       },
+  //       {
+  //         id: 3,
+  //         stote: 'Bách Hoá Xanh',
+  //         status: 'Giao thành công',
+  //         orderDate: '18:35 - 30/09/2023',
+  //         diemTichLuy: '1.300',
+  //       },
+  //       {
+  //         id: 4,
+  //         stote: 'Bách Hoá Xanh',
+  //         status: 'Giao thành công',
+  //         orderDate: '18:35 - 30/09/2023',
+  //         diemTichLuy: '1.300',
+  //       },
+  //       {
+  //         id: 5,
+  //         stote: 'Bách Hoá Xanh',
+  //         status: 'Giao thành công',
+  //         orderDate: '18:35 - 30/09/2023',
+  //         diemTichLuy: '1.300',
+  //       },
+  //       {
+  //         id: 6,
+  //         stote: 'Bách Hoá Xanh',
+  //         status: 'Giao thành công',
+  //         orderDate: '18:35 - 30/09/2023',
+  //         diemTichLuy: '1.300',
+  //       },
+  //       {
+  //         id: 7,
+  //         stote: 'Bách Hoá Xanh',
+  //         status: 'Giao thành công',
+  //         orderDate: '18:35 - 30/09/2023',
+  //         diemTichLuy: '1.300',
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: 2,
+  //     month: 8,
+  //     data: 
+  //     [
+  //       {
+  //         id: 1,
+  //         stote: 'Bách Hoá Xanh',
+  //         status: 'Giao thành công',
+  //         orderDate: '18:35 - 30/09/2023',
+  //         diemTichLuy: '1.300',
+  //       },
+  //       {
+  //         id: 2,
+  //         stote: 'Bách Hoá Xanh',
+  //         status: 'Giao thành công',
+  //         orderDate: '18:35 - 30/09/2023',
+  //         diemTichLuy: '1.300',
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: 3,
+  //     month: 7,
+  //     data: [],
+  //   },
+  //   {
+  //     id: 4,
+  //     month: 6,
+  //     data: [],
+  //   },
+  // ];
   
   const [page, setPage] = useState(0);
   const [lsdh, setLsdh] = useState(0);
@@ -199,7 +199,7 @@ export default function App({navigation}) {
             </TouchableOpacity>
           </View>
           <SectionList
-            style={{width: '100%', paddingHorizontal: 12, marginTop: -10,}}
+            style={{width: '100%', paddingHorizontal: 12, marginTop: -10, }}
             sections={groupedOrders}
             keyExtractor={(item, index) => item + index}
             renderItem={({item}) => (
