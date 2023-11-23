@@ -90,13 +90,13 @@ export default function App({navigation}) {
         <View style={{flexDirection: 'row', gap: isIPhone?10:15, marginBottom: isIPhone?5:10}}>
           <TouchableOpacity style={{width:isIPhone?175:180, height: 50, borderWidth: 1, borderColor: 'rgba(174, 178, 184, 1)', borderRadius: 15, alignItems: 'center', justifyContent: 'center'}}>
             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-              <Image source={require('../../assets/icons/qrcode-solid.png')} style={{width: 22, hzeight: 24, }}/>
+              <Image source={require('../../assets/icons/qrcode-solid.png')} style={{width: 22, height: 24, }}/>
               <Text style={{fontSize: 16, color: '#0C2A48', marginLeft: 10}}>Mã QR</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity style={{width:isIPhone?165:180, height: 50,  backgroundColor: 'rgba(255, 198, 45, 1)', borderRadius: 15, alignItems: 'center', justifyContent: 'center'}}>
             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-              <Image source={require('../../assets/icons/iconscan.png')} style={{width: 20, hzeight: 20, }}/>
+              <Image source={require('../../assets/icons/iconscan.png')} style={{width: 20, height: 20, }}/>
               <Text style={{fontSize: 16, color: '#0C2A48', marginLeft: 10}}>QUÉT MÃ</Text>
             </View>
           </TouchableOpacity>
