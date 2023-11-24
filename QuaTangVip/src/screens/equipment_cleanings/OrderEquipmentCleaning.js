@@ -6,15 +6,26 @@ import { useIsFocused } from '@react-navigation/native'
 import RNPickerSelect from 'react-native-picker-select';
 import moment from 'moment';
 
-const OrderEquipmentCleaning = ({ navigation }) => {
+const OrderEquipmentCleaning = ({route,navigation }) => {
+    console.log(route.params.selectedItems);
+    const [selectedItems, setSelectedItems] = useState([]);
+
     const isIPhone = Platform.OS === 'ios';
     const isFocused = useIsFocused();
 
-    const [chinhToi, setChinhToi] = useState(false);
+    const [chinhToi, setChinhToi] = useState(true);
     const [nguoiThan, setNguoiThan] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedGio, setSelectedGio] = useState(null);
     const [dateArray, setDateArray] = useState([]);
+
+    useEffect(() => {
+        setSelectedItems(route.params.selectedItems);
+    }, []);
+
+    // useEffect(() => {
+    //     setSelectedItems(route.params.selectedItems);
+    // }, [route.params.selectedItems]);
 
     useEffect(() => {
         const currentDate = moment();
@@ -101,16 +112,29 @@ const OrderEquipmentCleaning = ({ navigation }) => {
     };
 
 
-    const [temp, setTemp] = useState({
-        id: 1,
-        name: 'Vệ sinh máy lạnh từ 1 HP - 2.5 HP',
-        image: require('../../../assets/images/airconditioner1.png'),
-        price: 120000,
-        cost: 199000,
-        discount: 79000,
-        promotion_apply_at: "Khuyến mãi áp dụng tại Hồ Chí Minh",
-        qty: 0,
-    });
+    const calculateTotalPrice = () => {
+        let totalPrice = 0;
+        selectedItems.forEach(item => {
+          totalPrice += item.qty * item.cost;
+        });
+        return totalPrice;
+    };
+
+    const calculateTotalDiscount = () => {
+        let totalDiscount = 0;
+        selectedItems.forEach(item => {
+            totalDiscount += item.discount;
+        });
+        return totalDiscount;
+    };
+
+    const calculateTotalPriceAfterDiscount = () => {
+        let totalDiscount = 0;
+        selectedItems.forEach(item => {
+            totalDiscount += item.qty * item.price;
+        });
+        return totalDiscount;
+    }
 
     return (
         
@@ -123,34 +147,34 @@ const OrderEquipmentCleaning = ({ navigation }) => {
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 6, paddingHorizontal: isIPhone?10:10}}>
                         <Text style={{color: 'rgb(101, 101, 101)', fontSize: isIPhone?16:18, fontWeight: 500, paddingBottom: 10}}>Danh sách dịch vụ đã chọn</Text>
                     </View> 
-                    <View style={{width: '100%', alignItems: 'center'}}>
-                        <View style={{width: '95%', height: 130, borderRadius: 20, backgroundColor: 'rgb(244, 244, 244)'}}>
-                            <View style={{flexDirection: 'row', justifyContent: 'flex-start', paddingHorizontal: 10, marginTop: 10, gap: 10}}>
-                                <View style={{ marginTop: -10}}>
-                                    <Image source={temp.image}  resizeMode='contain' style={{width: 60, }}/>
-                                </View>
-                                <View style={{justifyContent: 'space-between', height: 105, width: '75%'}}>
-                                    <View>
-                                        <Text style={{fontSize: isIPhone?14:16, fontWeight: 500, color: '#104887',}}>{temp.name}</Text>
-                                        <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', marginTop: 10}}>
-                                            <Image source={require('../../../assets/icons/gift-solid.png')} style={{width: 15, height: 15, }}/>
-                                            <Text style={{marginLeft: 5, fontSize: isIPhone?13:13, fontWeight: 500, color: '#616161'}}>Giảm {numberToCurrency(temp.discount)}₫</Text>
-                                        </View>
+                    <View style={{width: '100%', alignItems: 'center', gap: 10}}>
+                        {selectedItems.map((item, index) =>  (
+                            <View key={index}  style={{width: '95%', height: 130, borderRadius: 20, backgroundColor: 'rgb(244, 244, 244)'}}>
+                                <View style={{flexDirection: 'row', justifyContent: 'flex-start', paddingHorizontal: 10, marginTop: 10, gap: 10}}>
+                                    <View style={{justifyContent: 'space-between'}}>
+                                        <Image source={item.image}  resizeMode='contain' style={{width: 70, height: 50}}/>
                                     </View>
-                                    <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
-                                        <View style={{justifyContent: 'flex-end'}}>
-                                            <Text style={{fontSize: 14, color: '#616161',}}><Text style={{fontSize: 10}}>X</Text>{temp.qty}</Text>
-                                        </View>
+                                    <View style={{justifyContent: 'space-between', height: 105, width: '75%'}}>
                                         <View>
-                                            <Text style={{fontSize: isIPhone?15:15, textAlign: 'right',fontWeight: 400, color: '#CFCFCF', textDecorationLine: 'line-through', textDecorationStyle: 'solid', marginTop: 3}}>{numberToCurrency(temp.cost)}₫</Text>
-                                            <Text style={{fontSize: isIPhone?18:19, fontWeight: 500, color: 'rgb(255, 97, 37)'}}>{numberToCurrency(temp.price)}₫</Text>
+                                            <Text style={{fontSize: isIPhone?14:16, fontWeight: 500, color: '#104887',}}>Vệ sinh {item.name}</Text>
+                                            <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', marginTop: 10}}>
+                                                <Image source={require('../../../assets/icons/gift-solid.png')} style={{width: 15, height: 15, }}/>
+                                                <Text style={{marginLeft: 5, fontSize: isIPhone?13:13, fontWeight: 500, color: '#616161'}}>Giảm {numberToCurrency(item.discount)}₫</Text>
+                                            </View>
+                                        </View>
+                                        <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
+                                            <View style={{justifyContent: 'flex-end'}}>
+                                                <Text style={{fontSize: 14, color: '#616161',}}><Text style={{fontSize: 10}}>X</Text>{item.qty}</Text>
+                                            </View>
+                                            <View>
+                                                <Text style={{fontSize: isIPhone?15:15, textAlign: 'right',fontWeight: 400, color: '#CFCFCF', textDecorationLine: 'line-through', textDecorationStyle: 'solid', marginTop: 3}}>{numberToCurrency(item.cost)}₫</Text>
+                                                <Text style={{fontSize: isIPhone?18:19, fontWeight: 500, color: 'rgb(255, 97, 37)'}}>{numberToCurrency(item.price)}₫</Text>
+                                            </View>
                                         </View>
                                     </View>
                                 </View>
-                                
-
                             </View>
-                        </View>
+                            ))}
                     </View>
                     
                 </View>
@@ -173,21 +197,21 @@ const OrderEquipmentCleaning = ({ navigation }) => {
                     </View> 
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10, paddingHorizontal: isIPhone?10:10}}>
                         <Text style={{color: 'rgb(62, 62, 62)', fontSize: isIPhone?15:17,}}>Tổng tiền :</Text>
-                        <Text style={{color: 'rgb(62, 62, 62)', fontSize: isIPhone?18:20,}}>199.000₫</Text>
+                        <Text style={{color: 'rgb(62, 62, 62)', fontSize: isIPhone?18:20,}}>{numberToCurrency(calculateTotalPrice())}₫</Text>
                     </View>       
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10, paddingHorizontal: isIPhone?10:10}}>
                         <Text style={{color: 'rgb(62, 62, 62)', fontSize: isIPhone?15:17,}}>Khuyến mãi :</Text>
-                        <Text style={{color: 'rgb(62, 62, 62)', fontSize: isIPhone?18:20,}}>-100.000₫</Text>
+                        <Text style={{color: 'rgb(62, 62, 62)', fontSize: isIPhone?18:20,}}>-{numberToCurrency(calculateTotalDiscount())}₫</Text>
                     </View>         
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10, paddingHorizontal: isIPhone?10:10}}>
                         <Text style={{color: 'rgb(62, 62, 62)', fontSize: isIPhone?15:17,}}>Tạm tính :</Text>
-                        <Text style={{color: 'rgb(62, 62, 62)', fontSize: isIPhone?18:20, fontWeight: 600, color: 'rgb(255, 97, 37)'}}>99.000₫</Text>
+                        <Text style={{color: 'rgb(62, 62, 62)', fontSize: isIPhone?18:20, fontWeight: 600, color: 'rgb(255, 97, 37)'}}>{numberToCurrency(calculateTotalPriceAfterDiscount())}</Text>
                     </View>
                     <View style={{borderColor: 'rgb(230, 230, 230)', width: '50%', borderTopWidth: 1, marginLeft: 10, marginTop: 10}}>
                     </View>      
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10, paddingHorizontal: isIPhone?10:10}}>
                         <Text style={{color: 'rgb(62, 62, 62)', fontSize: isIPhone?15:17,}}>Tổng điểm tạm tính :</Text>
-                        <Text style={{color: 'rgb(62, 62, 62)', fontSize: isIPhone?18:20, fontWeight: 500, color: 'rgb(0, 137, 105)'}}>+990</Text>
+                        <Text style={{color: 'rgb(62, 62, 62)', fontSize: isIPhone?18:20, fontWeight: 500, color: 'rgb(0, 137, 105)'}}>+{numberToCurrency(calculateTotalPriceAfterDiscount()/100)}</Text>
                     </View>   
                 </View>
 
@@ -257,7 +281,7 @@ const OrderEquipmentCleaning = ({ navigation }) => {
                 </View>
 
                 <View style={{paddingBottom: 80, alignItems: 'center', justifyContent: 'center', paddingTop: 50}}>
-                    <TouchableOpacity onPress={()=>{navigation.navigate("Đặt lịch vệ sinh thiết bị")}} style={{borderWidth: 1, borderRadius: 10, borderColor: 'rgb(227, 72, 87)', width: '40%'}}>
+                    <TouchableOpacity onPress={()=>{navigation.navigate("Đặt lịch vệ sinh thiết bị", {xoaDichVu: true})}} style={{borderWidth: 1, borderRadius: 10, borderColor: 'rgb(227, 72, 87)', width: '40%'}}>
                         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingVertical: 10, gap: 10}}>
                             <FontAwesome name="trash-o" size={20} color="rgb(227, 72, 87)" />
                             <Text style={{color: 'rgb(227, 72, 87)', fontSize: 12, fontWeight: 500, textTransform: 'uppercase'}}>Xoá dịch vụ</Text>
@@ -268,7 +292,7 @@ const OrderEquipmentCleaning = ({ navigation }) => {
             <View style={{width: '100%', paddingVertical: 20, backgroundColor: 'white', marginBottom: 10, gap: 20}}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, alignItems: 'center'}}>
                     <Text style={{fontSize: 16, color: 'rgb(48, 60, 70)'}}>Tổng giá tiền dịch vụ</Text>
-                    <Text style={{fontSize: 24, color: 'rgb(48, 60, 70)', fontWeight: 700}}>99.000₫</Text>
+                    <Text style={{fontSize: 24, color: 'rgb(48, 60, 70)', fontWeight: 700}}>{numberToCurrency(calculateTotalPriceAfterDiscount())}</Text>
                 </View>
                 <View style={{width: '100%', alignItems: 'center', }}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%', paddingHorizontal: 15}}>

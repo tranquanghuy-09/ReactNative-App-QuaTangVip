@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity} from 'react-native'
+import { View, Text, Image, TouchableOpacity, Linking } from 'react-native';
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -14,6 +14,10 @@ import OrderEquipmentCleaningScreen from './equipment_cleanings/OrderEquipmentCl
 const Stack = createStackNavigator();
 
 const HomeNavigation = ({navigation, route}) => {
+    const handleCallPress = () => {
+        Linking.openURL('tel:19009198'); 
+    };
+
     const isIPhone = Platform.OS === 'ios';
     React.useLayoutEffect(() => {
         const tabHiddenRoutes = ["Hỗ trợ trực tuyến","Quà của tôi", "Đặt lịch vệ sinh thiết bị", "OrderEquipmentCleaningScreen"];
@@ -24,7 +28,7 @@ const HomeNavigation = ({navigation, route}) => {
         }
     }, [navigation, route]);
   return (
-    <Stack.Navigator initialRouteName='OrderEquipmentCleaningScreen'>
+    <Stack.Navigator initialRouteName='Trang chủ'>
         <Stack.Screen name="Trang chủ" component={Home} options={{headerShown: false}}/>
         <Stack.Screen name="Quà của tôi" component={GiftScreen} options={{
             headerTitleAlign: 'left',
@@ -70,7 +74,7 @@ const HomeNavigation = ({navigation, route}) => {
             },
             headerRight:()=>(
                 <View style={{ paddingRight: 21, alignItems: 'center', alignItems: 'center', paddingBottom: 40}} >
-                    <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={handleCallPress} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <Image source={require('../../assets/icons/call.png')} style={{ width: 45, height: 45,}} />
                     </TouchableOpacity>
                 </View>
