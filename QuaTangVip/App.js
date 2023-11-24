@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, Image} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {Ionicons, MaterialIcons, MaterialCommunityIcons} from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -14,7 +14,7 @@ import Notification from './src/screens/Notification';
 
 const Tab = createBottomTabNavigator();
 
-export default function App() {
+export default function App({navigation}) {
   return (
     <NavigationContainer>
       <Tab.Navigator initialRouteName='HomeNavigation' screenOptions={{ headerShown: false, }}>
