@@ -61,7 +61,10 @@ export default function App({navigation, route}) {
           <View style={{borderWidth: 0, width: "100%", height: 214, paddingHorizontal: 12, justifyContent: 'center'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
               <View style={{flexDirection: 'row'}}>
-                <Image source={user.urlImage==null?require('../../assets/images/user2.jpeg'):user.urlImage} style={{width: 50, height: 50, borderRadius: 25}}/>
+                <Image
+                  source={user.urlImage ? { uri: user.urlImage } : require('../../assets/images/user2.jpeg')}
+                  style={{ width: 50, height: 50, borderRadius: 25 }}
+                />
                 <View style={{justifyContent: 'space-between', marginLeft: 10}}>
                   <Text style={{color: '#224682', fontWeight: '600', fontSize: 22}}>{user.name}</Text>
                   <Text style={{color: 'rgb(93, 94, 95)', fontSize: 18}}>{user.phone}</Text>

@@ -1,23 +1,41 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, } from 'react';
 import {Platform, TextInput,} from 'react-native';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, SectionList, Button} from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import {ipv4} from '../global';
 import axios from 'axios';
+import { useIsFocused } from '@react-navigation/native';
 
 
 export default function App({navigation}) {
   const isIPhone = Platform.OS === 'ios';
+  const isFocused = useIsFocused();
+
+  const [ivl1, setIvl1] = useState('');
+  const [ivl2, setIvl2] = useState('');
+  const [ivl3, setIvl3] = useState('');
+  const [ivl4, setIvl4] = useState('');
+  const [ivl5, setIvl5] = useState('');
+  const [ivl6, setIvl6] = useState('');
   
+  const [shouldSubmit, setShouldSubmit] = useState(false);
+
+
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState('Not yet scanned');
 
   const [order, setOrder] = useState({
-    "status": 1,
-    "employee_id": 1,
-    "user_id": 1,
+    // "order_date": "2021-07-01 10:00:00.000000",
+    // "status": 1,
+    // "employee_id": 1,
+    // "user_id": 1,
+    "maQR": "",
+    "order_date": "",
+    "status": 0,
+    "employee_id": 0,
+    "user_id": 0,
   });
   // const convertToOrderObject = (data) => {
   //   const { order_date, employee_id, user_id, order_id } = data;
@@ -41,18 +59,18 @@ export default function App({navigation}) {
   console.log(order);
 
   const [orderDetail, setOrderDetail] = useState([
-    {
-      "product_id": 1,
-      "note": "",
-      "price": 14500,
-      "quantity": 1.0,
-    },
-    {
-      "product_id": 4,
-      "note": "",
-      "price": 37500,
-      "quantity": 2.0,
-    }
+    // {
+    //   "product_id": 1,
+    //   "note": "",
+    //   "price": 14500,
+    //   "quantity": 1.0,
+    // },
+    // {
+    //   "product_id": 4,
+    //   "note": "",
+    //   "price": 37500,
+    //   "quantity": 2.0,
+    // }
   ]);
   console.log(orderDetail);
 
@@ -64,15 +82,84 @@ export default function App({navigation}) {
   }
 
   // Request Camera Permission
+  // useEffect(() => {
+  //   askForCameraPermission();
+  // }, []);
+
   useEffect(() => {
-    askForCameraPermission();
-  }, []);
+    const fetchData = async () => {
+      // Code để kiểm tra camera permission và các xử lý khác
+      askForCameraPermission();
+      
+    };
+
+    const submitData = async () => {
+      if (shouldSubmit) {
+        try {
+          await axios.post("http://" + ipv4 + "/order", {
+            "user_id": order.user_id,
+            "employee_id": order.employee_id,
+            "status": order.status,
+            "order_detail": orderDetail,
+            "order_date": order.order_date
+          });
+          console.log("Thêm thành công!");
+          setShouldSubmit(false);
+          
+          setText("");
+        } catch (error) {
+          console.error("Lỗi khi thêm:", error);
+          console.log({
+            "user_id": order.user_id,
+            "employee_id": order.employee_id,
+            "status": order.status,
+            "order_detail": orderDetail,
+            "order_date": order.order_date
+          });
+        }
+      }
+    };
+
+    fetchData(); 
+    submitData(); 
+
+    return () => {
+      // Cleanup logic 
+    };
+  }, [shouldSubmit]); 
+
+  useEffect(() => {
+    setScanned(false);
+    setIvl1('');
+    setIvl2('');
+    setIvl3('');
+    setIvl4('');
+    setIvl5('');
+    setIvl6('');
+  }, [isFocused]);
 
   // What happens when we scan the bar code
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    setText(data)
-    console.log('Type: ' + type + '\nData: ' + data)
+    try {
+      const scannedData = JSON.parse(data);
+      setOrder({
+        "order_date": scannedData.order_date,
+        "status": scannedData.status,
+        "employee_id": scannedData.employee_id,
+        "user_id": scannedData.user_id,
+        "maQR": scannedData.ma_qr,
+      });
+      setOrderDetail(scannedData.order_detail);
+      setText(data);
+      
+      setShouldSubmit(true);
+      updateDigits();
+    } catch (error) {
+      console.error("Error parsing scanned data:", error);
+    }
+  
+    console.log('Type: ' + type + '\nData: ' + data);
   };
 
   // Check permissions and return the screens
@@ -100,24 +187,56 @@ export default function App({navigation}) {
   // };
 
   const onSubmit = async () => {
-    try {
-      await axios.post("http://"+ipv4+"/order", {
-        "user_id": order.user_id,
-        "employee_id": order.employee_id,
-        "status": order.status,
-        "order_detail": orderDetail
-      });
-      console.log("Thêm thành công!");
-    } catch (error) {
-      console.error("Lỗi khi thêm:", error);
-      console.log({
-        "user_id": order.user_id,
-        "employee_id": order.employee_id,
-        "status": order.status,
-        "order_detail": orderDetail
-      });
+    if (shouldSubmit) {
+      try {
+        await axios.post("http://"+ipv4+"/order", {
+          "user_id": order.user_id,
+          "employee_id": order.employee_id,
+          "status": order.status,
+          "order_detail": orderDetail,
+          "order_date": order.order_date
+          // "user_id": orderData.user_id,
+          // "employee_id": orderData.employee_id,
+          // "status": orderData.status,
+          // "order_detail": orderData.order_detail,
+          // "order_date": orderData.order_date
+        });
+        console.log("Thêm thành công!");
+      } catch (error) {
+        console.error("Lỗi khi thêm:", error);
+        console.log({
+          // "user_id": orderData.user_id,
+          // "employee_id": orderData.employee_id,
+          // "status": orderData.status,
+          // "order_detail": orderData.order_detail,
+          // "order_date": orderData.order_date
+          "user_id": order.user_id,
+          "employee_id": order.employee_id,
+          "status": order.status,
+          "order_detail": orderDetail,
+          "order_date": order.order_date
+        });
+        setShouldSubmit(false);
+      }
     }
   };
+
+  const updateDigits = () => {
+    const digits = order.maQR.toString().split(''); // Chuyển mã QR thành một mảng các chữ số
+    // Đảm bảo mã QR có đúng 8 chữ số
+    if (digits.length === 6) {
+      setIvl1(digits[0]);
+      setIvl2(digits[1]);
+      setIvl3(digits[2]);
+      setIvl4(digits[3]);
+      setIvl5(digits[4]);
+      setIvl6(digits[5]);
+    } else {
+      // Xử lý trường hợp mã QR không hợp lệ (không có đúng 8 chữ số)
+      console.error('Mã QR không hợp lệ');
+    }
+  };
+
 
   return (
     <View style={styles.container}>
@@ -142,12 +261,24 @@ export default function App({navigation}) {
           <View style={{marginTop: 32, width: '100%', justifyContent: 'center', alignItems: 'center'}}>
             <Text style={{fontSize: 18, color: '#0C2A48'}}>Mã QR in trên hoá đơn</Text>
             <View style={{flexDirection: 'row', marginTop: 15}}>
-              <TextInput style={{width: 50, height: 45, borderWidth: 1, borderRadius: 6, borderColor: '#DDD', marginHorizontal: isIPhone?5:7}}/>
-              <TextInput style={{width: 50, height: 45, borderWidth: 1, borderRadius: 6, borderColor: '#DDD', marginHorizontal: isIPhone?5:7}}/>
-              <TextInput style={{width: 50, height: 45, borderWidth: 1, borderRadius: 6, borderColor: '#DDD', marginHorizontal: isIPhone?5:7}}/>
-              <TextInput style={{width: 50, height: 45, borderWidth: 1, borderRadius: 6, borderColor: '#DDD', marginHorizontal: isIPhone?5:7}}/>
-              <TextInput style={{width: 50, height: 45, borderWidth: 1, borderRadius: 6, borderColor: '#DDD', marginHorizontal: isIPhone?5:7}}/>
-              <TextInput style={{width: 50, height: 45, borderWidth: 1, borderRadius: 6, borderColor: '#DDD', marginHorizontal: isIPhone?5:7}}/>
+              <TextInput value={ivl1} onChangeText={(text) => setIvl1(text)} 
+                          style={{textAlign: 'center', fontSize: 20, width: 50, height: 45, borderWidth: 1, borderRadius: 6, 
+                                  borderColor: '#DDD', marginHorizontal: isIPhone?5:7, fontWeight: 500}}/>
+              <TextInput value={ivl2} onChangeText={(text) => setIvl2(text)} 
+                          style={{textAlign: 'center', fontSize: 20, width: 50, height: 45, borderWidth: 1, borderRadius: 6, 
+                                  borderColor: '#DDD', marginHorizontal: isIPhone?5:7, fontWeight: 500}}/>
+              <TextInput value={ivl3} onChangeText={(text) => setIvl3(text)} 
+                          style={{textAlign: 'center', fontSize: 20, width: 50, height: 45, borderWidth: 1, borderRadius: 6, 
+                                  borderColor: '#DDD', marginHorizontal: isIPhone?5:7, fontWeight: 500}}/>
+              <TextInput value={ivl4} onChangeText={(text) => setIvl4(text)} 
+                          style={{textAlign: 'center', fontSize: 20, width: 50, height: 45, borderWidth: 1, borderRadius: 6, 
+                                  borderColor: '#DDD', marginHorizontal: isIPhone?5:7, fontWeight: 500}}/>
+              <TextInput value={ivl5} onChangeText={(text) => setIvl5(text)} 
+                          style={{textAlign: 'center', fontSize: 20, width: 50, height: 45, borderWidth: 1, borderRadius: 6, 
+                                  borderColor: '#DDD', marginHorizontal: isIPhone?5:7, fontWeight: 500}}/>
+              <TextInput value={ivl6} onChangeText={(text) => setIvl6(text)} 
+                          style={{textAlign: 'center', fontSize: 20, width: 50, height: 45, borderWidth: 1, borderRadius: 6, 
+                                  borderColor: '#DDD', marginHorizontal: isIPhone?5:7, fontWeight: 500}}/>
             </View>
           </View>
           <View style={{width: '100%', borderWidth: 0, alignItems: 'center', marginTop: isIPhone?20:30}}>
@@ -156,25 +287,41 @@ export default function App({navigation}) {
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style={{ height: 400, width: 400 }} />
             </View>
-            <Text style={styles.maintext}>{text}</Text>
-
-            {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />}
+            {/* <Text style={styles.maintext}>{text}</Text> */}
+            {scanned && 
+              <View style={{gap: 10, paddingBottom: 10}}>
+                <Text style={{fontSize: 18, color: '#0C2A', marginTop: 3}}>Mã QR đã được quét</Text>
+                <TouchableOpacity  onPress={() => {
+                  setScanned(false);
+                  setIvl1(""), setIvl2(""), setIvl3(""), setIvl4(""), setIvl5(""), setIvl6("");
+                }} style={{borderWidth: 1, borderColor: 'silver', borderRadius: 5, alignItems: 'center', justifyContent: 'center', padding:5,}}>
+                  <Text style={{fontSize: 16, color: '#0C2A48',}}>Chọn để quét lại</Text>
+                </TouchableOpacity>
+              </View>
+            }
           </View>
         </View>
-        <View style={{flexDirection: 'row', gap: isIPhone?10:15, marginBottom: isIPhone?5:10}}>
-          <TouchableOpacity onPress={onSubmit} style={{width:isIPhone?175:180, height: 50, borderWidth: 1, borderColor: 'rgba(174, 178, 184, 1)', borderRadius: 15, alignItems: 'center', justifyContent: 'center'}}>
-            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-              <Image source={require('../../assets/icons/qrcode-solid.png')} style={{width: 22, height: 24, }}/>
-              <Text style={{fontSize: 16, color: '#0C2A48', marginLeft: 10}}>Mã QR</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={{width:isIPhone?165:180, height: 50,  backgroundColor: 'rgba(255, 198, 45, 1)', borderRadius: 15, alignItems: 'center', justifyContent: 'center'}}>
-            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-              <Image source={require('../../assets/icons/iconscan.png')} style={{width: 20, height: 20, }}/>
-              <Text style={{fontSize: 16, color: '#0C2A48', marginLeft: 10}}>QUÉT MÃ</Text>
-            </View>
-          </TouchableOpacity>
+        <View style={{width: '100%', alignItems: 'center', justifyContent: 'center', borderWidth: 0, }}>
+          {!scanned && <View style={{height: 70}}></View>}
+          <View style={{flexDirection: 'row', gap: isIPhone?10:15, marginBottom: isIPhone?5:10,}}>
+            <TouchableOpacity onPress={onSubmit} style={{width:isIPhone?175:180, height: 50, borderWidth: 1, borderColor: 'rgba(174, 178, 184, 1)', borderRadius: 15, alignItems: 'center', justifyContent: 'center'}}>
+              <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                <Image source={require('../../assets/icons/qrcode-solid.png')} style={{width: 22, height: 24, }}/>
+                <Text style={{fontSize: 16, color: '#0C2A48', marginLeft: 10}}>Mã QR</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>{
+              setScanned(false);
+              setIvl1(""), setIvl2(""), setIvl3(""), setIvl4(""), setIvl5(""), setIvl6("");
+            }} style={{width:isIPhone?165:180, height: 50,  backgroundColor: 'rgba(255, 198, 45, 1)', borderRadius: 15, alignItems: 'center', justifyContent: 'center'}}>
+              <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                <Image source={require('../../assets/icons/iconscan.png')} style={{width: 20, height: 20, }}/>
+                <Text style={{fontSize: 16, color: '#0C2A48', marginLeft: 10}}>QUÉT MÃ</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
+        
         </ScrollView>
       </View>
     </View>
