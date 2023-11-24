@@ -63,7 +63,7 @@ export default function App({navigation, route}) {
               <View style={{flexDirection: 'row'}}>
                 <Image
                   source={user.urlImage ? { uri: user.urlImage } : require('../../assets/images/user2.jpeg')}
-                  style={{ width: 50, height: 50, borderRadius: 25 }}
+                  style={{ width: 50, height: 50, borderRadius: 25, borderWidth: 1, borderColor: 'white'}}
                 />
                 <View style={{justifyContent: 'space-between', marginLeft: 10}}>
                   <Text style={{color: '#224682', fontWeight: '600', fontSize: 22}}>{user.name}</Text>
