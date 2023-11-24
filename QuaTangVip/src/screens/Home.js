@@ -2,10 +2,40 @@ import { StatusBar } from 'expo-status-bar';
 import {Platform,} from 'react-native';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ImageBackground, Image, ScrollView} from 'react-native';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import {ipv4} from '../global';
+import axios from 'axios';
 
 export default function App({navigation, route}) {
   const isIPhone = Platform.OS === 'ios';
+  const [diemTichLuy, setDiemTichLuy] = useState(0);
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    loadDiem();
+    loadProfileUser();
+  }, []);
+  //Load point of user from server
+  const loadDiem = async () => {
+    try {
+      const result = await axios.get("http://"+ipv4+"/diem?user_id=1");
+      setDiemTichLuy(result.data);
+      console.log(result.data);
+    } catch (error) {
+      console.error("Error loading point:", error);
+    }
+  };
+  //Load profile of user from server
+  const loadProfileUser = async () => {
+    try {
+      const result = await axios.get("http://"+ipv4+"/user?user_id=1");
+      setUser(result.data);
+      console.log(result.data);
+    } catch (error) {
+      console.error("Error loading user:", error);
+    }
+  };
+  console.log(parseFloat(diemTichLuy.toLocaleString('en-US', { style: 'decimal' }).replace(',','.')));
+  console.log(user);
   return (
     <View style={[styles.container]}>
       <ImageBackground
@@ -31,15 +61,18 @@ export default function App({navigation, route}) {
           <View style={{borderWidth: 0, width: "100%", height: 214, paddingHorizontal: 12, justifyContent: 'center'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
               <View style={{flexDirection: 'row'}}>
-                <Image source={require('../../assets/images/user2.jpeg')} style={{width: 50, height: 50, borderRadius: 25}}/>
+                <Image
+                  source={user.urlImage ? { uri: user.urlImage } : require('../../assets/images/user2.jpeg')}
+                  style={{ width: 50, height: 50, borderRadius: 25, borderWidth: 1, borderColor: 'white'}}
+                />
                 <View style={{justifyContent: 'space-between', marginLeft: 10}}>
-                  <Text style={{color: '#224682', fontWeight: '600', fontSize: 22}}>Quang Huy</Text>
-                  <Text style={{color: 'rgb(93, 94, 95)', fontSize: 18}}>0357391270</Text>
+                  <Text style={{color: '#224682', fontWeight: '600', fontSize: 22}}>{user.name}</Text>
+                  <Text style={{color: 'rgb(93, 94, 95)', fontSize: 18}}>{user.phone}</Text>
                 </View>
               </View>
               <View style={{flexDirection: 'row', backgroundColor: '#F6C850', width: 130, height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 11}}>
                 <Text style={{fontSize: 18, }}>Điểm: </Text>
-                <Text style={{fontSize: 18, fontWeight: 600}}>39.563</Text>
+                <Text style={{fontSize: 18, fontWeight: 600}}>{parseFloat(diemTichLuy.toLocaleString('en-US', { style: 'decimal' }).replace(',','.'))}</Text>
               </View>
             </View>
             <View style={{backgroundColor: 'white', width: '100%', height: 130, borderWidth: 0, marginTop: 15, borderRadius: 17, justifyContent: 'center', alignItems: 'center'}}>

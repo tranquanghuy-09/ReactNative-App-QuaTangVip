@@ -31,11 +31,11 @@ const Gift = ({ navigation }) => {
                 <Text style={{fontSize: 30, marginLeft: 20, fontWeight: 700}}>Quà của tôi</Text>
                     <View style={{flexDirection: 'row', backgroundColor: 'rgba(217, 217, 217, 1)', height: 48, marginTop: 17, justifyContent: 'space-between',
                                     borderWidth: 0, paddingHorizontal: 20, }}>
-                        <TouchableOpacity style={{width:isIPhone?165: 180, height: 39, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', marginTop: 8,
-                            borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
+                        <TouchableOpacity style={{width:isIPhone?165: 180, height: 40, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', marginTop: 8,
+                            borderTopLeftRadius: 10, borderTopRightRadius: 10, backgroundColor: 'rgba(245, 245, 245, 1)'}}>
                             <Text style={{fontSize: 15, fontWeight: 600}}>Quà đang có</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{width:isIPhone?165: 180, height: 39, alignItems: 'center', justifyContent: 'center', marginTop: 8}}>
+                        <TouchableOpacity style={{width:isIPhone?165: 180, height: 40, alignItems: 'center', justifyContent: 'center', marginTop: 8}}>
                             <Text style={{fontSize: 15, fontWeight: 600}}>Quà hết hiệu lực</Text>
                         </TouchableOpacity>
                     </View>
