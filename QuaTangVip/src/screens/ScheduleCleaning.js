@@ -4,13 +4,27 @@ import { Platform } from 'react-native';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native'
 
-const ScheduleCleaning = ({ navigation }) => {
+const ScheduleCleaning = ({route,navigation }) => {
+    // console.log(route.params.xoaDichVu);
+    useEffect(() => {
+        if (route.params && route.params.xoaDichVu) {
+            resetQuantities();
+            setShowQuantityControlsWA(false);
+            setShowQuantityControls(false);
+            setShowBtnContinute(false);
+            setShowWallAirConditioner(false);
+            setShowAirConditioner(false);
+        }
+    }, [route.params]);
+
     const isIPhone = Platform.OS === 'ios';
     const isFocused = useIsFocused();
     const [loading, setLoading] = useState(false);
     const [showWallAirConditioner, setShowWallAirConditioner] = useState(false);
     const [showAirConditioner, setShowAirConditioner] = useState(false);
     const [showBtnContinute, setShowBtnContinute] = useState(false);
+
+    // const [selectedItems, setSelectedItems] = useState([]);
 
     const [showQuantityControlsWA, setShowQuantityControlsWA] = useState(false);
     const [showQuantityControls, setShowQuantityControls] = useState(false);
@@ -82,6 +96,8 @@ const ScheduleCleaning = ({ navigation }) => {
             qty: 0,
         },
     ]);
+
+    const selectedItems = [...wallairconditioner, ...airconditioner].filter(item => item.qty > 0);
 
     //Reset quantities
     const resetQuantities = () => {
@@ -175,10 +191,10 @@ const ScheduleCleaning = ({ navigation }) => {
                 </View>
                 <View style={{backgroundColor: '#FFF', paddingHorizontal: isIPhone?5:10}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 6, paddingHorizontal: isIPhone?10:10}}>
+                    <TouchableOpacity onPress={() => setShowWallAirConditioner(!showWallAirConditioner)} style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
                         <Text style={{color: 'rgba(3, 102, 214, 1)', fontSize: isIPhone?21:24, fontWeight: 500, paddingBottom: 10}}>Vệ sinh máy lạnh treo tường</Text>
-                        <TouchableOpacity onPress={() => setShowWallAirConditioner(!showWallAirConditioner)}>
                             {showWallAirConditioner?<MaterialIcons name="expand-more" size={24} color="black" />:<MaterialIcons name="expand-less" size={24} color="black" />}
-                        </TouchableOpacity>
+                    </TouchableOpacity>
                     </View>
                     {showWallAirConditioner && <FlatList
                         data={wallairconditioner}
@@ -241,9 +257,9 @@ const ScheduleCleaning = ({ navigation }) => {
 
                 <View style={{backgroundColor: '#FFF', paddingHorizontal: isIPhone?5:10, marginTop: 18}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 6, paddingHorizontal: isIPhone?10:10}}>
+                    <TouchableOpacity onPress={() => setShowAirConditioner(!showAirConditioner)} style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
                         <Text style={{color: 'rgba(3, 102, 214, 1)', fontSize: isIPhone?21:24, fontWeight: 500, paddingBottom: 10}}>Vệ sinh máy lạnh âm trần/tủ đứng</Text>
-                        <TouchableOpacity onPress={() => setShowAirConditioner(!showAirConditioner)}>
-                            {showWallAirConditioner?<MaterialIcons name="expand-more" size={24} color="black" />:<MaterialIcons name="expand-less" size={24} color="black" />}
+                            {showAirConditioner?<MaterialIcons name="expand-more" size={24} color="black" />:<MaterialIcons name="expand-less" size={24} color="black" />}
                         </TouchableOpacity>
                     </View>
                     {showAirConditioner && <FlatList
@@ -308,7 +324,7 @@ const ScheduleCleaning = ({ navigation }) => {
             </ScrollView>
             {showBtnContinute && 
                 <View style={{width: '100%', alignItems: 'center', paddingVertical: 20, backgroundColor: 'white', marginBottom: 10}}>
-                    <TouchableOpacity onPress={() => {navigation.navigate("OrderEquipmentCleaningScreen")}} style={{width: '90%', height: 45, backgroundColor: '#FFC62D', alignItems: 'center', justifyContent: 'center', borderRadius: 17}}> 
+                    <TouchableOpacity onPress={() => {navigation.navigate("OrderEquipmentCleaningScreen", {selectedItems})}} style={{width: '90%', height: 45, backgroundColor: '#FFC62D', alignItems: 'center', justifyContent: 'center', borderRadius: 17}}> 
                         <Text style={{fontSize: isIPhone?18:20, color: '#000'}}>Tiếp tục</Text>
                     </TouchableOpacity>
                 </View>

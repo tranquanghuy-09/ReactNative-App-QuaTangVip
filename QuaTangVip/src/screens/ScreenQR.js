@@ -116,7 +116,7 @@ export default function App({navigation}) {
       setText(data);
       
       setShouldSubmit(true);
-      updateDigits();
+      updateDigits(scannedData.ma_qr);
     } catch (error) {
       console.error("Error parsing scanned data:", error);
     }
@@ -164,8 +164,8 @@ export default function App({navigation}) {
     }
   };
 
-  const updateDigits = () => {
-    const digits = order.maQR.toString().split(''); 
+  const updateDigits = (value) => {
+    const digits = value.toString().split(''); 
     if (digits.length === 6) {
       setIvl1(digits[0]);
       setIvl2(digits[1]);
