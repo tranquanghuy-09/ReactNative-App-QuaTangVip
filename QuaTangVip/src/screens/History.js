@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, SectionLis
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {ipv4} from '../global';
+import { format } from 'date-fns';
 
 export default function App({navigation}) {
   // const DATA = [
@@ -97,7 +98,7 @@ export default function App({navigation}) {
   // ];
   
   const [page, setPage] = useState(0);
-  const [lsdh, setLsdh] = useState(0);
+  const [lsdh, setLsdh] = useState(Math.random());
 
   const [orders, setOrders] = useState([]);
   useEffect(() => {
@@ -119,7 +120,7 @@ export default function App({navigation}) {
   const groupDataByMonth = (data) => {
     const groupedData = {};
     data.forEach((item) => {
-      const month = parseInt(item.orderDate.split('/')[1], 10);
+      const month = parseInt(item.orderDate.split('-')[1], 10);
       if (!groupedData[month]) {
         groupedData[month] = {
           id: month,
@@ -169,6 +170,10 @@ export default function App({navigation}) {
       console.error("Error loading orders:", error);
     } 
   };
+  // Định dạng ngày tháng
+  const formattedDate = (date) => {
+    return format(new Date(date), "HH:mm - dd/MM/yyyy");
+  };
 
   return (
     <View style={styles.container}>
@@ -215,7 +220,7 @@ export default function App({navigation}) {
                     </View>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 5}}>
                       <Text style={{color: 'rgba(152, 152, 152, 1)', fontSize: 15, fontWeight: 400}}>Thời gian đặt hàng</Text>
-                      <Text style={{color: 'rgba(142, 142, 142, 1)', fontSize: 14, fontWeight: 400}}>{item.orderDate}</Text>
+                      <Text style={{color: 'rgba(142, 142, 142, 1)', fontSize: 14, fontWeight: 400}}>{formattedDate(item.orderDate)}</Text>
                     </View>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                       <Text style={{color: 'rgba(43, 100, 206, 1)', fontSize: 16, fontWeight: 400}}>Điểm tích luỹ:</Text>
