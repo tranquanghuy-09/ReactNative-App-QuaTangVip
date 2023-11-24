@@ -18,7 +18,7 @@
     <img src="img/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Quà Tặng VIP</h3>
+  <h3 align="center">Quà Tặng VIpP</h3>
   </div>
 <!--
   <p align="center">
@@ -87,7 +87,8 @@ Use the `BLANK_README.md` to get started.
 
 ### Built With
 <!--  * [![Next][Next.js]][Next-url] -->
-* [![React][React.js]][React-url]
+* Frontend: [![React][React.js]][React-url]
+* Backend: [![Spring Boot][SpringBoot]][SpringBoot-url]  [![MariaDB][MariaDB]][MariaDB-url]
 <!-- * [![Vue][Vue.js]][Vue-url] -->
 <!-- * [![Angular][Angular.io]][Angular-url] -->
 <!-- * [![Svelte][Svelte.dev]][Svelte-url] -->
@@ -185,3 +186,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
 [wiki]: https://github.com/yourname/yourproject/wiki
+[SpringBoot]: https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=spring&logoColor=white
+[SpringBoot-url]: https://spring.io/projects/spring-boot
+[MariaDB]: https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white
+[MariaDB-url]: https://mariadb.org/
