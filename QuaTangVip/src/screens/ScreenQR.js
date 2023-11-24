@@ -27,52 +27,16 @@ export default function App({navigation}) {
   const [text, setText] = useState('Not yet scanned');
 
   const [order, setOrder] = useState({
-    // "order_date": "2021-07-01 10:00:00.000000",
-    // "status": 1,
-    // "employee_id": 1,
-    // "user_id": 1,
     "maQR": "",
     "order_date": "",
     "status": 0,
     "employee_id": 0,
     "user_id": 0,
   });
-  // const convertToOrderObject = (data) => {
-  //   const { order_date, employee_id, user_id, order_id } = data;
-
-  //   const orderObject = {
-  //     orderId: order_id,
-  //     orderDate: new Date(order_date),
-  //     orderStatus: "", // You may need to set the order status based on your logic
-  //     employee: { employeeId: employee_id }, // Assuming Employee has an employeeId property
-  //     user: { userId: user_id }, // Assuming User has a userId property
-  //     orderDetails: [], // You may need to handle order details based on your logic
-  //   };
-
-  //   return orderObject;
-  // };
-  // const handleData = () => {
-  //   const convertedOrder = convertToOrderObject(order);
-  //   setOrder(convertedOrder);
-  // };
 
   console.log(order);
 
-  const [orderDetail, setOrderDetail] = useState([
-    // {
-    //   "product_id": 1,
-    //   "note": "",
-    //   "price": 14500,
-    //   "quantity": 1.0,
-    // },
-    // {
-    //   "product_id": 4,
-    //   "note": "",
-    //   "price": 37500,
-    //   "quantity": 2.0,
-    // }
-  ]);
-  console.log(orderDetail);
+  const [orderDetail, setOrderDetail] = useState([]);
 
   const askForCameraPermission = () => {
     (async () => {
@@ -88,9 +52,7 @@ export default function App({navigation}) {
 
   useEffect(() => {
     const fetchData = async () => {
-      // Code để kiểm tra camera permission và các xử lý khác
       askForCameraPermission();
-      
     };
 
     const submitData = async () => {
@@ -177,15 +139,6 @@ export default function App({navigation}) {
       </View>)
   };
 
-  // const onSubmit = async () => {
-  //   try {
-  //     await axios.post("http://"+ipv4+"/order?user_id="+order.user_id+"&emp_id="+order.employee_id+"&order_detail="+orderDetail);
-  //     console.log("Thêm thành công!");
-  //   } catch (error) {
-  //     console.error("Lỗi khi thêm:", error);
-  //   }
-  // };
-
   const onSubmit = async () => {
     if (shouldSubmit) {
       try {
@@ -195,21 +148,11 @@ export default function App({navigation}) {
           "status": order.status,
           "order_detail": orderDetail,
           "order_date": order.order_date
-          // "user_id": orderData.user_id,
-          // "employee_id": orderData.employee_id,
-          // "status": orderData.status,
-          // "order_detail": orderData.order_detail,
-          // "order_date": orderData.order_date
         });
         console.log("Thêm thành công!");
       } catch (error) {
         console.error("Lỗi khi thêm:", error);
         console.log({
-          // "user_id": orderData.user_id,
-          // "employee_id": orderData.employee_id,
-          // "status": orderData.status,
-          // "order_detail": orderData.order_detail,
-          // "order_date": orderData.order_date
           "user_id": order.user_id,
           "employee_id": order.employee_id,
           "status": order.status,
@@ -222,8 +165,7 @@ export default function App({navigation}) {
   };
 
   const updateDigits = () => {
-    const digits = order.maQR.toString().split(''); // Chuyển mã QR thành một mảng các chữ số
-    // Đảm bảo mã QR có đúng 8 chữ số
+    const digits = order.maQR.toString().split(''); 
     if (digits.length === 6) {
       setIvl1(digits[0]);
       setIvl2(digits[1]);
@@ -232,11 +174,9 @@ export default function App({navigation}) {
       setIvl5(digits[4]);
       setIvl6(digits[5]);
     } else {
-      // Xử lý trường hợp mã QR không hợp lệ (không có đúng 8 chữ số)
       console.error('Mã QR không hợp lệ');
     }
   };
-
 
   return (
     <View style={styles.container}>
@@ -321,7 +261,6 @@ export default function App({navigation}) {
             </TouchableOpacity>
           </View>
         </View>
-        
         </ScrollView>
       </View>
     </View>

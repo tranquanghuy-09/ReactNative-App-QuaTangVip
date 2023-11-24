@@ -9,13 +9,14 @@ import GiftScreen from './Gift';
 import Home from './Home';
 import OnlineSupport from './OnlineSupport';
 import ScheduleCleaning from './ScheduleCleaning';
+import OrderEquipmentCleaningScreen from './equipment_cleanings/OrderEquipmentCleaning';
 
 const Stack = createStackNavigator();
 
 const HomeNavigation = ({navigation, route}) => {
     const isIPhone = Platform.OS === 'ios';
     React.useLayoutEffect(() => {
-        const tabHiddenRoutes = ["Hỗ trợ trực tuyến","Quà của tôi", "Đặt lịch vệ sinh thiết bị"];
+        const tabHiddenRoutes = ["Hỗ trợ trực tuyến","Quà của tôi", "Đặt lịch vệ sinh thiết bị", "OrderEquipmentCleaningScreen"];
         if(tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))){
             navigation.setOptions({tabBarStyle: {display: 'none'}});
         } else {
@@ -23,7 +24,7 @@ const HomeNavigation = ({navigation, route}) => {
         }
     }, [navigation, route]);
   return (
-    <Stack.Navigator initialRouteName='Trang chủ'>
+    <Stack.Navigator initialRouteName='OrderEquipmentCleaningScreen'>
         <Stack.Screen name="Trang chủ" component={Home} options={{headerShown: false}}/>
         <Stack.Screen name="Quà của tôi" component={GiftScreen} options={{
             headerTitleAlign: 'left',
@@ -77,6 +78,20 @@ const HomeNavigation = ({navigation, route}) => {
             
         }}/>
         <Stack.Screen name="Đặt lịch vệ sinh thiết bị" component={ScheduleCleaning} options={{
+            headerTitleAlign: 'left',
+            headerTitleStyle: {
+                fontSize: isIPhone?15:17,
+                fontWeight: 400,
+                color: '#1A93D4',
+            },
+            title: '',
+            headerBackground: () => (
+                <View style={{backgroundColor: 'rgba(245, 245, 245, 1)', flex: 1}}/>
+            ),
+        }}
+        
+        />
+        <Stack.Screen name="OrderEquipmentCleaningScreen" component={OrderEquipmentCleaningScreen} options={{
             headerTitleAlign: 'left',
             headerTitleStyle: {
                 fontSize: isIPhone?15:17,
