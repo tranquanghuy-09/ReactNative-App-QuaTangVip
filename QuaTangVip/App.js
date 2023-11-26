@@ -13,7 +13,7 @@ import InforUser from "./src/screeens/InforUser";
 // import TermsQTVIP from "./src/screeens/TermsQTVIP";
 // import ApplicationManagement from "./src/screeens/ApplicationManagement";
 // //Con trang chủ
-// import SuggestionsAndFeedBack from "./src/screeens/SuggestionsAndFeedBack";
+import SuggestionsAndFeedBack from "./src/screeens/SuggestionsAndFeedBack";
 import Camera from "./src/screeens/Camera";
 // import Notification from "./src/screeens/Notification";
 // import OrderTracking from "./src/screeens/OrderTracking";
@@ -28,11 +28,15 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName={"Thông tin cá nhân"}
+        // initialRouteName={"SuggestionsAndFeedBack"}
+
         // initialRouteName={"test"}
       >
         <Stack.Screen name="Thông tin cá nhân" component={InforUser} />
         {/* <Stack.Screen name="test" component={test} /> */}
         <Stack.Screen name="Camera" component={Camera} />
+
+        {/* <Stack.Screen name="SuggestionsAndFeedBack" component={SuggestionsAndFeedBack} /> */}
       </Stack.Navigator>
       
     </NavigationContainer>

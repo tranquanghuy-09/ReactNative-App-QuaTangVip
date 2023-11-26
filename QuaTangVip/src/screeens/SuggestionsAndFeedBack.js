@@ -143,7 +143,7 @@ const SuggestionsAndFeedback = ({ navigation, route }) => {
       return;
     }
     if (option === "CHỤP ẢNH") {
-      navigation.navigate("Camera", { pageOld: "SuggestionsAndFeedback" });
+      navigation.navigate("Camera", { pageOld: "SuggestionsAndFeedBack" });
     } else if (option === "TẢI ẢNH LÊN") {
       pickImage();
     }

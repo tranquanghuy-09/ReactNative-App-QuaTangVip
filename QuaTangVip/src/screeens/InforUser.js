@@ -244,7 +244,6 @@ export default function App({ navigation, route }) {
         Platform.OS === "android"
           ? await Permissions.askAsync(Permissions.MEDIA_LIBRARY)
           : await ImagePicker.requestMediaLibraryPermissionsAsync();
-
       if (status !== "granted") {
         console.warn("Quyền truy cập thư viện ảnh không được cấp phép.");
       }
