@@ -47,7 +47,7 @@ export default function App({ navigation, route }) {
   const [newSex, setNewSex] = React.useState(userGL.sex);
   const isFocused = useIsFocused();
   useEffect(() => {
-    // setPwdInput("");
+    setPwdInput("");
   }, [isFocused]);
   // const handleUpdateUser_id = () => {
   //   // Thực hiện bất kỳ logic cập nhật nào bạn muốn

@@ -16,6 +16,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {ipv4} from '../../global';
 import axios from 'axios';
+import { useIsFocused } from '@react-navigation/native';
 
 
 const colorGray = "#8D8D8D";
@@ -31,6 +32,11 @@ const iIcon = require("../../../assets/icons_Dai/ic_info_circle.webp");
 // + Chưa xử lý đănng ký số điện mới
 
 export default function App({ navigation, route }) {
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    setPhoneInput("");
+    setPhoneNumber("");
+  }, [isFocused]);
   const [phoneInput, setPhoneInput] = useState("");
   const checkPhoneLogin = async () => {
     try {
