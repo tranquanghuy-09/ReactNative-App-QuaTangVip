@@ -1,16 +1,19 @@
 import React from "react";
-import { Platform } from 'react-native';
+import { Platform, View} from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import LoginPhone from "./src/screens/logins/LoginPhone";
 import LoginPassword from "./src/screens/logins/LoginPassword";
+import InforUser from "./src/screens/accounts/InforUser";
 
-import MainNavigator from "./src/screens/MainNavigator"
+
+import MainNavigator from "./src/screens/MainNavigator";
 
 import { UserProvider } from "./src/UserContext";
 
 const Stack = createNativeStackNavigator();
+
 
 function App({ navigation}) {
   return (
@@ -24,6 +27,8 @@ function App({ navigation}) {
         <Stack.Screen name="LoginPhone" component={LoginPhone} />
         <Stack.Screen name="LoginPassword" component={LoginPassword} />
         <Stack.Screen name="MainNavigator" component={MainNavigator}/>
+        <Stack.Screen name="InforUser" component={InforUser}/>
+        
         {/*<Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen

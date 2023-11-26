@@ -126,7 +126,7 @@ export default function App({navigation}) {
             keyExtractor={(item, index) => item + index}
             renderItem={({item}) => (
               <View style={{alignItems: 'center'}}>
-                <TouchableOpacity style={{justifyContent: 'space-between', paddingVertical: 15, paddingHorizontal: 7, flexDirection: 'row',width: Platform.OS==='ios'?345:375, height: 120, borderRadius: 13, backgroundColor: '#FFFFFF', marginTop: 15, alignContent: 'center', }}>
+                <TouchableOpacity onPress={()=>{navigation.navigate("OrderDetail", {order_id: item.id})}} style={{justifyContent: 'space-between', paddingVertical: 15, paddingHorizontal: 7, flexDirection: 'row',width: Platform.OS==='ios'?345:375, height: 120, borderRadius: 13, backgroundColor: '#FFFFFF', marginTop: 15, alignContent: 'center', }}>
                   <Image source={item.store==='Bách Hoá Xanh'?require('../../assets/icons/bachhoaxanh.png'):null} style={{width: 38, height: 38, }}/>
                   <View style={{width: Platform.OS==='ios'?280:310, paddingTop: 5, justifyContent: 'space-between'}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
