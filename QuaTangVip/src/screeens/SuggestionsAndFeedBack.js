@@ -76,7 +76,7 @@ const SuggestionsAndFeedback = ({ navigation, route }) => {
   };
 
   const handleSubmit = () => {
-    console.log("Form submitted!");
+    console.log("Gửi");
   };
 
   // Kiểm tra và xin quyền truy cập thư viện ảnh
@@ -143,7 +143,7 @@ const SuggestionsAndFeedback = ({ navigation, route }) => {
       return;
     }
     if (option === "CHỤP ẢNH") {
-      navigation.navigate("Camera");
+      navigation.navigate("Camera", { pageOld: "SuggestionsAndFeedback" });
     } else if (option === "TẢI ẢNH LÊN") {
       pickImage();
     }

@@ -14,11 +14,12 @@ import InforUser from "./src/screeens/InforUser";
 // import ApplicationManagement from "./src/screeens/ApplicationManagement";
 // //Con trang chủ
 // import SuggestionsAndFeedBack from "./src/screeens/SuggestionsAndFeedBack";
-// import Camera from "./src/screeens/Camera";
+import Camera from "./src/screeens/Camera";
 // import Notification from "./src/screeens/Notification";
 // import OrderTracking from "./src/screeens/OrderTracking";
 // import WarrantyAndMaintenance from "./src/screeens/WarrantyAndMaintenance";
 // import First from "./src/screeens/First";
+// import test from "./src/screeens/test";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,11 +28,13 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName={"Thông tin cá nhân"}
+        // initialRouteName={"test"}
       >
-        
         <Stack.Screen name="Thông tin cá nhân" component={InforUser} />
-       
+        {/* <Stack.Screen name="test" component={test} /> */}
+        <Stack.Screen name="Camera" component={Camera} />
       </Stack.Navigator>
+      
     </NavigationContainer>
   );
 }
