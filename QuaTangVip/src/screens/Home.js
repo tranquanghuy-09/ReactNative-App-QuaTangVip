@@ -3,11 +3,16 @@ import {Platform,} from 'react-native';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ImageBackground, Image, ScrollView} from 'react-native';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import React, {useState, useEffect} from 'react';
-import {ipv4} from '../global';
+import {ipv4, user_id} from '../global';
 import axios from 'axios';
+import { useUser } from '../UserContext';
 
 export default function App({navigation, route}) {
+  const {userGL} = useUser();
+  const [newUserId, setNewUserId] = React.useState(userGL.user_id);
   const isIPhone = Platform.OS === 'ios';
+  console.log("user_id==>>>>>>>>>>>>>>>>",newUserId);
+  // const [user_id, setUser_id] = useState(route.params.user.user_id);
   const [diemTichLuy, setDiemTichLuy] = useState(0);
   const [user, setUser] = useState({});
   useEffect(() => {
@@ -17,9 +22,9 @@ export default function App({navigation, route}) {
   //Load point of user from server
   const loadDiem = async () => {
     try {
-      const result = await axios.get("http://"+ipv4+"/diem?user_id=1");
+      const result = await axios.get("http://"+ipv4+"/diem?user_id="+newUserId);
       setDiemTichLuy(result.data);
-      console.log(result.data);
+      // console.log(result.data);
     } catch (error) {
       console.error("Error loading point:", error);
     }
@@ -27,15 +32,15 @@ export default function App({navigation, route}) {
   //Load profile of user from server
   const loadProfileUser = async () => {
     try {
-      const result = await axios.get("http://"+ipv4+"/user?user_id=1");
+      const result = await axios.get("http://"+ipv4+"/user?user_id="+newUserId);
       setUser(result.data);
-      console.log(result.data);
+      // console.log(result.data);
     } catch (error) {
       console.error("Error loading user:", error);
     }
   };
-  console.log(parseFloat(diemTichLuy.toLocaleString('en-US', { style: 'decimal' }).replace(',','.')));
-  console.log(user);
+  // console.log(parseFloat(diemTichLuy.toLocaleString('en-US', { style: 'decimal' }).replace(',','.')));
+  // console.log(user);
   return (
     <View style={[styles.container]}>
       <ImageBackground
@@ -72,7 +77,7 @@ export default function App({navigation, route}) {
               </View>
               <View style={{flexDirection: 'row', backgroundColor: '#F6C850', width: 130, height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 11}}>
                 <Text style={{fontSize: 18, }}>Điểm: </Text>
-                <Text style={{fontSize: 18, fontWeight: 600}}>{parseFloat(diemTichLuy.toLocaleString('en-US', { style: 'decimal' }).replace(',','.'))}</Text>
+                <Text style={{fontSize: 18, fontWeight: 600}}>{diemTichLuy?parseFloat(diemTichLuy.toLocaleString('en-US', { style: 'decimal' }).replace(',','.')):0}</Text>
               </View>
             </View>
             <View style={{backgroundColor: 'white', width: '100%', height: 130, borderWidth: 0, marginTop: 15, borderRadius: 17, justifyContent: 'center', alignItems: 'center'}}>

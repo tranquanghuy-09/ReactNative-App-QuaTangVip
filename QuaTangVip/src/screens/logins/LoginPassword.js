@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,9 +12,12 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Platform } from 'react-native';
+import {ipv4, user_id} from '../../global';
+import axios from 'axios';
+import { useIsFocused } from '@react-navigation/native';
+import { ro } from "date-fns/locale";
+import { useUser } from '../../UserContext'
 
 // Color
 const colorGray = "#8D8D8D";
@@ -38,7 +41,22 @@ const fontSize2 = 14;
 //Chưa xong: chưa xử lý được nút vân tay
 // Định dùng tooltip nhưng tìm hiểu không thành công
 export default function App({ navigation, route }) {
-  const user = route.params
+  console.log(route.params.user);
+  const { userGL, updateUserId, updateSex } = useUser();
+  const [newUserId, setNewUserId] = React.useState(route.params.user.id);
+  const [newSex, setNewSex] = React.useState(userGL.sex);
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    // setPwdInput("");
+  }, [isFocused]);
+  // const handleUpdateUser_id = () => {
+  //   // Thực hiện bất kỳ logic cập nhật nào bạn muốn
+  //   // ...
+
+  //   // Sau đó, cập nhật giá trị user_id bằng cách gọi updateUser_id từ context
+  //   updateUser_id(newUser_id);
+  // };
+  const userpr = route.params
     ? route.params.user
     : {
         id: 1,
@@ -48,11 +66,31 @@ export default function App({ navigation, route }) {
         sex: true
       };
   // const user = route.params.user
-  const sex = user.sex ? "Anh" : "Chị";
+  const sex = userpr.sex ? "Chị" : "Anh";
+  
+  const [phoneUser, setPhoneUser] = useState(userpr.phone);
+  const [pwdInput, setPwdInput] = useState("");
 
+
+  const checkLogin = async () => {
+    try {
+      const result = await axios.get("http://"+ipv4+"/login?phone="+phoneUser+"&pwd="+pwdInput);
+      // setUser(result.data);
+      // console.log(result.data.user_id);
+      updateUserId(newUserId);
+      if(result.data === null){
+        console.log("Sai mật khẩu");
+      }else{
+        
+        navigation.navigate("MainNavigator", { user: result.data });
+      }
+    } catch (error) {
+      console.error("Error check password:", error);
+    }
+  };
   
   const [displayPass, setDisplayPass] = useState(false);
-  const [password, setPassword] = useState("");
+  // const [password, setPassword] = useState("");
   const [count, setCount] = useState(0);
   const [txtError, setTxtError] = useState(null);
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -184,7 +222,7 @@ export default function App({ navigation, route }) {
             textAlign: "center"
           }}
         >
-          01234567899
+          {phoneUser}
         </Text>
         <View
           style={{
@@ -275,7 +313,7 @@ export default function App({ navigation, route }) {
               fontSize: 16,
               color: colorBlack
             }}
-            onChangeText={setPassword}
+            onChangeText={setPwdInput}
           />
           <TouchableOpacity
             style={{ top: 13, flex: 1 }}
@@ -309,7 +347,7 @@ export default function App({ navigation, route }) {
                 justifyContent: "center",
                 alignItems: "center"
               }}
-              onPress={checkPassword}
+              onPress={checkLogin}
             >
               <Text
                 style={{

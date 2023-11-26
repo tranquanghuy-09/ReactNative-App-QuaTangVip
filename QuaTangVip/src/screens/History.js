@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {ipv4} from '../global';
 import { format } from 'date-fns';
+import { useUser } from '../UserContext';
 
 export default function App({navigation}) {
   // const DATA = [
@@ -96,9 +97,11 @@ export default function App({navigation}) {
   //     data: [],
   //   },
   // ];
-  
+  const {userGL} = useUser();
+  const [newUserId, setNewUserId] = React.useState(userGL.user_id);
   const [page, setPage] = useState(0);
   const [lsdh, setLsdh] = useState(Math.random());
+  const [hsEmpty, setHsEmpty] = useState(false);
 
   const [orders, setOrders] = useState([]);
   useEffect(() => {
@@ -108,9 +111,12 @@ export default function App({navigation}) {
 
   const loadOrders = async () => {
     try {
-      const result = await axios.get("http://"+ipv4+"/orders?user_id=1&page="+page+"&size=5");
+      const result = await axios.get("http://"+ipv4+"/orders?user_id="+newUserId+"&page="+page+"&size=5");
       setOrders(result.data.content);
       console.log(result.data.content);
+      if(result.data.content.length===0){
+        setHsEmpty(true);
+      }
     } catch (error) {
       console.error("Error loading orders:", error);
     }
@@ -236,7 +242,13 @@ export default function App({navigation}) {
             onEndReached={loadMoreData} 
             onEndReachedThreshold={0.05}
           />
-        
+          {hsEmpty && 
+              <View style={{alignItems: 'center', top: -180}}>
+                <Image source={require('../../assets/images/history-empty.webp')} style={{width: 133, height:186,}}/>
+                <Text style={{color: '#0366D6', fontSize: 24, marginTop: 30, fontWeight: 400}}>Lịch sử đơn hàng trống trống</Text>
+                <Text style={{color: '#67707B', fontSize: 15, marginTop: 14, fontWeight: 300}}>Anh hãy ghé cửa hàng để mua sắm cho mình nhé!</Text>
+              </View>
+          }
       </View>
     </View>
   );

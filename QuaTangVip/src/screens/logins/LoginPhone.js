@@ -14,6 +14,9 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {ipv4} from '../../global';
+import axios from 'axios';
+
 
 const colorGray = "#8D8D8D";
 const colorRed = "red";
@@ -28,6 +31,23 @@ const iIcon = require("../../../assets/icons_Dai/ic_info_circle.webp");
 // + Chưa xử lý đănng ký số điện mới
 
 export default function App({ navigation, route }) {
+  const [phoneInput, setPhoneInput] = useState("");
+  const checkPhoneLogin = async () => {
+    try {
+      const result = await axios.get("http://"+ipv4+"/login_phone?phone="+phoneInput);
+      // setUser(result.data);
+      // console.log(result.data);
+      if(!(result.data === null)){
+        navigation.navigate("LoginPassword", { user:{
+                                                    id: result.data.user_id,
+                                                    phone: result.data.phone,
+                                                    sex: result.data.sex 
+                                                    }});
+      }
+    } catch (error) {
+      console.error("Error check phone:", error);
+    }
+  };
   //Dữ liệu người dùng tạm thời
   const data = [
     {
@@ -134,7 +154,10 @@ export default function App({ navigation, route }) {
             }}
             keyboardType="numeric"
             maxLength={12}
-            onChangeText={handleTextChange}
+            onChangeText={(text)=>{
+              handleTextChange(text);
+              setPhoneInput(text);
+            }}
             value={phoneNumber}
           ></TextInput>
           {phoneNumber.length != 0 ? (
@@ -199,7 +222,7 @@ export default function App({ navigation, route }) {
               justifyContent: "center",
               alignItems: "center"
             }}
-            onPress={handleContinue}
+            onPress={checkPhoneLogin}
           >
             <Text
               style={{
