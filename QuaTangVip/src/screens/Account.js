@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import {
   View,
   Text,
@@ -9,9 +9,9 @@ import {
   Modal,
   TouchableWithoutFeedback
 } from "react-native";
-
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {ipv4, user_id} from '../global';
+import axios from 'axios';
+import { useUser } from '../UserContext';
 
 const colorBlack = "#000000";
 const colorGray = "#A59464";
@@ -30,18 +30,25 @@ const fontSize4 = 10;
 //Chưa xử lý được:
 
 const Account = ({ navigation, route }) => {
-  // const user = route.params.user;
-  const obj={
-    id: 1,
-    name: "Không một ai",
-    phone: "0000000000",
-    password: "123",
-    sex: true
-  }
-  const name = obj.name;
-  const phone = obj.phone;
+  const {userGL} = useUser();
+  const [newUserId, setNewUserId] = React.useState(userGL.user_id);
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    loadProfileUser();
+  }, []);
+  const loadProfileUser = async () => {
+    try {
+      const result = await axios.get("http://"+ipv4+"/user?user_id="+newUserId);
+      setUser(result.data);
+      // console.log(result.data);
+    } catch (error) {
+      console.error("Error loading user:", error);
+    }
+  };
+  const name = user.name;
+  const phone = user.phone;
 
-  const avatar = require("../../assets/icons_Dai/ic_account_logo.webp");
+  const avatar = {uri: user.urlImage};
   const rightArrowIcon = require("../../assets/icons_Dai/ic_right.webp");
   const logoutIcon = require("../../assets/icons_Dai/ic_logout.webp");
   const version = "1.1.10 v246";
@@ -360,6 +367,7 @@ const Account = ({ navigation, route }) => {
           alignItems: "center",
           flexDirection: "row"
         }}
+        onPress={() => {navigation.navigate('LoginPhone')}}
       >
         <Image
           source={logoutIcon}

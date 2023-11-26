@@ -228,7 +228,7 @@ const NearbyStore = ({ navigation, route }) => {
     getLocation();
   }, []);
   const handleGoBack = () => {
-    navigation.goBack();
+    navigation.navigate("Tài khoản");
   };
 
   //Xử lý di chuyển màn hình tới địa chỉ đươc nhận

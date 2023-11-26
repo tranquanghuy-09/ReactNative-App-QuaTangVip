@@ -8,11 +8,15 @@ import LoginPassword from "./src/screens/logins/LoginPassword";
 
 import MainNavigator from "./src/screens/MainNavigator"
 
+import { UserProvider } from "./src/UserContext";
+
 const Stack = createNativeStackNavigator();
 
-function App() {
+function App({ navigation}) {
   return (
+    <UserProvider>
     <NavigationContainer>
+      
       <Stack.Navigator
         initialRouteName={"LoginPhone"}
         screenOptions={{ headerShown: false }}
@@ -62,7 +66,9 @@ function App() {
           options={{ headerShown: true }}
         /> */}
       </Stack.Navigator>
+      
     </NavigationContainer>
+    </UserProvider>
   );
 }
 
