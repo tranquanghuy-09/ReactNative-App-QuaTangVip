@@ -41,10 +41,10 @@ const fontSize2 = 14;
 const fontSize3 = 12;
 const fontSize4 = 10;
 //Ảnh
-const ic_edit_input_new = require("../../assets/icons_Dai/ic_edit_input_new.png");
-const avatar = require("../../assets/icons_Dai/ic_account_logo.webp");
-const cameraIcon = require("../../assets/icons_Dai/ic_camera.webp");
-const ic_warning = require("../../assets/icons_Dai/ic_warning.webp");
+const ic_edit_input_new = require("../../../assets/icons_Dai/ic_edit_input_new.png");
+const avatar = require("../../../assets/icons_Dai/ic_account_logo.webp");
+const cameraIcon = require("../../../assets/icons_Dai/ic_camera.webp");
+const ic_warning = require("../../../assets/icons_Dai/ic_warning.webp");
 
 // Thử 3 hàm với 3 thư viện khác nhau mà không được :v said
 export default function App({ navigation, route }) {
