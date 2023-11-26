@@ -1,45 +1,74 @@
 import React from "react";
+import { Platform } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-// import LoginPhone from "./src/screeens/LoginPhone";
-// import LoginPassword from "./src/screeens/LoginPassword";
-// import SignUp from "./src/screeens/SignUp";
-// import Home from "./src/screeens/Home";
-// import Account from "./src/screeens/Account";
-//Con accoutn
-import InforUser from "./src/screeens/InforUser";
-// import NearbyStore from "./src/screeens/NearbyStore";
-// import TermsQTVIP from "./src/screeens/TermsQTVIP";
-// import ApplicationManagement from "./src/screeens/ApplicationManagement";
-// //Con trang chủ
-import SuggestionsAndFeedBack from "./src/screeens/SuggestionsAndFeedBack";
-import Camera from "./src/screeens/Camera";
-// import Notification from "./src/screeens/Notification";
-// import OrderTracking from "./src/screeens/OrderTracking";
-// import WarrantyAndMaintenance from "./src/screeens/WarrantyAndMaintenance";
-// import First from "./src/screeens/First";
-// import test from "./src/screeens/test";
+import LoginPhone from "./src/screens/logins/LoginPhone";
+import LoginPassword from "./src/screens/logins/LoginPassword";
+
+import MainNavigator from "./src/screens/MainNavigator"
+
+import { UserProvider } from "./src/UserContext";
 
 const Stack = createNativeStackNavigator();
 
-function App() {
+function App({ navigation}) {
   return (
+    <UserProvider>
     <NavigationContainer>
+      
       <Stack.Navigator
-        initialRouteName={"Thông tin cá nhân"}
-        // initialRouteName={"SuggestionsAndFeedBack"}
-
-        // initialRouteName={"test"}
+        initialRouteName={"LoginPhone"}
+        screenOptions={{ headerShown: false }}
       >
-        <Stack.Screen name="Thông tin cá nhân" component={InforUser} />
-        {/* <Stack.Screen name="test" component={test} /> */}
-        <Stack.Screen name="Camera" component={Camera} />
+        <Stack.Screen name="LoginPhone" component={LoginPhone} />
+        <Stack.Screen name="LoginPassword" component={LoginPassword} />
+        <Stack.Screen name="MainNavigator" component={MainNavigator}/>
+        {/*<Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen
+          name="Account"
+          component={Account}
+          options={
+            {
+              headerShown: true,
+              headerTitleAlign: "Cá nhân"
+            }
+          }
+        /> */}
 
-        {/* <Stack.Screen name="SuggestionsAndFeedBack" component={SuggestionsAndFeedBack} /> */}
+        {/* <Stack.Screen name="Thông tin cá nhân" component={InforUser} />
+        <Stack.Screen name="Cửa hàng gần bạn" component={NearbyStore} />
+        <Stack.Screen name="Điều khoản Quà Tặng VIP" component={TermsQTVIP} />
+        <Stack.Screen
+          name="Quản lý ứng dụng"
+          component={ApplicationManagement}
+        />
+
+        <Stack.Screen
+          name="Góp ý, khiếu nại"
+          component={SuggestionsAndFeedBack}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen name="Thông báo" component={Notification} />
+
+        <Stack.Screen name="Camera" component={Camera} />
+        <Stack.Screen name="Theo dõi đơn hàng" component={OrderTracking}    options={
+            {
+              headerShown: true,
+              headerTitleAlign: "Theo dõi dơn hàng"
+            }
+          }
+        />
+        <Stack.Screen
+          name="Bảo hành, bảo dưỡng"
+          component={WarrantyAndMaintenance}
+          options={{ headerShown: true }}
+        /> */}
       </Stack.Navigator>
       
     </NavigationContainer>
+    </UserProvider>
   );
 }
 
