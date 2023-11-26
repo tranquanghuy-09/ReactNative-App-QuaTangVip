@@ -9,9 +9,10 @@ import {
   Modal,
   TouchableWithoutFeedback
 } from "react-native";
-import {ipv4, user_id} from '../global';
+import {ipv4} from '../global';
 import axios from 'axios';
 import { useUser } from '../UserContext';
+import { useIsFocused } from '@react-navigation/native';
 
 const colorBlack = "#000000";
 const colorGray = "#A59464";
@@ -116,6 +117,9 @@ const Account = ({ navigation, route }) => {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: colorWhite, paddingVertical: 50}}>
+      <View style={{borderWidth: 0, paddingBottom: 5, backgroundColor: 'white', paddingTop: 10}}>
+          <Text style={{fontSize: 30, marginLeft: 20, fontWeight: 700}}>Cá nhân</Text>
+        </View>
       {/* Thông f khi chưa có link*/}
       <Modal
         animationType="fade" // hiệu ứng khi mở modal
@@ -208,7 +212,7 @@ const Account = ({ navigation, route }) => {
           style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}
         >
           {/* Ảnh đại diện */}
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>{navigation.navigate("Thông tin cá nhân")}}>
             {/* avatar */}
             <Image
               accessible={true}

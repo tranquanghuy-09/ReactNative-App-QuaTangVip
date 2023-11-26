@@ -24,6 +24,11 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 // import RNPickerSelect from "react-native-picker-select";
 import { SelectList } from "react-native-dropdown-select-list";
 import MultiSelect from "react-native-multiple-select";
+import {ipv4} from '../../global';
+import axios from 'axios';
+import { useUser } from '../../UserContext';
+import { useIsFocused } from '@react-navigation/native';
+
 
 // Color
 const colorBlack = "#000000";
@@ -48,9 +53,51 @@ const ic_warning = require("../../../assets/icons_Dai/ic_warning.webp");
 
 // Thử 3 hàm với 3 thư viện khác nhau mà không được :v said
 export default function App({ navigation, route }) {
-  const user = route.params
-    ? route.params.user
-    : {
+  const isIPhone = Platform.OS === 'ios';
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    navigation.setOptions({
+        headerLeft: () => (
+            <View style={{ marginLeft: 20, }} >
+                <TouchableOpacity onPress={() => navigation.goBack()} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <Image source={require('../../../assets/icons/arrow-left.png')} style={{ width: 13, height: 15 }} />
+                    <Text style={{ marginLeft: 10, fontSize: isIPhone ? 15 : 17, fontWeight: 400, color: '#1A93D4' }}>Quay lại</Text>
+                </TouchableOpacity>
+            </View>
+        ),
+    });
+}, []); 
+
+const {userGL} = useUser();
+  const [newUserId, setNewUserId] = React.useState(userGL.user_id);
+  useEffect(() => {
+    loadProfileUser();
+  }, [isFocused]);
+  const loadProfileUser = async () => {
+    try {
+      const result = await axios.get("http://"+ipv4+"/user?user_id="+newUserId);
+      console.log(result.data);
+      setUser({
+        id: 1,
+        name: result.data.name,
+        phone: "0000000000",
+        password: "123",
+        sex: true,
+        date: "2023-11-26",
+        address: "Gia Lai",
+        city: "Gia Lai",
+        email: "d@gmail.com",
+        // img: "file:///var/mobile/Containers/Data/Application/0997EAF5-2ACD-40A5-AEFD-1F18616E0643/Library/Caches/ExponentExperienceData/%2540anonymous%252FQuaTangVip-47b53549-6ad6-4e91-af41-790549c554bc/ImagePicker/D7E49D2D-A6D2-4F1B-B698-C060337459CE.jpg",
+        img: avatar,
+        group: [1, 2],
+        time: [2, 5]
+  });
+      
+    } catch (error) {
+      console.error("Error loading user:", error);
+    }
+  };
+  const [user, setUser] = useState({
         id: 1,
         name: "Không một ai",
         phone: "0000000000",
@@ -64,7 +111,27 @@ export default function App({ navigation, route }) {
         img: avatar,
         group: [1, 2],
         time: [2, 5]
-      };
+  });
+  
+  console.log(user);
+
+  // const user = route.params
+  //   ? route.params.user
+  //   : {
+  //       id: 1,
+  //       name: "Không một ai",
+  //       phone: "0000000000",
+  //       password: "123",
+  //       sex: true,
+  //       date: "2023-11-26",
+  //       address: "Gia Lai",
+  //       city: "Gia Lai",
+  //       email: "d@gmail.com",
+  //       // img: "file:///var/mobile/Containers/Data/Application/0997EAF5-2ACD-40A5-AEFD-1F18616E0643/Library/Caches/ExponentExperienceData/%2540anonymous%252FQuaTangVip-47b53549-6ad6-4e91-af41-790549c554bc/ImagePicker/D7E49D2D-A6D2-4F1B-B698-C060337459CE.jpg",
+  //       img: avatar,
+  //       group: [1, 2],
+  //       time: [2, 5]
+  //     };
 
   //Tên, số điện thoại, ngày sinh, địa chỉ, tỉnh thành sinh sống,email, nhóm sản phẩn ưu đãi,thời gian
   const dataInput = [
@@ -162,6 +229,7 @@ export default function App({ navigation, route }) {
       multiple: true
     }
   ];
+  console.log(dataInput);
 
   // Thay vào đó, sử dụng useCallback hoặc useMemo
   // const handleTextChange = React.useCallback(
@@ -256,6 +324,9 @@ export default function App({ navigation, route }) {
       style={{ flex: 1 }}
       // behavior là hành động khi bàn phím hiện lên, padding là di chuyển view lên trên
     >
+      <View style={{borderWidth: 0, paddingBottom: 10, backgroundColor: 'white'}}>
+          <Text style={{fontSize: 30, marginLeft: 20, fontWeight: 700}}>Thông tin cá nhân</Text>
+        </View>
       <ScrollView style={styles.container}>
         <View
           style={{

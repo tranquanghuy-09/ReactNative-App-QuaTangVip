@@ -28,7 +28,7 @@ function App({ navigation}) {
         <Stack.Screen name="LoginPhone" component={LoginPhone} />
         <Stack.Screen name="LoginPassword" component={LoginPassword} />
         <Stack.Screen name="MainNavigator" component={MainNavigator}/>
-        <Stack.Screen name="InforUser" component={InforUser}/>
+        {/* <Stack.Screen name="InforUser" component={InforUser}/> */}
         <Stack.Screen name="SignUp" component={SignUp} />
         {/*<Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="SignUp" component={SignUp} />

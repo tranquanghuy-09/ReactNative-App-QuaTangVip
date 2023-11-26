@@ -30,7 +30,7 @@ const HomeNavigation = ({navigation, route}) => {
     const isIPhone = Platform.OS === 'ios';
     React.useLayoutEffect(() => {
         const tabHiddenRoutes = ["Hỗ trợ trực tuyến","Quà của tôi", "Đặt lịch vệ sinh thiết bị", "OrderEquipmentCleaningScreen", "Góp ý, khiếu nại",
-        "Camera", "Cửa hàng gần bạn", "OrderDetail"];
+        "Camera", "Cửa hàng gần bạn", "OrderDetail", "Thông tin cá nhân"];
         if(tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))){
             navigation.setOptions({tabBarStyle: {display: 'none'}});
         } else {
@@ -197,7 +197,18 @@ const HomeNavigation = ({navigation, route}) => {
                 <View style={{backgroundColor: 'rgba(245, 245, 245, 1)', flex: 1}}/>
             ),
         }}/>
-        <Stack.Screen name='Thông tin cá nhân' component={InforUser}/>
+        <Stack.Screen name='Thông tin cá nhân' component={InforUser} options={{
+            headerTitleAlign: 'left',
+            headerTitleStyle: {
+                fontSize: isIPhone?15:17,
+                fontWeight: 400,
+                color: '#1A93D4',
+            },
+            title: '',
+            headerBackground: () => (
+                <View style={{backgroundColor: 'white', flex: 1}}/>
+            ),
+        }}/>
     </Stack.Navigator>
 
   )

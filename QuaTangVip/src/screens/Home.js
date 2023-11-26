@@ -66,7 +66,7 @@ export default function App({navigation, route}) {
           <View style={{borderWidth: 0, width: "100%", height: 214, paddingHorizontal: 12, justifyContent: 'center'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
               <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity onPress={()=>navigation.navigate("InforUser")}>
+                <TouchableOpacity onPress={()=>navigation.navigate("Thông tin cá nhân")}>
                   <Image
                     source={user.urlImage ? { uri: user.urlImage } : require('../../assets/images/user2.jpeg')}
                     style={{ width: 50, height: 50, borderRadius: 25, borderWidth: 1, borderColor: 'white'}}
