@@ -15,6 +15,7 @@ import {
   TextInput,
   RefreshControl,
   Platform,
+  SafeAreaView,
   ActivityIndicator
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -32,6 +33,7 @@ const colorGray = "#DCDCDC";
 const colorYellow = "#FFC62E";
 const colorBlue = "#0866FF";
 const Tab = createMaterialTopTabNavigator();
+const isIPhone = Platform.OS === 'ios';
 
 //Trang dễ đột tử khi chạy trên ISO khi không được khởi động đúng cách
 //Chưa xong:
@@ -113,7 +115,7 @@ function AllNotifications() {
     //Chuyển trạng thái đã đọc thành đã đọc
   }
   return (
-    <View style={{ flex: 1, backgroundColor: "#fff" }}>
+    <View style={{ flex: 1, backgroundColor: "#fff", paddingHorizontal: 5}}>
       <ScrollView>
         {dataAll.map((item, index) => {
           return (
@@ -126,7 +128,8 @@ function AllNotifications() {
                 paddingHorizontal: 10,
                 paddingVertical: 15,
                 borderBottomWidth: 1,
-                borderBottomColor: "#eee"
+                borderBottomColor: "#eee",
+                backgroundColor: 'white'
               }}
               onPress={() => setStatus(index, item)}
             >
@@ -163,8 +166,8 @@ function AllNotifications() {
                         item.type == 1 ? theGioiDiDongImage : dienMayXanhIcon
                       }
                       style={{
-                        width: 30,
-                        height: 30,
+                        width: 40,
+                        height: 40,
                         borderRadius: 20,
                         top: 25
                       }}
@@ -305,7 +308,7 @@ function ElectronicInvoices() {
                   fontSize: 22,
                   color: colorBlue,
                   marginTop: 10,
-                  fontWeight: "bold"
+                  fontWeight: 500
                 }}
               >
                 Hiện tại không có thông báo nào
@@ -391,8 +394,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
             <Text
               style={{
                 fontWeight: isFocused ? "bold" : "normal",
-                fontSize: 14,
-                textTransform: "lowercase"
+                fontSize: 18,
               }}
             >
               {label}
@@ -406,10 +408,15 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
 
 function NotificationScreen() {
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff", paddingTop: isIPhone?0:40}}>
+      <View style={{ height: 50, paddingLeft: 25, paddingTop: 10}}>
+        <Text style={{fontSize: 33, fontWeight: 'bold'}}>Thông báo</Text>
+      </View>
     <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
       <Tab.Screen name="Tất cả" component={AllNotifications} />
       <Tab.Screen name="Hoá đơn điện tử" component={ElectronicInvoices} />
     </Tab.Navigator>
+    </SafeAreaView>
   );
 }
 

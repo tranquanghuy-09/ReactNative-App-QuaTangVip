@@ -6,19 +6,19 @@ import React, {useState, useEffect} from 'react';
 import {ipv4, user_id} from '../global';
 import axios from 'axios';
 import { useUser } from '../UserContext';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function App({navigation, route}) {
+  const isFocused = useIsFocused();
   const {userGL} = useUser();
   const [newUserId, setNewUserId] = React.useState(userGL.user_id);
   const isIPhone = Platform.OS === 'ios';
-  console.log("user_id==>>>>>>>>>>>>>>>>",newUserId);
-  // const [user_id, setUser_id] = useState(route.params.user.user_id);
   const [diemTichLuy, setDiemTichLuy] = useState(0);
   const [user, setUser] = useState({});
   useEffect(() => {
     loadDiem();
     loadProfileUser();
-  }, []);
+  }, [isFocused]);
   //Load point of user from server
   const loadDiem = async () => {
     try {

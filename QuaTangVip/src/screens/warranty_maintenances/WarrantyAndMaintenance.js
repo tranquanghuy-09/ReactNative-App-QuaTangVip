@@ -28,6 +28,8 @@ const colorYellow = "#FFC62E";
 const colorBlue = "#0866FF";
 const Tab = createMaterialTopTabNavigator();
 
+const isIPhone = Platform.OS === 'ios';
+
 // Bảo dưỡng thiết bị
 function EquipmentMaintenance() {
   const [refreshing, setRefreshing] = useState(false);
@@ -76,8 +78,10 @@ function EquipmentMaintenance() {
                   fontSize: 22,
                   color: colorBlue,
                   marginTop: 10,
-                  fontWeight: "bold",
-                  textAlign: "center"
+                  fontWeight: 600,
+                  textAlign: "center",
+                  marginHorizontal: 15,
+                  lineHeight: 30
                 }}
               >
                 Anh/Chị không có sản phẩm cần thay đổi lõi lọc
@@ -154,23 +158,27 @@ const ListOfProducts = () => {
   ];
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: 'white'}}>
       {/* Ô option box nhỏ nằm góc trái màn hình */}
       <TouchableOpacity
         style={{
           position: "absolute",
           top: 10,
           left: 10,
-          height: 30,
+          height: 40,
           borderWidth: 1,
           borderColor: "gray",
-          borderRadius: 4,
+          borderRadius: 15,
           padding: 5,
-          backgroundColor: colorWhite
+          backgroundColor: colorWhite,
+          marginLeft: 10,
+          alignItems: "center",
+          justifyContent: "center",
+          width: 120
         }}
         onPress={() => setModalVisible(true)}
       >
-        <Text style={{ fontSize: 18 }}>{selectedValue} ↓ </Text>
+        <Text style={{ fontSize: 18 }}>{selectedValue}   ↓</Text>
       </TouchableOpacity>
 
       {/* Modal hiển thị danh sách lựa chọn */}
@@ -276,7 +284,8 @@ function WarrantyHistory() {
       style={{
         flex: 1,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: "white"
       }}
     >
       <Animated.View style={{ transform: [{ rotate: spin }] }}>
@@ -364,7 +373,19 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
   );
 };
 
-function WarrantyAndMaintenance() {
+function WarrantyAndMaintenance({navigation}) {
+  useEffect(() => {
+    navigation.setOptions({
+        headerLeft: () => (
+            <View style={{ marginLeft: 20 }} >
+                <TouchableOpacity onPress={() => navigation.navigate("Trang chủ")} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <Image source={require('../../../assets/icons/arrow-left.png')} style={{ width: 13, height: 15 }} />
+                    <Text style={{ marginLeft: 10, fontSize: isIPhone ? 15 : 17, fontWeight: 400, color: '#1A93D4' }}>Quay lại</Text>
+                </TouchableOpacity>
+            </View>
+        ),
+    });
+}, []); 
   return (
     <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
       <Tab.Screen name="Bảo dưỡng thiết bị" component={EquipmentMaintenance} />

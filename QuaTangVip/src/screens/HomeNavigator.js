@@ -114,9 +114,70 @@ const HomeNavigation = ({navigation, route}) => {
         }}
         
         />
-        <Stack.Screen name='OrderTracking' component={OrderTracking}/>
-        <Stack.Screen name='WarrantyAndMaintenance' component={WarrantyAndMaintenance}/>
-        <Stack.Screen name='Góp ý, khiếu nại' component={SuggestionsAndFeedBack}/>
+        <Stack.Screen name='OrderTracking' component={OrderTracking} options={{
+            headerTitleAlign: 'left',
+            headerTitleStyle: {
+                fontSize: isIPhone?15:17,
+                fontWeight: 400,
+                color: '#1A93D4',
+            },
+            title: '',
+            headerBackground: () => (
+                <View style={{backgroundColor: 'rgba(245, 245, 245, 1)', flex: 1}}/>
+            ),
+            
+        }} />
+        <Stack.Screen name='WarrantyAndMaintenance' component={WarrantyAndMaintenance}
+            options={{
+                headerTitleAlign: 'left',
+                headerTitleStyle: {
+                    fontSize: isIPhone?15:17,
+                    fontWeight: 400,
+                    color: '#1A93D4',
+                },
+                title: 'Hỗ trợ bảo hành, sữa chữa',
+                headerBackground: () => (
+                    <View style={{backgroundColor: 'white', flex: 1}}/>
+                ),
+                headerTitleStyle: {
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    color: 'black',
+                    textAlign: 'center',
+                },
+            }}
+        />
+        <Stack.Screen name='Góp ý, khiếu nại' component={SuggestionsAndFeedBack}
+            options={{
+                headerTitleAlign: 'left',
+                title: '',
+                headerBackground: () => (
+                    <View style={{backgroundColor: 'white', flex: 1}}/>
+                ),
+                headerLeft: () => (
+                    <View style={{ paddingLeft: 20, alignItems: 'center', alignItems: 'center', }} >
+                        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                            <TouchableOpacity onPress={() => navigation.navigate("Trang chủ")} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                <Image source={require('../../assets/icons/back.png')} style={{ width: 24, height: 20,}} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                ),
+                headerTitle: () => (
+                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                        <Text style={{ marginLeft: 15, fontSize: isIPhone ?24:24, fontWeight: 700, color: '#000', width: 181, height: 66}}>Nhập nội dung</Text>
+                    </View>
+                ),
+                headerStatusBarHeight: 70,
+                headerTitleContainerStyle: {
+                    paddingBottom: 0,
+                },
+                headerLeftContainerStyle: {
+                    paddingBottom: 30,
+                },
+            }}
+
+        />
         <Stack.Screen name='Camera' component={Camera}/>
         <Stack.Screen name='Cửa hàng gần bạn' component={NearbyStore} options={{headerShown: false}}/>
     </Stack.Navigator>

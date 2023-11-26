@@ -41,47 +41,33 @@ const fontSize2 = 14;
 //Chưa xong: chưa xử lý được nút vân tay
 // Định dùng tooltip nhưng tìm hiểu không thành công
 export default function App({ navigation, route }) {
-  console.log(route.params.user);
   const { userGL, updateUserId, updateSex } = useUser();
   const [newUserId, setNewUserId] = React.useState(route.params.user.id);
   const [newSex, setNewSex] = React.useState(userGL.sex);
   const isFocused = useIsFocused();
-  useEffect(() => {
-    setPwdInput("");
-  }, [isFocused]);
-  // const handleUpdateUser_id = () => {
-  //   // Thực hiện bất kỳ logic cập nhật nào bạn muốn
-  //   // ...
-
-  //   // Sau đó, cập nhật giá trị user_id bằng cách gọi updateUser_id từ context
-  //   updateUser_id(newUser_id);
-  // };
-  const userpr = route.params
-    ? route.params.user
-    : {
-        id: 1,
-        name: "Không một ai",
-        phone: "0000000000",
-        password: "123",
-        sex: true
-      };
-  // const user = route.params.user
+  // useEffect(() => {
+  //   setPwdInput("");
+  // }, [isFocused]);
+  const userpr = route.params.user;
   const sex = userpr.sex ? "Chị" : "Anh";
   
   const [phoneUser, setPhoneUser] = useState(userpr.phone);
   const [pwdInput, setPwdInput] = useState("");
 
-
   const checkLogin = async () => {
     try {
+      if (pwdInput === "") {
+        toggleModal();
+        setTxtError("Không được để trống mật khẩu");
+        return;
+      }
       const result = await axios.get("http://"+ipv4+"/login?phone="+phoneUser+"&pwd="+pwdInput);
-      // setUser(result.data);
-      // console.log(result.data.user_id);
       updateUserId(newUserId);
       if(result.data === null){
         console.log("Sai mật khẩu");
+        toggleModal();
+        setTxtError("Sai mật khẩu");
       }else{
-        
         navigation.navigate("MainNavigator", { user: result.data });
       }
     } catch (error) {
@@ -101,12 +87,12 @@ export default function App({ navigation, route }) {
 
   //Kiểm tra mật khẩu
   const checkPassword = () => {
-    if (password === "") {
+    if (pwdInput === "") {
       toggleModal();
       setTxtError("Không được để trống mật khẩu");
       return;
     }
-    if (password !== user.password) {
+    if (pwdInput !== userpr.password) {
       setCount((prevCount) => prevCount + 1);
       toggleModal();
       setTxtError("Sai mật khẩu");
@@ -115,7 +101,8 @@ export default function App({ navigation, route }) {
       }
       return;
     }
-    navigation.navigate("MainNavigator", { user: user });
+    navigation.navigate("MainNavigator", { user: userpr });
+    updateUserId(newUserId);
   };
 
   const toggleTooltip = () => {

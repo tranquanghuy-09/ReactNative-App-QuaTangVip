@@ -10,7 +10,9 @@ import {
   Dimensions,
   Image,
   KeyboardAvoidingView,
-  SafeAreaView
+  SafeAreaView,
+  Modal,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -22,9 +24,15 @@ import { useIsFocused } from '@react-navigation/native';
 const colorGray = "#8D8D8D";
 const colorRed = "red";
 const colorYellow = "#FFC62E";
+const colorBlack = "black";
 const screenWidth = Dimensions.get("window").width;
 const removeIcon = require("../../../assets/icons_Dai/ic_clear.webp");
 const iIcon = require("../../../assets/icons_Dai/ic_info_circle.webp");
+const errorIcon = require("../../../assets/icons_Dai/ic_error.webp");
+// Font
+const fontSize1 = 16;
+const fontSize2 = 14;
+
 
 //Chưa xử lý được:D
 // + Kiểm tra không phải số điện thoại việt nam
@@ -38,6 +46,10 @@ export default function App({ navigation, route }) {
     setPhoneNumber("");
   }, [isFocused]);
   const [phoneInput, setPhoneInput] = useState("");
+  const [txtError, setTxtError] = useState(null);
+  const toggleModal = () => {
+    setTxtError(null);
+  };
   const checkPhoneLogin = async () => {
     try {
       const result = await axios.get("http://"+ipv4+"/login_phone?phone="+phoneInput);
@@ -47,8 +59,14 @@ export default function App({ navigation, route }) {
         navigation.navigate("LoginPassword", { user:{
                                                     id: result.data.user_id,
                                                     phone: result.data.phone,
-                                                    sex: result.data.sex 
+                                                    sex: result.data.sex,
+                                                    password: result.data.password
                                                     }});
+
+      }else{
+        console.log("Không có user này");
+        toggleModal();
+        setTxtError("Vui lòng kiểm tra lại số điện thoại.");
       }
     } catch (error) {
       console.error("Error check phone:", error);
@@ -121,6 +139,86 @@ export default function App({ navigation, route }) {
 
   return (
     <View style={styles.container}>
+      {/* Modal thông báo sai mật khẩu */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={txtError !== null}
+      >
+        <TouchableWithoutFeedback onPress={toggleModal}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "rgba(0, 0, 0, 0.5)"
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: "white",
+                padding: 20,
+                borderRadius: 10,
+                width: "80%"
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between"
+                }}
+              >
+                <Image
+                  source={errorIcon}
+                  style={{
+                    width: 20,
+                    height: 20,
+                    resizeMode: "contain",
+                    alignSelf: "center",
+                    marginBottom: 10
+                  }}
+                />
+                <TouchableOpacity onPress={toggleModal}>
+                  <Text style={{ fontSize: fontSize1 }}>X</Text>
+                </TouchableOpacity>
+              </View>
+              <Text
+                style={{
+                  fontSize: fontSize1,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  paddingTop: 5,
+                }}
+              >
+                Tài khoản này không tồn tại
+              </Text>
+              <Text style={{ fontSize: fontSize2, marginBottom: 30, textAlign: 'center', marginTop: 10}}>
+                {txtError}
+              </Text>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: colorYellow,
+                  padding: 10,
+                  borderRadius: 5,
+                  alignItems: "center"
+                }}
+                onPress={toggleModal}
+              >
+                <Text
+                  style={{
+                    color: colorBlack,
+                    fontSize: fontSize1,
+                    fontWeight: "bold"
+                  }}
+                >
+                  Đồng ý
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+
       <View>
         <Text
           style={{

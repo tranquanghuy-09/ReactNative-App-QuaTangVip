@@ -5,7 +5,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   Animated,
-  Easing
+  Easing, TouchableOpacity, Image, Platform
 } from "react-native";
 
 // Color
@@ -14,9 +14,23 @@ const colorBlack = "black";
 const colorYellow = "#FFC62E";
 const colorBlue = "#0E86C6";
 
-const ContinuousReload = () => {
+const ContinuousReload = ({navigation}) => {
+  const isIPhone = Platform.OS === 'ios';
   const [loading, setLoading] = useState(true);
   const spinValue = useRef(new Animated.Value(0)).current; // useRef để lưu giá trị của Animated.Value(0) sau mỗi lần render
+
+  useEffect(() => {
+    navigation.setOptions({
+        headerLeft: () => (
+            <View style={{ marginLeft: 20 }} >
+                <TouchableOpacity onPress={() => navigation.navigate("Trang chủ")} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <Image source={require('../../../assets/icons/arrow-left.png')} style={{ width: 13, height: 15 }} />
+                    <Text style={{ marginLeft: 10, fontSize: isIPhone ? 15 : 17, fontWeight: 400, color: '#1A93D4' }}>Quay lại</Text>
+                </TouchableOpacity>
+            </View>
+        ),
+    });
+}, []); 
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -48,6 +62,9 @@ const ContinuousReload = () => {
   return (
     (
       <View style={styles.container}>
+        <View style={{ height: 50, paddingLeft: 25, top: -235, left: -40}}>
+          <Text style={{fontSize: 33, fontWeight: 'bold'}}>Theo dõi đơn hàng</Text>
+        </View>
         <Animated.View style={{ transform: [{ rotate: spin }] }}>
           <ActivityIndicator
             size="large"

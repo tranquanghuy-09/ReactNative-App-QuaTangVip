@@ -78,12 +78,12 @@ const Account = ({ navigation, route }) => {
         },
         {
           name: "Điều khoản Quà Tặng VIP",
-          link: "Điều khoản Quà Tặng VIP",
+          link: "",
           img: require("../../assets/icons_Dai/2490657-200.png")
         },
         {
           name: "Quản lý ứng dụng",
-          link: "Quản lý ứng dụng",
+          link: "",
           img: require("../../assets/icons_Dai/ics_setting.webp")
         }
       ]
@@ -168,7 +168,7 @@ const Account = ({ navigation, route }) => {
               >
                 Tính năng được phát triển
               </Text>
-              <Text style={{ fontSize: fontSize2, marginBottom: 30 }}>
+              <Text style={{ fontSize: fontSize2, marginBottom: 30, textAlign: 'justify', marginTop: 8}}>
                 Ứng dụng Quà tặng VIP sẽ mang tính năng này đến anh trong thời
                 gian sớm nhất. Mong anh thông cảm nhé!
               </Text>
