@@ -1,404 +1,439 @@
-// // import React, { useState } from "react";
-// // import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
-// // import { useNavigation } from '@react-navigation/native';
-// // export default function App() {
-// //   const [user, setUser] = useState({
-// //     name: "",
-// //     username: "",
-// //     email: "",
-// //   });
-// //   const { name, username, email } = user;
-// //   const onInputChange = (e) => {
-// //     setUser({ ...user, [e.target.name]: e.target.value });
-// //   };
-
-// //   const onSubmit = async (e) => {
-// //     e.preventDefault();
-// //     await axios.post("http://localhost:8080/user", user);
-// //     navigate("/");
-// //   };
-// //   return (
-// //     <View style={styles.container}>
-// //       <View style={styles.style1}>
-// //         <Text style={styles.title}>LOGIN</Text>
-// //       </View>
-// //       <View style={styles.style2}>
-// //       <TextInput
-// //         style={styles.input}
-// //         placeholder="Enter your name"
-// //         onChangeText={onInputChange}
-// //         value={name}
-// //       />
-// //         <View style={{ flexDirection: 'row', alignItems: 'center'}}>
-// //         {/* <TextInput
-// //         style={styles.input}
-// //         placeholder="Password"
-// //         secureTextEntry={true} // Để ẩn mật khẩu
-// //         onChangeText={(text) => onInputChange(text, 'password')}
-// //         value={password}
-// //       /> */}
-// //       <TextInput
-// //         style={styles.input}
-// //         placeholder="Enter your username"
-// //         onChangeText={onInputChange}
-// //         value={username}
-// //       />
-      
-// //         </View>
-// //         <View style={{ flexDirection: 'row', alignItems: 'center'}}>
-// //         <TextInput
-// //         style={styles.input}
-// //         placeholder="Enter your e-mail address"
-// //         onChangeText={onInputChange}
-// //         value={email}
-// //         keyboardType="email-address" // Kiểu bàn phím dành cho địa chỉ email
-// //       />
-// //         </View>
-// //         <TouchableOpacity style={styles.btnLogin}>
-// //           <Text style={{fontSize: 20, fontWeight: 'bold', color: 'white'}}>LOGIN</Text>
-// //         </TouchableOpacity>
-// //       </View>
-// //       <View style={styles.style3}>
-// //         <Text style={[styles.style3.style3_text,{marginTop:-20}]}>When you agree to terms and conditions</Text>
-// //         <TouchableOpacity onPress={() => handleNavigation('ForgetPassword')}>
-// //           <Text style={[styles.style3.style3_text, {color: '#5D25FA'}]}>For got your password</Text>
-// //         </TouchableOpacity>
-// //         <Text style={styles.style3.style3_text}>Or login with</Text>
-// //       </View>
-// //     </View>
-// //   );
-// // }
-
-// // const styles = StyleSheet.create({
-// //   container: {
-// //     flex: 1,
-// //     justifyContent: 'center',
-// //     alignItems: 'center',
-// //     backgroundColor: '#31AA5230',
-// //   },
-// //   style1: {
-// //     flex: 1,
-// //     justifyContent: 'center',
-// //     alignItems: 'center',
-// //     marginTop: 0,
-// //   },
-// //   style2: {
-// //     flex: 3,
-// //     justifyContent: 'center',
-// //     alignItems: 'center',
-// //   },
-// //   style3: {
-// //     flex: 1,
-// //     justifyContent: 'center',
-// //     alignItems: 'center',
-// //     style3_text:{
-// //       fontSize: 14,
-// //       fontWeight: 400,
-// //       marginTop:15,
-// //     }
-// //   },
-// //   style4: {
-// //     flex: 1,
-// //     justifyContent: 'center',
-// //     alignItems: 'center',
-// //     flexDirection: 'row',
-// //     marginTop: -20,
-// //     btn:{
-// //       borderColor: '#0680F1',
-// //       borderWidth: 1,
-// //       borderRadius: 2,
-// //       width: 110,
-// //       height: 45,
-// //       alignItems: 'center',
-// //       justifyContent: 'center',
-// //     },
-// //     image:{
-// //       width: 30,
-// //       height: 30,
-// //     }
-// //   },
-// //   input: {
-// //     height: 54,
-// //     width: 330,
-// //     margin: 12,
-// //     borderWidth: 1,
-// //     padding: 10,
-// //     fontSize: 18,
-// //     fontWeight: 400,
-// //     backgroundColor: '#C4C4C44D',
-// //     borderColor: '#F2F2F2',
-// //   },
-// //   title: {
-// //     fontSize: 25,
-// //     fontWeight: 'bold',
-// //   },
-// //   btnLogin: {
-// //     width: 330,
-// //     height: 45,
-// //     backgroundColor: 'red',
-// //     borderRadius: 2,
-// //     alignItems: 'center',
-// //     justifyContent: 'center',
-// //     marginTop: 50,
-// //   },
-// //   button: {
-// //     width: 150,
-// //     height: 50,
-// //     backgroundColor: '#e3c000',
-// //     borderRadius: 5,
-// //     alignItems: 'center',
-// //     justifyContent: 'center',
-// //   },
-// //   buttonText: {
-// //     fontSize: 16,
-// //     fontWeight: 'bold',
-// //     color: 'white',
-// //   },
-// // });
-
-
-// import axios from "axios";
-// import React, { useState } from "react";
-// import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
-
-// const AddUser = () => {
-//   const [user, setUser] = useState({
-//     name: "",
-//     username: "",
-//     email: "",
-//   });
-
-//   const { name, username, email } = user;
-
-//   const onInputChange = (fieldName, text) => {
-//     setUser({ ...user, [fieldName]: text });
-//   };
-
-//   const onSubmit = async (e) => {
-//     e.preventDefault();
-//     // Assuming you have navigation implemented in your app
-//     // Replace the following line accordingly
-//     console.log("Submitting:", user);
-//     await axios.post("http://localhost:8080/user", user);
-//     // navigate("/");
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <View style={styles.formContainer}>
-//         <Text style={styles.headerText}>Register User</Text>
-
-//         <View style={styles.inputContainer}>
-//           <Text style={styles.label}>Name</Text>
-//           <TextInput
-//             style={styles.input}
-//             placeholder="Enter your name"
-//             onChangeText={(text) => onInputChange("name", text)}
-//             value={name}
-//           />
-//         </View>
-
-//         <View style={styles.inputContainer}>
-//           <Text style={styles.label}>Username</Text>
-//           <TextInput
-//             style={styles.input}
-//             placeholder="Enter your username"
-//             onChangeText={(text) => onInputChange("username", text)}
-//             value={username}
-//           />
-//         </View>
-
-//         <View style={styles.inputContainer}>
-//           <Text style={styles.label}>E-mail</Text>
-//           <TextInput
-//             style={styles.input}
-//             placeholder="Enter your e-mail address"
-//             onChangeText={(text) => onInputChange("email", text)}
-//             value={email}
-//           />
-//         </View>
-
-//         <TouchableOpacity style={styles.submitButton} onPress={onSubmit}>
-//           <Text style={styles.buttonText}>Submit</Text>
-//         </TouchableOpacity>
-
-//         {/* Replace the following Link component accordingly based on your navigation system */}
-//         <TouchableOpacity style={styles.cancelButton} onPress={() => console.log("Cancel")}>
-//           <Text style={styles.buttonText}>Cancel</Text>
-//         </TouchableOpacity>
-//       </View>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: "center",
-//     padding: 20,
-//   },
-//   formContainer: {
-//     borderRadius: 10,
-//     padding: 20,
-//     backgroundColor: "#fff",
-//     shadowColor: "#000",
-//     shadowOffset: { width: 0, height: 2 },
-//     shadowOpacity: 0.25,
-//     shadowRadius: 4,
-//     elevation: 5,
-//   },
-//   headerText: {
-//     fontSize: 20,
-//     textAlign: "center",
-//     marginBottom: 20,
-//   },
-//   inputContainer: {
-//     marginBottom: 20,
-//   },
-//   label: {
-//     marginBottom: 5,
-//   },
-//   input: {
-//     height: 40,
-//     borderColor: "gray",
-//     borderWidth: 1,
-//     paddingLeft: 10,
-//   },
-//   submitButton: {
-//     backgroundColor: "#3498db",
-//     padding: 10,
-//     borderRadius: 5,
-//     alignItems: "center",
-//   },
-//   cancelButton: {
-//     backgroundColor: "#e74c3c",
-//     padding: 10,
-//     borderRadius: 5,
-//     alignItems: "center",
-//     marginTop: 10,
-//   },
-//   buttonText: {
-//     color: "white",
-//   },
-// });
-
-// export default AddUser;
-
-
-import axios from "axios";
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
-import { ipv4 } from "../global";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  Modal,
+  TouchableWithoutFeedback
+} from "react-native";
 
-const AddUser = () => {
-  const [user, setUser] = useState({
-    name: "",
-    username: "",
-    email: "",
-  });
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-  const { name, username, email } = user;
+const colorBlack = "#000000";
+const colorGray = "#A59464";
+const colorGrayLight = "#F7F7F7";
+const colorWhite = "#FFF";
+const colorRed = "red";
+const colorYellow = "#FFEEC0";
+const colorYellow2 = "#FFC62E";
+const colorBlue = "#105989";
 
-  const onInputChange = (fieldName, text) => {
-    setUser({ ...user, [fieldName]: text });
-  };
+const fontSize1 = 16;
+const fontSize2 = 14;
+const fontSize3 = 12;
+const fontSize4 = 10;
 
-  const onSubmit = async () => {
-    try {
-      // Thay localhost:8080 bằng địa chỉ IP máy chủ của bạn
-      await axios.post("http://172.20.10.9:8080/user", user);
-      // Thực hiện điều hướng đến màn hình mong muốn ở đây
-      console.log("Đăng ký thành công!");
-    } catch (error) {
-      console.error("Lỗi khi đăng ký:", error);
+//Chưa xử lý được:
+
+const Account = ({ navigation, route }) => {
+  // const user = route.params.user;
+  const obj={
+    id: 1,
+    name: "Không một ai",
+    phone: "0000000000",
+    password: "123",
+    sex: true
+  }
+  const name = obj.name;
+  const phone = obj.phone;
+
+  const avatar = require("../../assets/icons_Dai/ic_account_logo.webp");
+  const rightArrowIcon = require("../../assets/icons_Dai/ic_right.webp");
+  const logoutIcon = require("../../assets/icons_Dai/ic_logout.webp");
+  const version = "1.1.10 v246";
+  const brachImage = require("../../assets/icons_Dai/img_branchname.webp");
+  const cameraIcon = require("../../assets/icons_Dai/ic_camera.webp");
+  const developmentIcon = require("../../assets/icons_Dai/ic_development.webp");
+  const txtBrach =
+    " Ứng dụng tích điểm và sử dụng điểm dành cho Khách hàng của Tập đoàn Thế Giới Di Động (MWG)";
+  const data = [
+    {
+      name: "Tài khoản",
+      child: [
+        {
+          name: "Thông tin cá nhân",
+          link: "Thông tin cá nhân",
+          img: require("../../assets/icons_Dai/user.webp")
+        }
+      ]
+    },
+    {
+      name: "Khác",
+      child: [
+        {
+          name: "Cửa hàng gần bạn",
+          link: "Cửa hàng gần bạn",
+          img: require("../../assets/icons_Dai/maps.webp")
+        },
+        {
+          name: "Điều khoản Quà Tặng VIP",
+          link: "Điều khoản Quà Tặng VIP",
+          img: require("../../assets/icons_Dai/2490657-200.png")
+        },
+        {
+          name: "Quản lý ứng dụng",
+          link: "Quản lý ứng dụng",
+          img: require("../../assets/icons_Dai/ics_setting.webp")
+        }
+      ]
+    },
+    {
+      name: "Đối tác",
+      child: [
+        {
+          name: "Liên kết nhãn hàng",
+          link: "",
+          img: require("../../assets/icons_Dai/brand_affiliate.webp")
+        }
+      ]
     }
+  ];
+  //Xử lý sự kiện
+
+  const [isModalVisible, setModalVisible] = React.useState(false);
+
+  const onClick = (link) => {
+    if (link === "") {
+      toggleModal();
+      return;
+    }
+    navigation.navigate(link);
+  };
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.formContainer}>
-        <Text style={styles.headerText}>Đăng ký người dùng</Text>
+    <ScrollView style={{ flex: 1, backgroundColor: colorWhite, paddingVertical: 50}}>
+      {/* Thông f khi chưa có link*/}
+      <Modal
+        animationType="fade" // hiệu ứng khi mở modal
+        transparent={true} // màn hình nền có trong suốt hay không
+        visible={isModalVisible}
+      >
+        <TouchableWithoutFeedback onPress={toggleModal}>
+          {/* khi click ra ngoài thì modal sẽ tắt */}
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "rgba(0, 0, 0, 0.5)"
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: "white",
+                padding: 20,
+                borderRadius: 10,
+                width: "80%"
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between"
+                }}
+              >
+                <Image
+                  source={developmentIcon}
+                  style={{
+                    width: 20,
+                    height: 20,
+                    resizeMode: "contain",
+                    alignSelf: "center",
+                    marginBottom: 10
+                  }}
+                />
+                <TouchableOpacity onPress={() => setModalVisible(false)}>
+                  <Text style={{ fontSize: fontSize1 }}>X</Text>
+                </TouchableOpacity>
+              </View>
+              <Text
+                style={{
+                  fontSize: fontSize1,
+                  fontWeight: "bold"
+                }}
+              >
+                Tính năng được phát triển
+              </Text>
+              <Text style={{ fontSize: fontSize2, marginBottom: 30 }}>
+                Ứng dụng Quà tặng VIP sẽ mang tính năng này đến anh trong thời
+                gian sớm nhất. Mong anh thông cảm nhé!
+              </Text>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: colorYellow2,
+                  padding: 10,
+                  borderRadius: 5,
+                  alignItems: "center"
+                }}
+                onPress={toggleModal}
+              >
+                <Text
+                  style={{
+                    color: colorBlack,
+                    fontSize: fontSize1,
+                    fontWeight: "bold"
+                  }}
+                >
+                  Đồng ý
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+      {/* End thông f */}
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Họ và tên</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Nhập họ và tên của bạn"
-            onChangeText={(text) => onInputChange("name", text)}
-            value={name}
-          />
+      <View
+        style={{
+          paddingHorizontal: 16,
+          paddingTop: 10,
+          backgroundColor: colorWhite
+        }}
+      >
+        <View
+          style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}
+        >
+          {/* Ảnh đại diện */}
+          <TouchableOpacity>
+            {/* avatar */}
+            <Image
+              accessible={true}
+              accessibilityLabel="Profile Image"
+              source={avatar}
+              style={{ width: 50, height: 50, borderRadius: 25 }}
+            />
+            {/* Ảnh biểu tượng nhỏ góc phải của avatar */}
+            <Image
+              accessible={true}
+              accessibilityLabel="Camera Icon"
+              source={cameraIcon}
+              style={{
+                width: 20,
+                height: 20,
+                resizeMode: "contain",
+                position: "absolute",
+                bottom: -2,
+                right: 0,
+                tintColor: colorBlue,
+                backgroundColor: colorWhite,
+                borderRadius: 10,
+                borderWidth: 2,
+                borderColor: colorWhite
+              }}
+            />
+          </TouchableOpacity>
+          <View style={{ marginLeft: 20 }}>
+            <Text style={{ fontWeight: "bold", fontSize: fontSize1 }}>
+              {name}
+            </Text>
+            <Text
+              style={{
+                color: colorBlack,
+                fontSize: fontSize1,
+                marginTop: 5
+              }}
+            >
+              {phone}
+            </Text>
+          </View>
         </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Tên người dùng</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Nhập tên người dùng"
-            onChangeText={(text) => onInputChange("username", text)}
-            value={username}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>E-mail</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Nhập địa chỉ e-mail"
-            onChangeText={(text) => onInputChange("email", text)}
-            value={email}
-          />
-        </View>
-
-        <TouchableOpacity style={styles.submitButton} onPress={onSubmit}>
-          <Text style={styles.buttonText}>Đăng ký</Text>
-        </TouchableOpacity>
       </View>
-    </View>
+
+      <View
+        accessible={true}
+        accessibilityLabel="Options"
+        style={{ marginTop: 10, backgroundColor: colorWhite }}
+      >
+        {data.map((item, index) => (
+          <View
+            accessible={true}
+            accessibilityLabel={item.name}
+            key={index}
+            style={{
+              paddingVertical: 10,
+              paddingHorizontal: 16
+            }}
+          >
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: fontSize1,
+                color: colorBlack,
+                marginBottom: 15
+              }}
+            >
+              {item.name}
+            </Text>
+            <View style={{ backgroundColor: colorGrayLight, borderRadius: 20 }}>
+              {item.child.map((child, childIndex) => (
+                <React.Fragment key={childIndex}>
+                  {/* Chức năng con */}
+                  <TouchableOpacity
+                    key={childIndex}
+                    style={{
+                      paddingVertical: 10,
+                      paddingHorizontal: 16,
+                      marginBottom: 0,
+                      width: (Dimensions.get("window").width * 90) / 100
+                    }}
+                    onPress={() => onClick(child.link)}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        height: 40
+                      }}
+                    >
+                      <Image
+                        source={child.img}
+                        style={{
+                          flex: 1,
+                          width: 22,
+                          height: 22,
+                          resizeMode: "contain",
+                          tintColor: "#F2C069"
+                        }}
+                      />
+                      <Text
+                        style={{
+                          flex: 5,
+                          color: colorBlack,
+                          fontSize: fontSize1
+                        }}
+                      >
+                        {child.name}
+                      </Text>
+                      <Image
+                        accessible={true}
+                        accessibilityLabel="Arrow Icon"
+                        source={rightArrowIcon}
+                        style={{
+                          flex: 0.5,
+                          width: 100,
+                          height: 100,
+                          tintColor: colorBlack,
+                          resizeMode: "contain"
+                        }}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                  {/* Gạch chân    */}
+                  {childIndex === item.child.length - 1 ? null : (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center"
+                      }}
+                    >
+                      <View style={{ flex: 1 }}></View>
+                      <View
+                        style={{
+                          flex: 5,
+                          borderBottomWidth: 2,
+                          borderColor: "#EAEAEA"
+                        }}
+                      ></View>
+                      <View style={{ flex: 1 }}></View>
+                    </View>
+                  )}
+                </React.Fragment>
+              ))}
+            </View>
+          </View>
+        ))}
+      </View>
+      <TouchableOpacity
+        style={{
+          flex: 1,
+          marginTop: 15,
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "row"
+        }}
+      >
+        <Image
+          source={logoutIcon}
+          style={{
+            width: 20,
+            height: 20,
+            resizeMode: "contain",
+            tintColor: colorRed
+          }}
+        />
+        <Text
+          style={{
+            color: colorRed,
+            fontSize: fontSize1,
+            marginLeft: 5,
+            fontWeight: 500
+          }}
+        >
+          Thoát tài khoản
+        </Text>
+      </TouchableOpacity>
+      {/* Giới thiệu */}
+      <View
+        style={{
+          flexDirection: "column",
+          marginTop: 25,
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            backgroundColor: colorYellow,
+            width: (Dimensions.get("window").width * 85) / 100,
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 5,
+            padding: 10
+          }}
+        >
+          <Image
+            source={brachImage}
+            style={{ flex: 3, width: 50, height: 50, resizeMode: "contain" }}
+          ></Image>
+          <Text
+            style={{
+              flex: 5,
+              fontSize: fontSize4,
+              color: colorGray,
+              fontWeight: 500,
+              marginLeft: 10
+            }}
+          >
+            {txtBrach}
+          </Text>
+        </View>
+        <Text
+          style={{
+            color: "#B49D5C",
+            fontSize: fontSize3,
+            textAlign: "center",
+            marginTop: 10,
+            marginBottom: 75,
+            fontWeight: 500
+          }}
+        >
+          Phiên bản: {version}
+        </Text>
+      </View>
+      <View style={{height: 60}}>
+      </View>
+    </ScrollView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 20,
-  },
-  formContainer: {
-    borderRadius: 10,
-    padding: 20,
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  headerText: {
-    fontSize: 20,
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
-  label: {
-    marginBottom: 5,
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    paddingLeft: 10,
-  },
-  submitButton: {
-    backgroundColor: "#3498db",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "white",
-  },
-});
-
-export default AddUser;
+export default Account;

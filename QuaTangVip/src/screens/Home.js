@@ -92,7 +92,7 @@ export default function App({navigation, route}) {
         </View>
         <View style={{borderWidth: 0, width: '100%', padding: 30}}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}}>
+            <TouchableOpacity onPress={()=>navigation.navigate('OrderTracking')} style={{justifyContent:'center', alignItems: 'center'}}>
               <View style={{backgroundColor: '#F1FCF6', width: 70, height: 70, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}}>
                 <Image source={require('../../assets/images/purchase-order.png')} style={{width: 30, height: 30}} />
               </View>
@@ -100,7 +100,7 @@ export default function App({navigation, route}) {
                 <Text style={{fontSize: 14, color: '#605F5F', color: '#7B7B7B', textAlign: 'center'}}>Theo dõi đơn hàng</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}}>
+            <TouchableOpacity onPress={()=>navigation.navigate('WarrantyAndMaintenance')} style={{justifyContent:'center', alignItems: 'center'}}>
               <View style={{backgroundColor: '#EFFCFB', width: 70, height: 70, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}}>
                 <Image source={require('../../assets/images/tools.png')} style={{width: 30, height: 30}} />
               </View>
@@ -108,7 +108,7 @@ export default function App({navigation, route}) {
                 <Text style={{fontSize: 14, color: '#605F5F', color: '#7B7B7B', textAlign: 'center'}}>Hỗ trợ bảo hành, sửa chữa</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}}>
+            <TouchableOpacity onPress={()=>navigation.navigate('Góp ý, khiếu nại')}  style={{justifyContent:'center', alignItems: 'center'}}>
               <View style={{backgroundColor: '#F9EFF0', width: 70, height: 70, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}}>
                 <Image source={require('../../assets/images/chat.png')} style={{width: 30, height: 30}} />
               </View>
@@ -155,7 +155,7 @@ export default function App({navigation, route}) {
             horizontal={true}>
               <Image
                 source={require('../../assets/images/banner3.png')}
-                style={{width: isIPhone?350:385, height: isIPhone?110:130, borderRadius: 18, marginHorizontal: Platform.OS==='ios'?13:13, overflow: 'hidden' }}
+                style={{width: isIPhone?350:385, height: isIPhone?110:120, borderRadius: 18, marginHorizontal: Platform.OS==='ios'?13:13, overflow: 'hidden' }}
               />
             <Image
               source={require('../../assets/images/banner1.png')}
