@@ -1,4 +1,4 @@
-export const ipv4 = '192.168.40.48:8080';
+export const ipv4 = '172.20.10.9:8080';
 
 // export const ipv4 = 'localhost:8080';
 

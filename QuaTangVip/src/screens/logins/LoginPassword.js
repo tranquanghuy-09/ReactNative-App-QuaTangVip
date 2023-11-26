@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Platform } from 'react-native';
 
 // Color
 const colorGray = "#8D8D8D";
@@ -23,12 +24,12 @@ const colorBlue = "#0E86C6";
 const screenWidth = Dimensions.get("window").width;
 
 // Icon
-const clockIcon = require("../../assets/icons_Dai/assets_images_ic_light_lock.webp");
-const iIcon = require("../../assets/icons_Dai/ic_info_circle.webp");
-const showIcon = require("../../assets/icons_Dai/design_ic_visibility.png");
-const hideIcon = require("../../assets/icons_Dai/design_ic_visibility_off.png");
-const fingerprintIcon = require("../../assets/icons_Dai/ic_fingerprint.webp");
-const errorIcon = require("../../assets/icons_Dai/ic_error.webp");
+const clockIcon = require("../../../assets/icons_Dai/assets_images_ic_light_lock.webp");
+const iIcon = require("../../../assets/icons_Dai/ic_info_circle.webp");
+const showIcon = require("../../../assets/icons_Dai/design_ic_visibility.png");
+const hideIcon = require("../../../assets/icons_Dai/design_ic_visibility_off.png");
+const fingerprintIcon = require("../../../assets/icons_Dai/ic_fingerprint.webp");
+const errorIcon = require("../../../assets/icons_Dai/ic_error.webp");
 
 // Font
 const fontSize1 = 16;
@@ -76,7 +77,7 @@ export default function App({ navigation, route }) {
       }
       return;
     }
-    navigation.navigate("Home", { user: user });
+    navigation.navigate("MainNavigator", { user: user });
   };
 
   const toggleTooltip = () => {
@@ -367,7 +368,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    paddingBottom: 30
   },
   icon: {
     resizeMode: "contain",

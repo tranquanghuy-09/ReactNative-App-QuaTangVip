@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
-
+import React, { useState, useEffect, useCallback,} from "react";
+import { Platform } from 'react-native';
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  SafeAreaView
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -18,8 +19,8 @@ const colorGray = "#8D8D8D";
 const colorRed = "red";
 const colorYellow = "#FFC62E";
 const screenWidth = Dimensions.get("window").width;
-const removeIcon = require("../../assets/icons_Dai/ic_clear.webp");
-const iIcon = require("../../assets/icons_Dai/ic_info_circle.webp");
+const removeIcon = require("../../../assets/icons_Dai/ic_clear.webp");
+const iIcon = require("../../../assets/icons_Dai/ic_info_circle.webp");
 
 //Chưa xử lý được:D
 // + Kiểm tra không phải số điện thoại việt nam
@@ -101,7 +102,8 @@ export default function App({ navigation, route }) {
             fontWeight: "bold",
             marginBottom: 20,
             marginTop: 50,
-            textAlign: "center"
+            textAlign: "center",
+            paddingTop: 20
           }}
         >
           Đăng nhập
@@ -221,6 +223,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    paddingVertical: 30
   }
 });

@@ -21,9 +21,9 @@ import * as Permissions from "expo-permissions";
 //Quyền truy cập thư viện ảnh
 
 import Ionicons from "react-native-vector-icons/Ionicons";
-import IconCamera from "../../assets/icons_Dai/ic_camera.webp";
-import IconImage from "../../assets/icons_Dai/ic_copy_new.webp";
-import IconBack from "../../assets/icons_Dai/node_modules_reactnavigation_stack_src_views_assets_backicon.png";
+import IconCamera from "../../../assets/icons_Dai/ic_camera.webp";
+import IconImage from "../../../assets/icons_Dai/ic_copy_new.webp";
+import IconBack from "../../../assets/icons_Dai/node_modules_reactnavigation_stack_src_views_assets_backicon.png";
 const Stack = createStackNavigator();
 
 //Chưa xong:

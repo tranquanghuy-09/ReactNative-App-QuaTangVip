@@ -32,6 +32,7 @@ import {
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
+import { Platform } from "react-native";
 
 //Thử nghiệm tạo button trên map nhưng không được => do sắp xếp thứ tụ sai: button nằm dưới hàm xử lý :(((((
 
@@ -42,15 +43,16 @@ import { useNavigation } from "@react-navigation/native";
 // Chưa hiển thị con đường đến cửa hàng
 
 const NearbyStore = ({ navigation, route }) => {
+  const isIPhone = Platform.OS === 'ios';
   //Ảnh
-  const goBackImage = require("../../assets/icons_Dai/node_modules_reactnavigation_stack_src_views_assets_backicon.png");
-  const myLocationImage = require("../../assets/icons_Dai/ic_my_location.webp");
+  const goBackImage = require("../../../assets/icons_Dai/node_modules_reactnavigation_stack_src_views_assets_backicon.png");
+  const myLocationImage = require("../../../assets/icons_Dai/ic_my_location.webp");
   //Iocn logo 5 loại cửa hàng
-  const theGioiDiDongImage = require("../../assets/icons_Dai/logo_branch_tgdd.webp");
-  const dienMayXanhIcon = require("../../assets/icons_Dai/phat-trien-website-dien-may-xanh-16233.jpeg");
-  const anKhangIcon = require("../../assets/icons_Dai/nha-thuoc-an-khang-tra-cuu-chi-tiet-thong-tin-thuoc-logo-06-07-2021.png");
-  const aVAKIDSIcon = require("../../assets/icons_Dai/file.jpg");
-  const aVACareIcon = require("../../assets/icons_Dai/thumbtopzone2_800x450-600x400.jpg");
+  const theGioiDiDongImage = require("../../../assets/icons_Dai/logo_branch_tgdd.webp");
+  const dienMayXanhIcon = require("../../../assets/icons_Dai/phat-trien-website-dien-may-xanh-16233.jpeg");
+  const anKhangIcon = require("../../../assets/icons_Dai/nha-thuoc-an-khang-tra-cuu-chi-tiet-thong-tin-thuoc-logo-06-07-2021.png");
+  const aVAKIDSIcon = require("../../../assets/icons_Dai/file.jpg");
+  const aVACareIcon = require("../../../assets/icons_Dai/thumbtopzone2_800x450-600x400.jpg");
   //Màu
   const colorYellow = "#FFC62E";
   const colorGray = "#BDBDBD";
@@ -60,12 +62,12 @@ const NearbyStore = ({ navigation, route }) => {
   //Độ phóng to
   const zoom = 0.002;
   //Icon
-  const upIcon = require("../../assets/icons_Dai/ic_up.webp");
-  const downIcon = require("../../assets/icons_Dai/ic_down.webp");
-  const shopIcon = require("../../assets/icons_Dai/ic_shop.webp");
-  const mapIcon = require("../../assets/icons_Dai/maps.webp");
-  const clockIcon = require("../../assets/icons_Dai/lovepik-clock-icon-png-image_401467032_wh1200.png");
-  const closeIcon = require("../../assets/icons_Dai/ic_close.webp");
+  const upIcon = require("../../../assets/icons_Dai/ic_up.webp");
+  const downIcon = require("../../../assets/icons_Dai/ic_down.webp");
+  const shopIcon = require("../../../assets/icons_Dai/ic_shop.webp");
+  const mapIcon = require("../../../assets/icons_Dai/maps.webp");
+  const clockIcon = require("../../../assets/icons_Dai/lovepik-clock-icon-png-image_401467032_wh1200.png");
+  const closeIcon = require("../../../assets/icons_Dai/ic_close.webp");
 
   //Height của thanh dưới
   const [lowerBarLength, setlowerBarLength] = useState(false);
@@ -344,7 +346,7 @@ const NearbyStore = ({ navigation, route }) => {
   ];
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1,}}>
       {location ? (
         <MapView
           ref={mapViewRef}
@@ -406,11 +408,12 @@ const NearbyStore = ({ navigation, route }) => {
         style={{
           width: "100%",
           position: "absolute",
-          marginTop: 80,
+          marginTop: isIPhone?60:80,
           padding: 20,
           zIndex: 1,
           flexDirection: "row",
           justifyContent: "space-between"
+
         }}
       >
         {button.map((item) => (
@@ -588,7 +591,8 @@ const NearbyStore = ({ navigation, route }) => {
                     justifyContent: "center",
                     alignItems: "center",
                     borderRadius: 25,
-                    position: "absolute"
+                    position: "absolute",
+                    bottom: isIPhone?7:0,
                   }}
                 >
                   <Image

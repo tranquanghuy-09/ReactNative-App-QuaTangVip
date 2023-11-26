@@ -16,9 +16,9 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { Picker } from "@react-native-picker/picker";
 
 // Icon
-const theGioiDiDongImage = require("../../assets/icons_Dai/logo_branch_tgdd.webp");
-const dienMayXanhIcon = require("../../assets/icons_Dai/phat-trien-website-dien-may-xanh-16233.jpeg");
-const emptyIcon = require("../../assets/icons_Dai/ic_empty.webp");
+const theGioiDiDongImage = require("../../../assets/icons_Dai/logo_branch_tgdd.webp");
+const dienMayXanhIcon = require("../../../assets/icons_Dai/phat-trien-website-dien-may-xanh-16233.jpeg");
+const emptyIcon = require("../../../assets/icons_Dai/ic_empty.webp");
 
 // Color
 const colorRed = "red";
