@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback,} from "react";
-import { Platform } from 'react-native';
+import React, { useState, useEffect, useCallback } from "react";
+import { Platform } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -16,10 +16,9 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import {ipv4} from '../../global';
-import axios from 'axios';
-import { useIsFocused } from '@react-navigation/native';
-
+import { ipv4 } from "../../global";
+import axios from "axios";
+import { useIsFocused } from "@react-navigation/native";
 
 const colorGray = "#8D8D8D";
 const colorRed = "red";
@@ -45,6 +44,7 @@ export default function App({ navigation, route }) {
     setPhoneInput("");
     setPhoneNumber("");
   }, [isFocused]);
+
   const [phoneInput, setPhoneInput] = useState("");
   const [txtError, setTxtError] = useState(null);
   const toggleModal = () => {
@@ -52,7 +52,9 @@ export default function App({ navigation, route }) {
   };
   const checkPhoneLogin = async () => {
     try {
-      const result = await axios.get("http://"+ipv4+"/login_phone?phone="+phoneInput);
+      const result = await axios.get(
+        "http://" + ipv4 + "/login_phone?phone=" + phoneInput
+      );
       // setUser(result.data);
       // console.log(result.data);
       if(!(result.data === null)){
@@ -258,7 +260,7 @@ export default function App({ navigation, route }) {
             }}
             keyboardType="numeric"
             maxLength={12}
-            onChangeText={(text)=>{
+            onChangeText={(text) => {
               handleTextChange(text);
               setPhoneInput(text);
             }}

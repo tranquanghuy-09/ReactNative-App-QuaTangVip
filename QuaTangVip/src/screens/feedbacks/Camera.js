@@ -47,11 +47,12 @@ import {
 } from "react-native";
 import { Camera } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from '@react-navigation/native';
 
-const CameraScreen = () => {
+const CameraScreen = ({ navigation, route }) => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const cameraRef = useRef();
-  const navigation = useNavigation();
+  const pageOld = route.params?.pageOld;
 
   useEffect(() => {
     // Kiểm tra và yêu cầu quyền truy cập camera khi màn hình được tải lần đầu
@@ -59,6 +60,8 @@ const CameraScreen = () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasCameraPermission(status === "granted");
 
+      // Xem màn hình cũ
+      console.log("pageOld: " + pageOld);
       // Hiển thị thông báo nếu quyền truy cập camera bị từ chối
       if (status !== "granted") {
         Alert.alert(
@@ -68,7 +71,7 @@ const CameraScreen = () => {
             {
               text: "OK",
               onPress: () => {
-                navigation.navigate("Góp ý, khiếu nại");
+                navigation.goBack();
               }
             }
           ]
@@ -87,7 +90,14 @@ const CameraScreen = () => {
       });
 
       // Chuyển tiếp về trang cũ và gửi hình ảnh
-      navigation.navigate("Góp ý, khiếu nại", { imgNew: uri });
+      
+      console.log("uri"+uri);
+      try {
+        
+        navigation.navigate(pageOld, { imgNew: uri });
+      } catch (error) {
+        console.error("Lỗi khi chuyển đến màn hình Camera:", error);
+      }
     }
   };
 
