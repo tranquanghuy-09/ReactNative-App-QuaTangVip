@@ -67,8 +67,9 @@ export default function App({ navigation, route }) {
 
       }else{
         console.log("Không có user này");
-        toggleModal();
-        setTxtError("Vui lòng kiểm tra lại số điện thoại.");
+        navigation.navigate("SignUp", { phone: phoneInput });
+        // toggleModal();
+        // setTxtError("Vui lòng kiểm tra lại số điện thoại.");
       }
     } catch (error) {
       console.error("Error check phone:", error);

@@ -13,9 +13,11 @@ import OrderEquipmentCleaningScreen from './equipment_cleanings/OrderEquipmentCl
 import OrderTracking from "./order_trackings/OrderTracking"
 import WarrantyAndMaintenance from "./warranty_maintenances/WarrantyAndMaintenance"
 import SuggestionsAndFeedBack from "./feedbacks/SuggestionsAndFeedBack"
-// import Camera from "./feedbacks/Camera"
+import Camera from "./feedbacks/Camera"
 import NearbyStore from "./accounts/NearbyStore"
 import OrderDetail from "./orders/OrderDetail";
+import InforUser from "./accounts/InforUser";
+
 const isIPhone = Platform.OS === 'ios';
 
 const Stack = createStackNavigator();
@@ -182,10 +184,6 @@ const HomeNavigation = ({navigation, route}) => {
 
         />
         <Stack.Screen name='Camera' component={Camera}/>
-        <Stack.Screen name='OrderTracking' component={OrderTracking}/>
-        <Stack.Screen name='WarrantyAndMaintenance' component={WarrantyAndMaintenance}/>
-        <Stack.Screen name='Góp ý, khiếu nại' component={SuggestionsAndFeedBack}/>
-        {/* <Stack.Screen name='Camera' component={Camera}/> */}
         <Stack.Screen name='Cửa hàng gần bạn' component={NearbyStore} options={{headerShown: false}}/>
         <Stack.Screen name="OrderDetail" component={OrderDetail} options={{
             headerTitleAlign: 'left',
@@ -199,6 +197,7 @@ const HomeNavigation = ({navigation, route}) => {
                 <View style={{backgroundColor: 'rgba(245, 245, 245, 1)', flex: 1}}/>
             ),
         }}/>
+        <Stack.Screen name='Thông tin cá nhân' component={InforUser}/>
     </Stack.Navigator>
 
   )
