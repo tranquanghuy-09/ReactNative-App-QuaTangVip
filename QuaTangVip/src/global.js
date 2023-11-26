@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 export const ipv4 = '172.20.0.1:8080';
-=======
-export const ipv4 = '192.168.1.7:8080';
-export const user_id = '0';
->>>>>>> f38173e1699495a89588aa4304d7f915df09579d
 
 // export const ipv4 = 'localhost:8080';
 
