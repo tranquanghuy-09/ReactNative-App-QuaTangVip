@@ -43,7 +43,7 @@ import { Platform } from "react-native";
 // Chưa hiển thị con đường đến cửa hàng
 
 const NearbyStore = ({ navigation, route }) => {
-  const isIPhone = Platform.OS === 'ios';
+  const isIPhone = Platform.OS === "ios";
   //Ảnh
   const goBackImage = require("../../../assets/icons_Dai/node_modules_reactnavigation_stack_src_views_assets_backicon.png");
   const myLocationImage = require("../../../assets/icons_Dai/ic_my_location.webp");
@@ -278,29 +278,29 @@ const NearbyStore = ({ navigation, route }) => {
   }
 
   // Xử lý khi người dùng vuốt lên hoặc xuống
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponderCapture: () => true,
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: (_, gestureState) => {
-        // Di chuyển lên
-        if (gestureState.dy < 0) {
-          setUpDownIcon(downIcon);
-          setlowerBarLength(true);
-          console.log("Moving up", gestureState.dy);
-        } else {
-          // // Di chuyển xuống
-          setUpDownIcon(upIcon);
-          setlowerBarLength(false);
-          console.log("Moving down", gestureState.dy);
-        }
-      },
-      onPanResponderRelease: (_, gestureState) => {
-        // Xử lý khi người dùng nhả tay
-        console.log("Released", gestureState.dy);
-      }
-    })
-  ).current;
+  // const panResponder = useRef(
+  //   PanResponder.create({
+  //     onMoveShouldSetPanResponderCapture: () => true,
+  //     onMoveShouldSetPanResponder: () => true,
+  //     onPanResponderMove: (_, gestureState) => {
+  //       // Di chuyển lên
+  //       if (gestureState.dy < 0) {
+  //         // setUpDownIcon(downIcon);
+  //         // setlowerBarLength(true);
+  //         console.log("Moving up", gestureState.dy);
+  //       } else {
+  //         // // Di chuyển xuống
+  //         // setUpDownIcon(upIcon);
+  //         // setlowerBarLength(false);
+  //         console.log("Moving down", gestureState.dy);
+  //       }
+  //     },
+  //     onPanResponderRelease: (_, gestureState) => {
+  //       // Xử lý khi người dùng nhả tay
+  //       console.log("Released", gestureState.dy);
+  //     }
+  //   })
+  // ).current;
 
   //Xử lý thay đổi độ dài thanh dưới với 2 kich thước măc định
   const handleScroll = () => {
@@ -346,7 +346,7 @@ const NearbyStore = ({ navigation, route }) => {
   ];
 
   return (
-    <View style={{ flex: 1,}}>
+    <View style={{ flex: 1 }}>
       {location ? (
         <MapView
           ref={mapViewRef}
@@ -408,12 +408,11 @@ const NearbyStore = ({ navigation, route }) => {
         style={{
           width: "100%",
           position: "absolute",
-          marginTop: isIPhone?60:80,
+          marginTop: isIPhone ? 60 : 80,
           padding: 20,
           zIndex: 1,
           flexDirection: "row",
           justifyContent: "space-between"
-
         }}
       >
         {button.map((item) => (
@@ -471,7 +470,8 @@ const NearbyStore = ({ navigation, route }) => {
 
       <View
         style={{
-          width: widthMAX,
+          flex: 1,
+          width: "100%",
           position: "absolute",
           bottom: 0,
           height: lowerBarLength ? 575 : 215, //215
@@ -479,17 +479,19 @@ const NearbyStore = ({ navigation, route }) => {
           flexDirection: "column",
           alignItems: "center"
         }}
-        {...panResponder.panHandlers} //Lắng nghe sự kiện vuốt lên hoặc xuống
+        // {...panResponder.panHandlers} //Lắng nghe sự kiện vuốt lên hoặc xuống
       >
-        <Image
-          source={upDownIcon}
-          style={{
-            width: 150,
-            height: 30,
-            tintColor: colorGray,
-            resizeMode: "stretch"
-          }}
-        ></Image>
+        <TouchableOpacity onPress={handleScroll}>
+          <Image
+            source={upDownIcon}
+            style={{
+              width: 150,
+              height: 30,
+              tintColor: colorGray,
+              resizeMode: "stretch"
+            }}
+          ></Image>
+        </TouchableOpacity>
         {/* Nội dung của thanh cuối */}
         {infoStore == null ? (
           <>
@@ -503,7 +505,7 @@ const NearbyStore = ({ navigation, route }) => {
                     <View
                       key={store.id}
                       style={{
-                        width: "90%",
+                        width: Dimensions.get("window").width,
                         height: 150,
                         flexDirection: "row",
                         padding: 10,
@@ -511,18 +513,20 @@ const NearbyStore = ({ navigation, route }) => {
                         borderColor: colorGray
                       }}
                     >
-                      <Image
-                        source={item.icon}
-                        style={{
-                          width: 30,
-                          height: 30,
-                          borderRadius: 25,
-                          marginBottom: 10,
-                          marginLeft: 20,
-                          marginRight: 20,
-                          marginTop: 0
-                        }}
-                      />
+                      <TouchableOpacity onPress={() => setinfoStore(true)}>
+                        <Image
+                          source={item.icon}
+                          style={{
+                            width: 30,
+                            height: 30,
+                            borderRadius: 25,
+                            marginBottom: 10,
+                            marginLeft: 20,
+                            marginRight: 20,
+                            marginTop: 0
+                          }}
+                        />
+                      </TouchableOpacity>
                       <View
                         style={{
                           flexDirection: "column"
@@ -543,12 +547,12 @@ const NearbyStore = ({ navigation, route }) => {
                         <Text
                           style={{
                             color: colorGray,
-                            fontSize: 16,
-                            width: "65%"
+                            fontSize: 16
                           }}
                         >
                           {store.local}
                         </Text>
+                        {/* Nút đóng trở về màn hình */}
                         <TouchableOpacity
                           style={{}}
                           onPress={() => handleShowStore(item, store)}
@@ -564,6 +568,7 @@ const NearbyStore = ({ navigation, route }) => {
                             Chi tiết cửa hàng
                           </Text>
                         </TouchableOpacity>
+                        {/* Nút thay đổi kích thước cửa sổ */}
                       </View>
                     </View>
                   ))
@@ -592,7 +597,7 @@ const NearbyStore = ({ navigation, route }) => {
                     alignItems: "center",
                     borderRadius: 25,
                     position: "absolute",
-                    bottom: isIPhone?7:0,
+                    bottom: isIPhone ? 7 : 0
                   }}
                 >
                   <Image
@@ -684,7 +689,13 @@ const NearbyStore = ({ navigation, route }) => {
                   marginTop: 0
                 }}
               />
-              <Text style={{ fontSize: 1, marginRight: 20 }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  marginRight: 20,
+                  width: Dimensions.get("window").width * 0.7
+                }}
+              >
                 {infoStore.local}
               </Text>
             </View>

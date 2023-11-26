@@ -26,6 +26,7 @@ const colorYellow = "#FFC62E";
 // Chức năng tạo mã 6 số ngẫu nhiên
 // Xoá sang trái, nhập sang phải
 export default function App({ navigation, route }) {
+  const {phone} = route.params;
   const [txtxAuthentication, setTxtxAuthentication] = useState(
     generateRandomCode(6)
   );
@@ -67,6 +68,7 @@ export default function App({ navigation, route }) {
       const verificationCode = newCodes.join("");
       if (verificationCode === txtxAuthentication) {
         Alert.alert("Xác thực thành công");
+        navigation.navigate("infoLogin");
       }
     }
   };
@@ -94,6 +96,7 @@ export default function App({ navigation, route }) {
     const verificationCode = codes.join("");
     if (verificationCode === txtxAuthentication) {
       Alert.alert("Xác thực thành công");
+      navigation.navigate("infoLogin");
     } else {
       Alert.alert("Mã xác nhận không đúng");
     }
