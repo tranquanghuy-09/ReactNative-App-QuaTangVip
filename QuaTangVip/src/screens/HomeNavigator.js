@@ -10,6 +10,11 @@ import Home from './Home';
 import OnlineSupport from './OnlineSupport';
 import ScheduleCleaning from './ScheduleCleaning';
 import OrderEquipmentCleaningScreen from './equipment_cleanings/OrderEquipmentCleaning';
+import OrderTracking from "./order_trackings/OrderTracking"
+import WarrantyAndMaintenance from "./warranty_maintenances/WarrantyAndMaintenance"
+import SuggestionsAndFeedBack from "./feedbacks/SuggestionsAndFeedBack"
+import Camera from "./feedbacks/Camera"
+import NearbyStore from "./accounts/NearbyStore"
 
 const Stack = createStackNavigator();
 
@@ -20,7 +25,7 @@ const HomeNavigation = ({navigation, route}) => {
 
     const isIPhone = Platform.OS === 'ios';
     React.useLayoutEffect(() => {
-        const tabHiddenRoutes = ["Hỗ trợ trực tuyến","Quà của tôi", "Đặt lịch vệ sinh thiết bị", "OrderEquipmentCleaningScreen"];
+        const tabHiddenRoutes = ["Hỗ trợ trực tuyến","Quà của tôi", "Đặt lịch vệ sinh thiết bị", "OrderEquipmentCleaningScreen", "Góp ý, khiếu nại", "Camera", "Cửa hàng gần bạn"];
         if(tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))){
             navigation.setOptions({tabBarStyle: {display: 'none'}});
         } else {
@@ -109,6 +114,11 @@ const HomeNavigation = ({navigation, route}) => {
         }}
         
         />
+        <Stack.Screen name='OrderTracking' component={OrderTracking}/>
+        <Stack.Screen name='WarrantyAndMaintenance' component={WarrantyAndMaintenance}/>
+        <Stack.Screen name='Góp ý, khiếu nại' component={SuggestionsAndFeedBack}/>
+        <Stack.Screen name='Camera' component={Camera}/>
+        <Stack.Screen name='Cửa hàng gần bạn' component={NearbyStore} options={{headerShown: false}}/>
     </Stack.Navigator>
 
   )
