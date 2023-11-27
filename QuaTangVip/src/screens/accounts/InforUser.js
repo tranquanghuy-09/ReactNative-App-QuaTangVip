@@ -99,14 +99,14 @@ const {userGL} = useUser();
   };
   const [user, setUser] = useState({
         id: 1,
-        name: "Không một ai",
-        phone: "0000000000",
+        name: "",
+        phone: "",
         password: "123",
         sex: true,
         date: "2023-11-26",
-        address: "Gia Lai",
-        city: "Gia Lai",
-        email: "d@gmail.com",
+        address: "",
+        city: "",
+        email: "",
         // img: "file:///var/mobile/Containers/Data/Application/0997EAF5-2ACD-40A5-AEFD-1F18616E0643/Library/Caches/ExponentExperienceData/%2540anonymous%252FQuaTangVip-47b53549-6ad6-4e91-af41-790549c554bc/ImagePicker/D7E49D2D-A6D2-4F1B-B698-C060337459CE.jpg",
         img: avatar,
         group: [1, 2],
@@ -321,7 +321,7 @@ const {userGL} = useUser();
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
+      style={{ flex: 1,}}
       // behavior là hành động khi bàn phím hiện lên, padding là di chuyển view lên trên
     >
       <View style={{borderWidth: 0, paddingBottom: 10, backgroundColor: 'white'}}>
@@ -730,7 +730,8 @@ const {userGL} = useUser();
         <TouchableOpacity
           style={{
             width: Dimensions.get("window").width,
-            height: 50,
+            height: 55,
+            bottom: 30,
             backgroundColor: colorBlue,
             justifyContent: "center",
             alignItems: "center",

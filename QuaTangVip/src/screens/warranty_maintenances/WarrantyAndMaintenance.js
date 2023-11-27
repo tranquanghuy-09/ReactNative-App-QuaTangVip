@@ -15,6 +15,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Picker } from "@react-native-picker/picker";
 
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
 // Icon
 const theGioiDiDongImage = require("../../../assets/icons_Dai/logo_branch_tgdd.webp");
 const dienMayXanhIcon = require("../../../assets/icons_Dai/phat-trien-website-dien-may-xanh-16233.jpeg");
